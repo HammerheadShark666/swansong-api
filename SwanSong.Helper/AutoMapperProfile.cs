@@ -7,25 +7,27 @@ namespace SwanSong.Helper;
 public class AutoMapperProfile : AutoMapper.Profile
 {
     public AutoMapperProfile()
-    {   
-        CreateMap<Member, MemberAddRequest>().ReverseMap();
-        CreateMap<Member, MemberUpdateRequest>().ReverseMap();
-        CreateMap<Member, MemberActionResponse>().ReverseMap();
-        CreateMap<Member, MemberResponse>().ReverseMap(); 
+    {
+        CreateMap<MemberAddRequest, Member>()
+            .ForMember(dest => dest.BirthPlaceId, opt => opt.MapFrom(src => src.BirthPlaceId < 1 ? null : src.BirthPlaceId));
+        CreateMap<MemberUpdateRequest, Member>()
+            .ForMember(dest => dest.BirthPlaceId, opt => opt.MapFrom(src => src.BirthPlaceId < 1 ? null : src.BirthPlaceId));
+        CreateMap<Member, MemberActionResponse>();
+        CreateMap<Member, MemberResponse>(); 
 
-        CreateMap<Artist, ArtistAddRequest>().ReverseMap();
-        CreateMap<Artist, ArtistUpdateRequest>().ReverseMap();
-        CreateMap<Artist, ArtistActionResponse>().ReverseMap();
-        CreateMap<Artist, ArtistResponse>().ReverseMap();
-        CreateMap<Artist, ArtistLookUpResponse>() //.ReverseMap();
+        CreateMap<ArtistAddRequest, Artist>();
+        CreateMap<ArtistUpdateRequest, Artist>();
+        CreateMap<Artist, ArtistActionResponse>();
+        CreateMap<Artist, ArtistResponse>();
+        CreateMap<Artist, ArtistLookUpResponse>()
           .ConstructUsing((artist, c) => new ArtistLookUpResponse(
               artist.Id,
               artist.Name,
               artist.Photo));
 
-        CreateMap<Album, AlbumAddRequest>().ReverseMap();
-        CreateMap<Album, AlbumUpdateRequest>().ReverseMap();
-        CreateMap<Album, AlbumActionResponse>().ReverseMap();
+        CreateMap<AlbumAddRequest, Album>();
+        CreateMap<AlbumUpdateRequest, Album>();
+        CreateMap<Album, AlbumActionResponse>();
         CreateMap<Album, AlbumResponse>()
           .ConstructUsing((album, c) => new AlbumResponse(               
               album.Id,
@@ -50,9 +52,9 @@ public class AutoMapperProfile : AutoMapper.Profile
               album.ReleaseDate, "",
               album.Photo, "", ""));
 
-        CreateMap<AlbumSong, AlbumSongAddRequest>().ReverseMap();
-        CreateMap<AlbumSong, AlbumSongUpdateRequest>().ReverseMap();
-        CreateMap<AlbumSong, AlbumSongActionResponse>().ReverseMap();
+        CreateMap<AlbumSongAddRequest, AlbumSong>();
+        CreateMap<AlbumSongUpdateRequest, AlbumSong>();
+        CreateMap<AlbumSong, AlbumSongActionResponse>();
 
         CreateMap<AlbumSong, AlbumSongResponse>()
             .ConstructUsing(albumSong => new AlbumSongResponse(
@@ -64,9 +66,9 @@ public class AutoMapperProfile : AutoMapper.Profile
                 albumSong.Side
                 ));
 
-        CreateMap<Song, AlbumSongSongAddRequest>().ReverseMap();
-        CreateMap<Song, AlbumSongSongUpdateRequest>().ReverseMap();
-        CreateMap<Song, SongActionResponse>().ReverseMap();
+        CreateMap<AlbumSongSongAddRequest, Song>();
+        CreateMap<AlbumSongSongUpdateRequest, Song>();
+        CreateMap<Song, SongActionResponse>();
 
         CreateMap<Song, SongResponse>()
             .ConstructUsing(song => new SongResponse(
@@ -81,26 +83,26 @@ public class AutoMapperProfile : AutoMapper.Profile
         CreateMap<Account, ProfileRequest>().ReverseMap();
         CreateMap<Account, JwtRefreshTokenActionResponse>().ReverseMap();
         CreateMap<Account, LoginActionResponse>().ReverseMap(); 
-        CreateMap<RegisterRequest, Account>().ReverseMap(); 
+        CreateMap<RegisterRequest, Account>().ReverseMap();
 
-        CreateMap<RecordLabel, RecordLabelResponse>().ReverseMap();
-        CreateMap<RecordLabel, RecordLabelActionResponse>().ReverseMap();
-        CreateMap<RecordLabel, RecordLabelAddRequest>().ReverseMap();
-        CreateMap<RecordLabel, RecordLabelUpdateRequest>().ReverseMap();
+        CreateMap<RecordLabel, RecordLabelResponse>();
+        CreateMap<RecordLabel, RecordLabelActionResponse>();
+        CreateMap<RecordLabelAddRequest, RecordLabel>();
+        CreateMap<RecordLabelUpdateRequest, RecordLabel>();
 
-        CreateMap<Country, CountryResponse>().ReverseMap();
-        CreateMap<Country, CountryActionResponse>().ReverseMap();
-        CreateMap<Country, CountryAddRequest>().ReverseMap();
-        CreateMap<Country, CountryUpdateRequest>().ReverseMap();
+        CreateMap<Country, CountryResponse>();
+        CreateMap<Country, CountryActionResponse>();
+        CreateMap<CountryAddRequest, Country>();
+        CreateMap<CountryUpdateRequest, Country>();
 
-        CreateMap<Studio, StudioResponse>().ReverseMap();
-        CreateMap<Studio, StudioActionResponse>().ReverseMap();
-        CreateMap<Studio, StudioAddRequest>().ReverseMap();
-        CreateMap<Studio, StudioUpdateRequest>().ReverseMap();
+        CreateMap<Studio, StudioResponse>();
+        CreateMap<Studio, StudioActionResponse>();
+        CreateMap<StudioAddRequest, Studio>();
+        CreateMap<StudioUpdateRequest, Studio>();
 
-        CreateMap<BirthPlace, BirthPlaceResponse>().ReverseMap();
-        CreateMap<BirthPlace, BirthPlaceActionResponse>().ReverseMap();
-        CreateMap<BirthPlace, BirthPlaceAddRequest>().ReverseMap();
-        CreateMap<BirthPlace, BirthPlaceUpdateRequest>().ReverseMap();  
+        CreateMap<BirthPlace, BirthPlaceResponse>();
+        CreateMap<BirthPlace, BirthPlaceActionResponse>();
+        CreateMap<BirthPlaceAddRequest, BirthPlace>();
+        CreateMap<BirthPlaceUpdateRequest, BirthPlace>();
     }
 }
