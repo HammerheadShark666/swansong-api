@@ -33,4 +33,3 @@ public record RecordLabelActionResponse(long Id, string name, List<Message> Mess
 public record StudioResponse(int Id, string Name);
 
 public record StudioActionResponse(long Id, string name, List<Message> Messages, bool IsValid);
-
