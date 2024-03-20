@@ -18,4 +18,3 @@ public record MemberResponse(long Id, long ArtistId, string StageName,
 public record MemberActionResponse(long Id, List<Message> Messages, bool IsValid);
 
 public record MemberPhotoActionResponse(string filename, bool IsValid);
-
