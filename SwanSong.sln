@@ -31,8 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Postman Integration Testing
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D956F9C0-7B22-4CA4-BCD0-379E5CDB11C2}"
 	ProjectSection(SolutionItems) = preProject
-		PostmanCollections\SwanSongV1.postman_collection-env.json = PostmanCollections\SwanSongV1.postman_collection-env.json
-		PostmanCollections\SwanSongV1.postman_collection.json = PostmanCollections\SwanSongV1.postman_collection.json
+		PostmanCollections\SwanSongV1_postman_collection.json = PostmanCollections\SwanSongV1_postman_collection.json
+		PostmanCollections\SwanSongV1_postman_collection_env.json = PostmanCollections\SwanSongV1_postman_collection_env.json
 	EndProjectSection
 EndProject
 Global
