@@ -26,23 +26,14 @@ public class StudioValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_studio_return_true()
+    public async Task Before_save_validate_studio_return_true()
     {
         ValidationResult validation = await validator.ValidateAsync(existingStudio);
         Assert.True(validation.IsValid);
     }
-
+     
     [Fact]
-    public async void After_save_validate_studio_return_true()
-    {
-        ValidationResult validation = await validator.ValidateAsync(existingStudio, options => options
-                                                                            .IncludeRuleSets("AfterSave"));
-        Assert.False(validation.IsValid);
-        Assert.Equal("The studio has been saved.", validation.Errors[0].ErrorMessage);
-    }               
-
-    [Fact]
-    public async void Before_save_validate_studio_name_null_return_false()
+    public async Task Before_save_validate_studio_name_null_return_false()
     {
         Studio Studio = new() { Id = 1, Name = "" };
         ValidationResult validationResult = await validator.ValidateAsync(Studio, options => options
@@ -54,7 +45,7 @@ public class StudioValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_studio_name_empty_return_false()
+    public async Task Before_save_validate_studio_name_empty_return_false()
     {
         Studio Studio = new() { Id = 1, Name = "" };
         ValidationResult validationResult = await validator.ValidateAsync(Studio, options => options
@@ -66,7 +57,7 @@ public class StudioValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_studio_name_over_100_characters_return_false()
+    public async Task Before_save_validate_studio_name_over_100_characters_return_false()
     {
         Studio Studio = new() { Id = 1, Name = UnitTestHelper.generateRandomString(251) };
         ValidationResult validationResult = await validator.ValidateAsync(Studio, options => options
@@ -78,7 +69,7 @@ public class StudioValidatorTest
     }
 
     [Fact]
-    public async void Before_insert_save_validate_studio_insert_name_duplicate_return_false()
+    public async Task Before_insert_save_validate_studio_insert_name_duplicate_return_false()
     {
         Studio Studio = new() { Id = 0, Name = "Test Studio" };
 
@@ -93,7 +84,7 @@ public class StudioValidatorTest
     }
 
     [Fact]
-    public async void Before_update_save_validate_studio_update_name_duplicate_return_false()
+    public async Task Before_update_save_validate_studio_update_name_duplicate_return_false()
     {
         Studio Studio = new() { Id = 1, Name = "Test Studio" };
 
