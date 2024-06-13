@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "93b176ce-c2bc-43e1-9735-ea3c5706a1e3",
-		"name": "SwanSong",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"_postman_id": "d1e34535-2f6a-474f-8ab4-7f1d867d4142",
+		"name": "SwanSongV1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4654363"
 	},
 	"item": [
 		{
@@ -14,14 +15,15 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6472e4ed-954c-424a-8c80-ffbb4a070b4a",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"var jsonData = JSON.parse(responseBody);\r",
-									"postman.setEnvironmentVariable(\"token\", jsonData.jwtToken);\r",
+									"//var jsonData = JSON.parse(pm.responseBody);\r",
+									"let jsonData = pm.response.json();   \r",
+									"\r",
+									"pm.environment.set(\"token\", jsonData.jwtToken);\r",
 									""
 								],
 								"type": "text/javascript",
@@ -29,10 +31,6 @@
 							}
 						}
 					],
-					"id": "b8128182-a6fd-4688-8417-58560f11f8f9",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -45,12 +43,21 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/v1/login"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
 					},
 					"response": []
 				}
-			],
-			"id": "2eb195d8-f91c-47be-8e7e-b45be8d6f8e7"
+			]
 		},
 		{
 			"name": "Album",
@@ -61,14 +68,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "76c0ac5c-c475-4b96-a7cf-dc8ed6e17803",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test('Schema validation', () => {  \r",
-									"  pm.response.to.have.jsonSchema(JSON.parse(pm.environment.get('albums_paging_schema')));\r",
+									"pm.test('Schema validation', () => { \r",
+									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('albums_paging_schema')));\r",
 									"});\r",
 									"\r",
 									"pm.test(\"albums present\", () => {\r",
@@ -91,10 +97,6 @@
 							}
 						}
 					],
-					"id": "d47579ba-10ea-4634-a9f2-5a460db96e53",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -128,7 +130,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c92a04bd-ae57-4338-aa5a-ca486d4e2a01",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -149,14 +150,22 @@
 							}
 						}
 					],
-					"id": "1545a6d5-8028-4d1e-ad23-8aa98fd1d047",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/search-by-letter/t"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/search-by-letter/t",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"search-by-letter",
+								"t"
+							]
+						}
 					},
 					"response": []
 				},
@@ -166,7 +175,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c0ecb72f-6f50-4664-a221-504d8177d18b",
 								"exec": [
 									"pm.test(\"Status code is 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
@@ -177,14 +185,22 @@
 							}
 						}
 					],
-					"id": "d8dd160d-6d0c-4067-9e35-42a89aa6f4b2",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/search-by-letter/"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/search-by-letter/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"search-by-letter",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -194,7 +210,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "db5fe399-b22d-4b19-ada0-ed6347ddf2cf",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -215,14 +230,22 @@
 							}
 						}
 					],
-					"id": "03d34ede-da1d-48b2-b38e-b6925017f188",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/search/nevermind"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/search/nevermind",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"search",
+								"nevermind"
+							]
+						}
 					},
 					"response": []
 				},
@@ -232,7 +255,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "934eb3aa-db7b-47e5-af82-f9e251f48f48",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -248,14 +270,22 @@
 							}
 						}
 					],
-					"id": "80564166-ec26-4d0d-bebb-49b1575d2731",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/search/test123 "
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/search/test123 ",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"search",
+								"test123 "
+							]
+						}
 					},
 					"response": []
 				},
@@ -265,7 +295,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "aea564d2-765d-4861-9198-b7d44264f978",
 								"exec": [
 									"pm.test(\"Status code is 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
@@ -276,14 +305,22 @@
 							}
 						}
 					],
-					"id": "103b05fb-cf4d-46bd-935b-3f6b3f69956f",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/search/"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/search/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"search",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -293,7 +330,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5d0f3bc0-875a-4eea-9ca3-dbfb35cc4729",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -314,14 +350,22 @@
 							}
 						}
 					],
-					"id": "15c810d8-953d-47fd-a531-d70dd9901ad9",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/album/1"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -331,7 +375,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "53a473f2-afbf-4f5d-b867-6f88e2193e29",
 								"exec": [
 									"pm.test(\"Status code is 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
@@ -342,14 +385,22 @@
 							}
 						}
 					],
-					"id": "dd90c1a1-4343-4e6c-a067-1180585df382",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/album/100000000"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/100000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								"100000000"
+							]
+						}
 					},
 					"response": []
 				},
@@ -359,7 +410,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e3ce18c0-a6b8-4786-9afd-a291efa1bb5d",
 								"exec": [
 									"pm.test(\"Status code is 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
@@ -370,14 +420,22 @@
 							}
 						}
 					],
-					"id": "cefefd7f-340f-4021-8322-e71921e97a26",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/album/"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -387,7 +445,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fd34b202-aa8e-408e-afd2-0654b5401828",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -408,14 +465,22 @@
 							}
 						}
 					],
-					"id": "118d2d07-b327-4de8-97d3-01b93ce05fe4",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/artist/1"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/artist/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"artist",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -425,7 +490,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d1437492-b38d-4d04-892e-5718854245b6",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -441,27 +505,43 @@
 							}
 						}
 					],
-					"id": "074888f3-c35e-43cd-9c23-17fadb7b25d0",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/artist/1000000"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/artist/1000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"artist",
+								"1000000"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "/api/{version}/albums/artist/ (Fail 404)",
-					"id": "e9d3f743-0aab-4f7a-b21a-bdaff517f469",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/artist/"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/artist/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"artist",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -471,7 +551,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1dd31d82-b7a2-43d2-992d-fd7cd557c3f2",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -494,10 +573,6 @@
 							}
 						}
 					],
-					"id": "5d600da2-1171-47dd-8679-36dceb6f9bc6",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -510,7 +585,19 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/v1/albums/album/add"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -520,24 +607,23 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1dd31d82-b7a2-43d2-992d-fd7cd557c3f2",
 								"exec": [
 									"pm.test(\"Status code is 400\", function () {\r",
 									"    pm.response.to.have.status(400);\r",
 									"}); \r",
 									" \r",
 									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('action_response_schema')));\r",
+									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('action_fail_response_schema')));\r",
 									"}); \r",
 									" \r",
 									"let jsonData = pm.response.json();  \r",
 									"\r",
+									"console.log(jsonData.messages)\r",
+									"\r",
 									"pm.test(\"Has correct messages\", function () {\r",
 									"    pm.expect(jsonData.messages).to.have.length == 2;\r",
-									"    pm.expect(jsonData.messages[0].text).to.eql(\"Album name is required.\"); \r",
-									"    pm.expect(jsonData.messages[0].severity).to.eql(\"error\");\r",
-									"    pm.expect(jsonData.messages[1].text).to.eql(\"Album name length between 1 and 120.\");\r",
-									"    pm.expect(jsonData.messages[1].severity).to.eql(\"error\");\r",
+									"    pm.expect(jsonData.messages[0].text).to.eql(\"Album name is required.\");  \r",
+									"    pm.expect(jsonData.messages[1].text).to.eql(\"Album name length between 1 and 120.\");  \r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -545,10 +631,6 @@
 							}
 						}
 					],
-					"id": "5776fa79-9e6b-4a3c-b43f-4b3f68ea03f1",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -561,7 +643,19 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/v1/albums/album/add"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -571,19 +665,9 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "bcfedbac-0418-42d9-b882-862119a262a6",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_actions_schema')));\r",
-									"}); \r",
-									"\r",
-									"pm.test(\"Has How The West Was Won 2\", function () {\r",
-									"    let response = pm.response.json();     \r",
-									"    pm.expect(response.messages[0].text).to.eql(\"The album How The West Was Won 2 has been saved.\"); \r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -591,12 +675,8 @@
 							}
 						}
 					],
-					"id": "a9310f46-2eed-4ba7-a4e6-db5001e646ed",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -607,7 +687,19 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/v1/albums/album/update"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								"update"
+							]
+						}
 					},
 					"response": []
 				},
@@ -617,7 +709,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "53062272-c6b1-420e-b84c-cc9b266f9223",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -638,9 +729,7 @@
 							}
 						}
 					],
-					"id": "77667f8a-139f-452a-9e79-63af7285224e",
 					"protocolProfileBehavior": {
-						"disableBodyPruning": true,
 						"disabledSystemHeaders": {}
 					},
 					"request": {
@@ -649,7 +738,6 @@
 							{
 								"key": "Content-Type",
 								"value": "multipart/form-data",
-								"type": "text",
 								"disabled": true
 							}
 						],
@@ -663,7 +751,20 @@
 								}
 							]
 						},
-						"url": "{{baseUrl}}/api/v1/albums/album/upload-photo/{{albumId}}"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/upload-photo/{{albumId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								"upload-photo",
+								"{{albumId}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -673,20 +774,9 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "221a039a-8b69-4906-8537-4a4922b56926",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_actions_schema')));\r",
-									"});\r",
-									"\r",
-									"let jsonData = pm.response.json(); \r",
-									" \r",
-									"pm.test(\"Has correct message\", function () { \r",
-									"    pm.expect(jsonData.messages[0].text).to.eql(\"The album How The West Was Won 2 has been deleted.\");\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -694,14 +784,22 @@
 							}
 						}
 					],
-					"id": "2e94df47-53b1-420c-884c-a35abf4e98fb",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/album/{{albumId}}"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/{{albumId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								"{{albumId}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -711,7 +809,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "221a039a-8b69-4906-8537-4a4922b56926",
 								"exec": [
 									"pm.test(\"Status code is 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
@@ -722,14 +819,22 @@
 							}
 						}
 					],
-					"id": "f1815fab-ca56-4c7a-989a-bca83613ad76",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{baseUrl}}/v1/api/albums/album/8888888"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/8888888",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								"8888888"
+							]
+						}
 					},
 					"response": []
 				},
@@ -739,7 +844,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ce8ed7f4-17d8-453d-bba1-84705f9cb091",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -757,19 +861,26 @@
 							}
 						}
 					],
-					"id": "a7bf5516-313d-4de0-835b-770859ba68df",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/search-by-letter/@"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/search-by-letter/@",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"search-by-letter",
+								"@"
+							]
+						}
 					},
 					"response": []
 				}
-			],
-			"id": "2c381c56-530b-4a58-a834-981ee7ed4f6b"
+			]
 		},
 		{
 			"name": "Album Song",
@@ -780,7 +891,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f65b7e17-e8fb-4174-9abd-31eb6dba96c2",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -813,14 +923,22 @@
 							}
 						}
 					],
-					"id": "a65acdd7-f533-4736-998a-8132e13ad7ea",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/album/songs/1"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/album/songs/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"album",
+								"songs",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -830,7 +948,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "214d8326-aebe-42a6-a328-103e2fd7b21d",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -847,14 +964,22 @@
 							}
 						}
 					],
-					"id": "8024c9cd-28f3-4aa7-b24d-6ee409a7b65b",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/album/songs/1000000"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/album/songs/1000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"album",
+								"songs",
+								"1000000"
+							]
+						}
 					},
 					"response": []
 				},
@@ -864,7 +989,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "205c7eaa-7013-4520-98ae-27b6d34dfea6",
 								"exec": [
 									"pm.test(\"Status code is 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
@@ -875,14 +999,21 @@
 							}
 						}
 					],
-					"id": "ab71d160-fc74-42da-90b8-86778a64c30d",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1album/songs/"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1album/songs/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1album",
+								"songs",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -892,7 +1023,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a39d3eb7-665e-45de-b743-ab96dbb4ea25",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -916,10 +1046,6 @@
 							}
 						}
 					],
-					"id": "bf3fe089-0d35-4372-b297-f81e73b84d5b",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -932,7 +1058,19 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/v1/albums/album/add"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -942,7 +1080,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3ba3e0ea-0fd9-4ac0-a68f-783b14876433",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -956,8 +1093,7 @@
 									"\r",
 									"pm.test(\"Has album song id greater than zero\", function () { \r",
 									"    pm.expect(jsonData.id).to.be.greaterThan(0);\r",
-									"    pm.expect(jsonData.songId).to.be.greaterThan(0);\r",
-									"    pm.expect(jsonData.messages[0].text).to.eql(\"The album song has been saved.\"); \r",
+									"    pm.expect(jsonData.songId).to.be.greaterThan(0); \r",
 									"}); \r",
 									"\r",
 									"pm.environment.set(\"albumSongId\", jsonData.id);\r",
@@ -968,10 +1104,6 @@
 							}
 						}
 					],
-					"id": "dc921bd6-7151-41dc-b881-ca0dd50fbd6b",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -984,7 +1116,20 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/v1/album/songs/song/add"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/album/songs/song/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"album",
+								"songs",
+								"song",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
@@ -994,35 +1139,33 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "726daacf-4852-41d1-86fb-8edc9f0ec2e0",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_song_add_schema')));\r",
-									"}); \r",
-									"\r",
-									"let jsonData = pm.response.json();  \r",
-									"\r",
-									"pm.test(\"Has deleted message\", function () {  \r",
-									"    pm.expect(jsonData.messages[0].text).to.eql(\"The album song has been deleted.\"); \r",
-									"}); "
+									"});"
 								],
 								"type": "text/javascript",
 								"packages": {}
 							}
 						}
 					],
-					"id": "a22a4c3f-28cf-47ee-830b-408fdccb43cc",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/album/songs/song/{{albumSongId}}"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/album/songs/song/{{albumSongId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"album",
+								"songs",
+								"song",
+								"{{albumSongId}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1032,35 +1175,32 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "726daacf-4852-41d1-86fb-8edc9f0ec2e0",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_song_delete_schema')));\r",
-									"}); \r",
-									"\r",
-									"let jsonData = pm.response.json();  \r",
-									"\r",
-									"pm.test(\"Has deleted message\", function () {  \r",
-									"    pm.expect(jsonData.messages[0].text).to.eql(\"The song has been deleted.\"); \r",
-									"}); "
+									"});"
 								],
 								"type": "text/javascript",
 								"packages": {}
 							}
 						}
 					],
-					"id": "3f0f9862-9597-41df-ab64-88203be442a9",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/songs/song/{{songId}}"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/songs/song/{{songId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"songs",
+								"song",
+								"{{songId}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1070,53 +1210,54 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "14a0da3a-cfd0-43f7-88e2-6be1b46fb8fa",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_actions_schema')));\r",
-									"}); "
+									"});"
 								],
 								"type": "text/javascript",
 								"packages": {}
 							}
 						}
 					],
-					"id": "369ebf57-af6b-488d-ba37-31ee1b5c25ca",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{baseUrl}}/api/v1/albums/album/{{albumId}}"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/albums/album/{{albumId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"albums",
+								"album",
+								"{{albumId}}"
+							]
+						}
 					},
 					"response": []
 				}
-			],
-			"id": "7671313f-188c-46f7-b89e-8355fbf5b33d"
+			]
 		},
 		{
 			"name": "Artist",
 			"item": [
 				{
-					"name": "/api/artists?pageNumber=1&pageSize=5",
+					"name": "/api/{version}/artists?pageNumber=1&pageSize=5",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "18673f76-81f3-4b34-8d1e-1e4a7f65631c",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"// pm.test('Schema validation', () => {\r",
-									"//   pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('artist_paging_schema')));\r",
-									"// }); \r",
+									"pm.test('Schema validation', () => {\r",
+									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('artist_paging_schema')));\r",
+									"}); \r",
 									"\r",
 									"let jsonData = pm.response.json();\r",
 									"\r",
@@ -1131,25 +1272,21 @@
 									"    pm.expect(jsonData.totalRecords).to.greaterThan(10);   \r",
 									"});"
 								],
-								"type": "text/javascript",
-								"packages": {}
+								"type": "text/javascript"
 							}
 						}
 					],
-					"id": "7cfacf5b-9768-4c7d-bb44-f7e3be5af0eb",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/artists?pageNumber=1&pageSize=5",
+							"raw": "{{baseUrl}}/api/v1/artists?pageNumber=1&pageSize=5",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"artists"
 							],
 							"query": [
@@ -1167,12 +1304,11 @@
 					"response": []
 				},
 				{
-					"name": "/api/artists (Success)",
+					"name": "/api/{version}/artists (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "6053d248-7d36-47a7-8c57-85a4e601f1a6",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1200,24 +1336,30 @@
 							}
 						}
 					],
-					"id": "49628d95-d96d-44b5-b3c1-13f0e278beaf",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/lookups"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/lookups",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"lookups"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/search/denny (Success)",
+					"name": "/api/{version}/artists/search/denny (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "718baa18-47d8-4742-8bd3-b833d1d52422",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1238,24 +1380,31 @@
 							}
 						}
 					],
-					"id": "8243963c-3e5a-4c08-be9b-3531f9b19d48",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/search/denny"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/search/denny",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"search",
+								"denny"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/search/test123 (Nothing Found)",
+					"name": "/api/{version}/artists/search/test123 (Nothing Found)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "619ca235-56e7-40c1-9e7d-459874454cf9",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1272,19 +1421,27 @@
 							}
 						}
 					],
-					"id": "8185f018-afdf-413b-9242-fb7dcc0cbfe0",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/search/test123"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/search/test123",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"search",
+								"test123"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/search/ (Fail 404)",
+					"name": "/api/{version}/artists/search/ (Fail 404)",
 					"event": [
 						{
 							"listen": "test",
@@ -1294,29 +1451,35 @@
 									"    pm.response.to.have.status(404);\r",
 									"});"
 								],
-								"type": "text/javascript",
-								"id": "06734a2e-b007-46d2-a611-fb2efc512689"
+								"type": "text/javascript"
 							}
 						}
 					],
-					"id": "7b1a36fb-c704-4d44-a2f1-572880c1d7e3",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/search/"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/search/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"search",
+								""
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/search-by-letter/n",
+					"name": "/api/{version}/artists/search-by-letter/n",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "7a1b6cce-9cc1-4954-9738-e6b29e4fb01c",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1337,24 +1500,31 @@
 							}
 						}
 					],
-					"id": "3a35b25e-de96-4696-ad26-dab19b5efb0f",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/search-by-letter/n"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/search-by-letter/n",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"search-by-letter",
+								"n"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/search-by-letter/@ (Nothing Found)",
+					"name": "/api/{version}/artists/search-by-letter/@ (Nothing Found)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "a1c12887-97e6-4225-a25b-3bedfaacf59c",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1372,19 +1542,27 @@
 							}
 						}
 					],
-					"id": "b0bff835-fad7-48b6-a4c2-7e12285a065b",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/search-by-letter/@"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/search-by-letter/@",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"search-by-letter",
+								"@"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/search-by-letter/ (Fail 404)",
+					"name": "/api/{version}/artists/search-by-letter/ (Fail 404)",
 					"event": [
 						{
 							"listen": "test",
@@ -1394,29 +1572,79 @@
 									"    pm.response.to.have.status(404);\r",
 									"});"
 								],
-								"type": "text/javascript",
-								"id": "ac0dfeaa-4075-42c3-8535-52a0e331bfee"
+								"type": "text/javascript"
 							}
 						}
 					],
-					"id": "4dba2939-0c6d-4749-832d-857af2f74140",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/search-by-letter/"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/search-by-letter/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"search-by-letter",
+								""
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/artist/1",
+					"name": "/api/{version}/artists/lookups",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "776d9b65-cff9-41a8-ae7a-e3d9ab771e42",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema validation', () => {\r",
+									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('artists_lookup_schema')));\r",
+									"});  \r",
+									"\r",
+									"pm.test(\"Has artists\", function () {\r",
+									"    let artists = pm.response.json(); \r",
+									"    const artist = artists.find(m => m.name === \"Sandy Denny\");    \r",
+									"    pm.expect(artist).to.be.an(\"object\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/lookups",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"lookups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/{version}/artists/artist/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1437,19 +1665,27 @@
 							}
 						}
 					],
-					"id": "b3c68b81-4137-4843-9a12-b645367a0f4a",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/artist/1"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/artist/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"artist",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/artist/ (Fail 404)",
+					"name": "/api/{version}/artists/artist/ (Fail 404)",
 					"event": [
 						{
 							"listen": "test",
@@ -1459,29 +1695,35 @@
 									"    pm.response.to.have.status(404);\r",
 									"});"
 								],
-								"type": "text/javascript",
-								"id": "f9dab968-59a9-48ae-b52a-6d85c5813bf4"
+								"type": "text/javascript"
 							}
 						}
 					],
-					"id": "58d41f34-4f1d-4721-8008-2d5032ce36a4",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/artist/"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/artist/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"artist",
+								""
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/artist/add (Insert) (Success)",
+					"name": "/api/{version}/artists/artist/add (Insert) (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "b2e80281-6c93-4f8c-b6ef-cfc21cc75738",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1504,10 +1746,6 @@
 							}
 						}
 					],
-					"id": "fac67c54-9810-43ba-b431-44067cc97bc5",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1520,42 +1758,40 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/artists/artist/add"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/artist/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"artist",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/artist/update (Update) (Success)",
+					"name": "/api/{version}/artists/artist/update (Update) (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "6e926934-7c22-4e02-83d1-41355d5fc8b3",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_actions_schema')));\r",
-									"}); \r",
-									"  \r",
-									"let jsonData = pm.response.json();  \r",
-									"\r",
-									"pm.test(\"Has Tom Petty 2\", function () { \r",
-									"    pm.expect(jsonData).to.be.an(\"object\", \"Could not find the artist\"); \r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
-					"id": "6a787498-6867-4f7e-ad40-1eaa24c7c8bc",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -1566,17 +1802,28 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/artists/artist/update"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/artist/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"artist",
+								"update"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/artist/upload-photo/{{artistId}} (Success)",
+					"name": "/api/{version}/artists/artist/upload-photo/{{artistId}} (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "83ada397-9847-4813-96a4-08312866d66c",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1592,14 +1839,11 @@
 									"    pm.expect(jsonData.filename).to.be.not.null; \r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
-					"id": "15f00d7e-50b9-4066-af75-36c00e330f31",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1613,136 +1857,145 @@
 								}
 							]
 						},
-						"url": "{{baseUrl}}/api/artists/artist/upload-photo/{{artistId}}"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/artist/upload-photo/{{artistId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"artist",
+								"upload-photo",
+								"{{artistId}}"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/artist/delete/{{artistId}} (Delete) (Success)",
+					"name": "/api/{version}/artists/artist/delete/{{artistId}} (Delete) (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "d077b3b0-8882-462f-a3d3-8012da73754d",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_actions_schema')));\r",
-									"});\r",
-									"\r",
-									"let jsonData = pm.response.json(); \r",
-									" \r",
-									"pm.test(\"Has correct message\", function () { \r",
-									"    pm.expect(jsonData.messages[0].text).to.eql(\"The artist has been deleted.\");\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
-					"id": "f803e99f-2267-4cd0-b38f-e9b5a9259152",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/artist/{{artistId}}"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/artist/{{artistId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"artist",
+								"{{artistId}}"
+							]
+						}
 					},
 					"response": []
 				}
-			],
-			"id": "20f1a314-6dc8-4641-9cf9-40fb0fc1b028"
+			]
 		},
 		{
 			"name": "Member",
 			"item": [
 				{
-					"name": "/api/members/1 (Success)",
+					"name": "/api/{version}/members/member/1 (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "3540851e-7c69-4248-8f9f-0a2d041e98d8",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									" \r",
 									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('members_schema')));\r",
+									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('member_schema')));\r",
 									"}); \r",
 									"\r",
-									"let jsonData = pm.response.json();\r",
-									"\r",
-									"pm.test(\"members present\", () => { \r",
-									"    pm.expect(jsonData).to.have.length == 4;\r",
-									"}); \r",
-									"\r",
-									"pm.test(\"Has Jimmy Page\", function () { \r",
-									"    const member = jsonData.find(m => m.stageName === \"Jimmy Page\");    \r",
-									"    pm.expect(member).to.be.an(\"object\", \"Could not find the member\");\r",
+									" "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/members/member/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"member",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/{version}/members/member/100000 (Not Found)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
-					"id": "f4590769-9960-4a28-9b17-2e7d2e1cb02e",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{baseUrl}}/api/members/1"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/members/member/100000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"member",
+								"100000"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/members/100000 (Not Found)",
+					"name": "/api/{version}/artists/artist/add (to add members to)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "a8643fe3-48aa-4a78-90d9-d95fc83c5951",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"}); \r",
-									"\r",
-									"let jsonData = pm.response.json();   \r",
-									"\r",
-									"pm.test(\"No Members\", () => {  \r",
-									"    pm.expect(jsonData).to.be.an('array').that.is.empty; \r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"id": "747e6567-c7f9-4df3-81a7-5041900f9b54",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{baseUrl}}/api/members/100000"
-					},
-					"response": []
-				},
-				{
-					"name": "/api/artists/artist/add (to add members to)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "0b479e3d-e2c7-4acb-b01b-d80f7684ec17",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1765,10 +2018,6 @@
 							}
 						}
 					],
-					"id": "8b88bd48-f91e-432f-86fe-e7a7611dc1bc",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1781,17 +2030,28 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/artists/artist/add"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/artist/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"artist",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/members/member/add (Insert) (Success)",
+					"name": "/api/{version}/members/member/add (Insert) (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "4b2eab94-f1da-437e-b6b5-268d4b677ae6",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1805,8 +2065,7 @@
 									" \r",
 									"pm.test(\"Has member id greater than zero\", function () { \r",
 									"    pm.expect(jsonData).to.be.an(\"object\", \"Could not find the member\");\r",
-									"    pm.expect(jsonData.id).to.be.greaterThan(0)\r",
-									"    pm.expect(jsonData.messages[0].text).to.eql(\"The member has been saved.\");\r",
+									"    pm.expect(jsonData.id).to.be.greaterThan(0);\r",
 									"});\r",
 									" \r",
 									"pm.environment.set(\"memberId\", jsonData.id); "
@@ -1816,10 +2075,6 @@
 							}
 						}
 					],
-					"id": "24d9eb18-d9e3-47c5-94fb-67005e31caad",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1832,45 +2087,40 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/members/member/add"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/members/member/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"member",
+								"add"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/members/member/update (Update) (Success)",
+					"name": "/api/{version}/members/member/update (Update) (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "11dfc682-cf58-436d-b034-3be61267b583",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_actions_schema')));\r",
-									"}); \r",
-									"  \r",
-									"let jsonData = pm.response.json();  \r",
-									"\r",
-									"pm.test(\"Has Test Member 2\", function () { \r",
-									"    pm.expect(jsonData).to.be.an(\"object\", \"Could not find the artist\"); \r",
-									"});\r",
-									"\r",
-									" "
+									"});"
 								],
 								"type": "text/javascript",
 								"packages": {}
 							}
 						}
 					],
-					"id": "371acf91-1aef-42ec-9ae5-4d633f9c641e",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -1881,17 +2131,28 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/members/member/update"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/members/member/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"member",
+								"update"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/members/member/upload-photo/{{memberId}} (Success)",
+					"name": "/api/{version}/members/member/upload-photo/{{memberId}} (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "3fafbf8f-602b-4272-843a-90b8eb8433d4",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1907,14 +2168,11 @@
 									"    pm.expect(jsonData.filename).to.be.not.null; \r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
-					"id": "cce9e8b6-5373-462a-be7b-acd15ddb826c",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1928,17 +2186,29 @@
 								}
 							]
 						},
-						"url": "{{baseUrl}}/api/members/member/upload-photo/{{memberId}}"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/members/member/upload-photo/{{memberId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"member",
+								"upload-photo",
+								"{{memberId}}"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/members?pageNumber=1&pageSize=5",
+					"name": "/api/{version}/members?pageNumber=1&pageSize=5",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "7c51b035-892a-48e5-8dfe-9a493e8766a3",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -1967,20 +2237,17 @@
 							}
 						}
 					],
-					"id": "a5182e59-ef15-444b-a9e2-61c806cc1c30",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/members?pageNumber=1&pageSize=5",
+							"raw": "{{baseUrl}}/api/v1/members?pageNumber=1&pageSize=5",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"members"
 							],
 							"query": [
@@ -1998,81 +2265,76 @@
 					"response": []
 				},
 				{
-					"name": "/api/members/member/{{memberId}} (Delete) (Success)",
+					"name": "/api/{version}/members/member/{{memberId}} (Delete) (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "3f75ad9b-fe5d-4feb-8220-6e02e4cd9edd",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_actions_schema')));\r",
-									"});\r",
-									"\r",
-									"let jsonData = pm.response.json(); \r",
-									" \r",
-									"pm.test(\"Has correct message\", function () { \r",
-									"    pm.expect(jsonData.messages[0].text).to.eql(\"The member has been deleted.\");\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
-					"id": "49f6841a-c938-4366-831f-b2526884675e",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{baseUrl}}/api/members/member/{{memberId}}"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/members/member/{{memberId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"members",
+								"member",
+								"{{memberId}}"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "/api/artists/artist/{{artistId}} (Delete) (Success) Copy",
+					"name": "/api/{version}/artists/artist/{{artistId}} (Delete) (Success)",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "312d11a5-d036-4354-8c63-81328e39a795",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Schema validation', () => {\r",
-									"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_actions_schema')));\r",
-									"});\r",
-									"\r",
-									"let jsonData = pm.response.json(); \r",
-									" \r",
-									"pm.test(\"Has correct message\", function () { \r",
-									"    pm.expect(jsonData.messages[0].text).to.eql(\"The artist has been deleted.\");\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
-					"id": "72912f95-67b2-4d41-9b02-62004254ac32",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "{{baseUrl}}/api/artists/artist/{{artistId}}"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/artists/artist/{{artistId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"artists",
+								"artist",
+								"{{artistId}}"
+							]
+						}
 					},
 					"response": []
 				}
-			],
-			"id": "44f43f8f-fdc3-4506-a14b-b67508eed1f3"
+			]
 		},
 		{
 			"name": "Lookup",
@@ -2086,7 +2348,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "763b4f31-fe05-4918-855d-d430002d8312",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2106,14 +2367,12 @@
 											"pm.environment.set(\"countryId\", jsonData.id);\r",
 											"pm.environment.set(\"countryUpdateName\", jsonData.name);"
 										],
-										"type": "text/javascript",
-										"packages": {}
+										"type": "text/javascript"
 									}
 								},
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "b864f3c8-5e41-47d5-987c-1a50b0fd4c21",
 										"exec": [
 											"utils = {\r",
 											"    isItemInArray: function(json, keyname, value) {\r",
@@ -2124,15 +2383,54 @@
 											"    }\r",
 											"}"
 										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Germany\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/countries/country/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"countries",
+										"country",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/{version}/countries/country/add (Fail 400)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
 										"type": "text/javascript",
 										"packages": {}
 									}
 								}
 							],
-							"id": "d1f47795-debe-497d-92fb-2a7188517431",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -2145,87 +2443,40 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/v1/countries/country/add"
-							},
-							"response": []
-						},
-						{
-							"name": "/api/countries/country/add (Fail 400)",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "7142455a-8e7a-4e9c-971e-80cecb99c5ab",
-										"exec": [
-											"pm.test(\"Status code is 400\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											" \r",
-											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_validation_schema_2')));\r",
-											"}); "
-										],
-										"type": "text/javascript"
-									}
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/countries/country/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"countries",
+										"country",
+										"add"
+									]
 								}
-							],
-							"id": "308a5dce-85a6-4072-948d-d82096013ac0",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"Name\": \"Germany\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{baseUrl}}/api/countries/country/add"
 							},
 							"response": []
 						},
 						{
-							"name": "/api/countries/country/update",
+							"name": "/api/{version}/countries/country/update",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "49bcbf25-01f1-4fb1-abbb-f7f6bf9aa284",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_schema')));\r",
-											"}); \r",
-											"\r",
-											"let jsonData = pm.response.json();   \r",
-											"\r",
-											"pm.test(\"Has country id greater than zero\", function () { \r",
-											"    pm.expect(jsonData).to.be.an(\"object\", \"Could not find the country\");\r",
-											"    pm.expect(jsonData.id).to.be.greaterThan(0); \r",
-											"});\r",
-											"\r",
-											"pm.test(\"The response contains a valid country name in the response\", function () { \r",
-											"    pm.expect(utils.isItemInArray(jsonData, \"name\" , pm.environment.get(\"countryUpdateName\"))).to.be.true;\r",
-											"}); "
+											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "83d72bb1-7c22-46c2-929a-7492eea97938",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -2236,36 +2487,44 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/countries/country/update"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/countries/country/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"countries",
+										"country",
+										"update"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/countries/country/update (Fail 400)",
+							"name": "/api/{version}/countries/country/update (Fail 400)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "d254b85a-0c45-45fe-a775-f0ecbe1467f7",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {\r",
 											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"\r",
 											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_validation_schema_2')));\r",
+											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_fail_validation_schema_name')));\r",
 											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "f73b7ad0-d155-4511-b92e-0ed489886c6a",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -2276,17 +2535,28 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/countries/country/update"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/countries/country/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"countries",
+										"country",
+										"update"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/countries (Success)",
+							"name": "/api/{version}/countries (Success)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "14412867-46e8-483d-93a0-e08210021b84",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2313,7 +2583,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "3e7289fa-b0cc-46cd-975f-7ce7585cc6d1",
 										"exec": [
 											""
 										],
@@ -2321,24 +2590,104 @@
 									}
 								}
 							],
-							"id": "c08e400d-b7f6-48e2-a5c0-c031b369908e",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{baseUrl}}/api/countries"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/countries",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"countries"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/countries/country/{{countryId}} (Success)",
+							"name": "/api/{version}/countries/country/{{countryId}} (Success)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "37f60ec5-fd59-4c66-86ae-5c9f78145dac",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/countries/country/{{countryId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"countries",
+										"country",
+										"{{countryId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/{version}/countries/country/300 (Fail 404)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/countries/country/300",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"countries",
+										"country",
+										"300"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "BirthPlace",
+					"item": [
+						{
+							"name": "/api/{version}/birth-places/birth-place/add (Success)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2347,67 +2696,347 @@
 											"pm.test('Schema validation', () => {\r",
 											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_schema')));\r",
 											"}); \r",
-											""
+											"\r",
+											"let jsonData = pm.response.json();   \r",
+											"\r",
+											"pm.test(\"Has birthPlace id greater than zero\", function () { \r",
+											"    pm.expect(jsonData).to.be.an(\"object\", \"Could not find the birthPlace\");\r",
+											"    pm.expect(jsonData.id).to.be.greaterThan(0)\r",
+											"}); \r",
+											"\r",
+											"pm.environment.set(\"birthPlaceId\", jsonData.id);\r",
+											"pm.environment.set(\"birthPlaceUpdateName\", jsonData.name);"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"utils = {\r",
+											"    isItemInArray: function(json, keyname, value) {\r",
+											"            return Object.keys(json).some(key => {\r",
+											"            return typeof json[key] === 'object' ? \r",
+											"                this.isItemInArray(json[key], keyname, value) : key === keyname && json[key] === value;\r",
+											"        });\r",
+											"    }\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "44fa688d-dca9-4c47-b579-fddb1f38e058",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
-								"method": "DELETE",
+								"method": "POST",
 								"header": [],
-								"url": "{{baseUrl}}/api/countries/country/{{countryId}}"
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Oundle\",\r\n    \"CountryId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/birth-places/birth-place/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"birth-places",
+										"birth-place",
+										"add"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/countries/country/300 (Fail 404)",
+							"name": "/api/{version}/birth-places/birth-place/add (Fail 400)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "adad33da-dcf1-44c0-99ec-855134b5d5dd",
 										"exec": [
-											"pm.test(\"Status code is 404\", function () {\r",
-											"    pm.response.to.have.status(404);\r",
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
-											"\r",
+											" \r",
 											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_delete_schema')));\r",
+											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_fail_validation_schema_exists')));\r",
 											"}); "
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "7e878644-1e5d-4d8c-9f75-ae50f16451e3",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Name\": \"Oundle\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/birth-places/birth-place/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"birth-places",
+										"birth-place",
+										"add"
+									]
+								}
 							},
+							"response": []
+						},
+						{
+							"name": "/api/{version}/birth-places/birth-place/update",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Id\": {{birthPlaceId}},\r\n    \"Name\": \"{{birthPlaceUpdateName}}\",\r\n    \"CountryId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/birth-places/birth-place/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"birth-places",
+										"birth-place",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/{version}/birth-places/birth-place/update (Fail 400)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test('Schema validation', () => {\r",
+											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_fail_validation_schema_name')));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Id\": {{birthPlaceId}},\r\n    \"Name\": \"OundleOundleOundleOundleOundleOundleOundleOundleOundleOundleOundleOundleOundleOundleOundleOundleOundle\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/birth-places/birth-place/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"birth-places",
+										"birth-place",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/{version}/birth-places (Success)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											" \r",
+											"pm.test('Schema validation', () => {\r",
+											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_schema')));\r",
+											"}); \r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"birthPlaces present\", () => {  \r",
+											"    pm.expect(jsonData).to.have.length > 4;\r",
+											"});\r",
+											" \r",
+											"pm.test(\"Has Oundle\", function () { \r",
+											"    const birthPlace = jsonData.find(m => m.name === \"Oundle\");    \r",
+											"    pm.expect(birthPlace).to.be.an(\"object\", \"Could not find the birth place\");\r",
+											"    pm.expect(birthPlace.countryId).to.be.eq(2);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/birth-places",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"birth-places"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/{version}/birth-places/birth-place/{{countryId}} (Success)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{baseUrl}}/api/countries/country/300"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/birth-places/birth-place/{{birthPlaceId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"birth-places",
+										"birth-place",
+										"{{birthPlaceId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/{version}/birth-places/birth-place/300 (Fail 404)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/birth-places/birth-place/300",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"birth-places",
+										"birth-place",
+										"300"
+									]
+								}
 							},
 							"response": []
 						}
-					],
-					"id": "10d29642-cdd6-4753-89c9-80950423a10a"
+					]
 				},
 				{
 					"name": "Studio",
 					"item": [
 						{
-							"name": "/api/studios/studio/add (Success)",
+							"name": "/api/{version}/studios/studio/add (Success)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "763b4f31-fe05-4918-855d-d430002d8312",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2431,10 +3060,6 @@
 									}
 								}
 							],
-							"id": "b6dfe880-b3dd-446b-affc-4663a87081e3",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -2447,34 +3072,42 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/studios/studio/add"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/studios/studio/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"studios",
+										"studio",
+										"add"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/studios/studio/add (Fail 400)",
+							"name": "/api/{version}/studios/studio/add (Fail 400)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "7142455a-8e7a-4e9c-971e-80cecb99c5ab",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {\r",
 											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											" \r",
 											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_validation_schema_2')));\r",
+											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_fail_validation_schema_exists')));\r",
 											"}); "
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "4038b3b7-d1bd-4339-b296-0ca6bb3abe14",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -2487,43 +3120,40 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/studios/studio/add"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/studios/studio/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"studios",
+										"studio",
+										"add"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/studios/studio/update",
+							"name": "/api/{version}/studios/studio/update",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "49bcbf25-01f1-4fb1-abbb-f7f6bf9aa284",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_schema')));\r",
-											"}); \r",
-											"\r",
-											"let jsonData = pm.response.json();   \r",
-											"\r",
-											"pm.test(\"Has studio id greater than zero\", function () { \r",
-											"    pm.expect(jsonData).to.be.an(\"object\", \"Could not find the studio\");\r",
-											"    pm.expect(jsonData.id).to.be.greaterThan(0); \r",
 											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "3f50e5cf-8778-4421-8b08-2f40ec54539d",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -2534,36 +3164,44 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/studios/studio/update"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/studios/studio/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"studios",
+										"studio",
+										"update"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/studios/studio/update (Fail 400)",
+							"name": "/api/{version}/studios/studio/update (Fail 400)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "d254b85a-0c45-45fe-a775-f0ecbe1467f7",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {\r",
 											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"\r",
 											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_validation_schema_2')));\r",
-											"}); "
+											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_fail_validation_schema_name')));\r",
+											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "41135688-b850-4e0b-8b2e-13d1d87a6df5",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -2574,17 +3212,28 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/studios/studio/update"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/studios/studio/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"studios",
+										"studio",
+										"update"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/studios (Success)",
+							"name": "/api/{version}/studios (Success)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "14412867-46e8-483d-93a0-e08210021b84",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2613,92 +3262,104 @@
 									}
 								}
 							],
-							"id": "bf3f8e80-d5e9-4c90-a801-fe82806ed1bd",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{baseUrl}}/api/studios"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/studios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"studios"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/studios/studio/{{studioId}} (Success)",
+							"name": "/api/{version}/studios/studio/{{studioId}} (Success)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "37f60ec5-fd59-4c66-86ae-5c9f78145dac",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_schema')));\r",
-											"}); "
+											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "7aba64b6-9ef8-4f82-9da5-d63ba2edc5d7",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{baseUrl}}/api/studios/studio/{{studioId}}"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/studios/studio/{{studioId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"studios",
+										"studio",
+										"{{studioId}}"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/studios/studio/300 (Fail 404)",
+							"name": "/api/{version}/studios/studio/300 (Fail 404)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "adad33da-dcf1-44c0-99ec-855134b5d5dd",
 										"exec": [
 											"pm.test(\"Status code is 404\", function () {\r",
 											"    pm.response.to.have.status(404);\r",
-											"});\r",
-											"\r",
-											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_delete_schema')));\r",
-											"}); "
+											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "08faba24-b6aa-404c-aacc-309a9ed73e86",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{baseUrl}}/api/studios/studio/300"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/studios/studio/300",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"studios",
+										"studio",
+										"300"
+									]
+								}
 							},
 							"response": []
 						}
-					],
-					"id": "e4c5651e-49a3-45d5-8a81-eea4cd9104aa"
+					]
 				},
 				{
 					"name": "Record Label",
 					"item": [
 						{
-							"name": "/api/record-labels/record-label/add (Success)",
+							"name": "/api/{version}/record-labels/record-label/add (Success)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "763b4f31-fe05-4918-855d-d430002d8312",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2722,10 +3383,6 @@
 									}
 								}
 							],
-							"id": "3d4d604d-ec94-4f20-84cc-0b898e91dba1",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -2738,34 +3395,42 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/record-labels/record-label/add"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/record-labels/record-label/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"record-labels",
+										"record-label",
+										"add"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/record-labels/record-label/add (Fail 400)",
+							"name": "/api/{version}/record-labels/record-label/add (Fail 400)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "7142455a-8e7a-4e9c-971e-80cecb99c5ab",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {\r",
 											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											" \r",
 											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_validation_schema_2')));\r",
+											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_fail_validation_schema_exists')));\r",
 											"}); "
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "a7d4f5e6-785c-414a-9dde-ab1aaa56bb0a",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -2778,43 +3443,40 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/record-labels/record-label/add"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/record-labels/record-label/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"record-labels",
+										"record-label",
+										"add"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/record-labels/record-label/update",
+							"name": "/api/{version}/record-labels/record-label/update",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "49bcbf25-01f1-4fb1-abbb-f7f6bf9aa284",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_schema')));\r",
-											"}); \r",
-											"\r",
-											"let jsonData = pm.response.json();   \r",
-											"\r",
-											"pm.test(\"Has record label id greater than zero\", function () { \r",
-											"    pm.expect(jsonData).to.be.an(\"object\", \"Could not find the record label\");\r",
-											"    pm.expect(jsonData.id).to.be.greaterThan(0); \r",
 											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "2fdeaabb-4599-4071-8341-1d0cacef42d0",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -2825,36 +3487,44 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/record-labels/record-label/update"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/record-labels/record-label/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"record-labels",
+										"record-label",
+										"update"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/record-labels/record-label/update (Fail 400)",
+							"name": "/api/{version}/record-labels/record-label/update (Fail 400)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "d254b85a-0c45-45fe-a775-f0ecbe1467f7",
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {\r",
 											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"\r",
 											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_validation_schema_2')));\r",
-											"}); "
+											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_fail_validation_schema_name')));\r",
+											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "1dee622e-db5d-423f-b183-83a2ccc4d49d",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -2865,17 +3535,28 @@
 										}
 									}
 								},
-								"url": "{{baseUrl}}/api/record-labels/record-label/update"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/record-labels/record-label/update",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"record-labels",
+										"record-label",
+										"update"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/record-labels (Success)",
+							"name": "/api/{version}/record-labels (Success)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "14412867-46e8-483d-93a0-e08210021b84",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2906,7 +3587,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "d1187d82-302d-4160-9196-b6abf27bf472",
 										"exec": [
 											""
 										],
@@ -2914,94 +3594,102 @@
 									}
 								}
 							],
-							"id": "b1c88b3a-618a-4d60-a78b-4c106edfb0fa",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{baseUrl}}/api/record-labels"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/record-labels",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"record-labels"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/record-labels/record-label/{{recordLabelId}} (Success)",
+							"name": "/api/{version}/record-labels/record-label/{{recordLabelId}} (Success)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "37f60ec5-fd59-4c66-86ae-5c9f78145dac",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('lookup_action_schema')));\r",
-											"}); "
+											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "393f6751-ff90-41e7-a8ac-6dc1815319d9",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{baseUrl}}/api/record-labels/record-label/{{recordLabelId}}"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/record-labels/record-label/{{recordLabelId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"record-labels",
+										"record-label",
+										"{{recordLabelId}}"
+									]
+								}
 							},
 							"response": []
 						},
 						{
-							"name": "/api/record-labels/record-label/300 (Fail 404)",
+							"name": "/api/{version}/record-labels/record-label/300 (Fail 404)",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
-										"id": "adad33da-dcf1-44c0-99ec-855134b5d5dd",
 										"exec": [
 											"pm.test(\"Status code is 404\", function () {\r",
 											"    pm.response.to.have.status(404);\r",
-											"});\r",
-											"\r",
-											"pm.test('Schema validation', () => {\r",
-											"  pm.response.to.have.jsonSchema (JSON.parse(pm.environment.get('album_delete_schema')));\r",
-											"}); "
+											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
-							"id": "179e2e9f-4bbe-4a3b-9976-c30e78944e08",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{baseUrl}}/api/record-labels/record-label/300"
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/record-labels/record-label/300",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"record-labels",
+										"record-label",
+										"300"
+									]
+								}
 							},
 							"response": []
 						}
-					],
-					"id": "194cb9b5-0c5e-42cf-9f87-adf4d5103793"
+					]
 				}
-			],
-			"id": "65b5a9c1-0d3b-4ae2-92cf-3584a9ba9557"
+			]
 		},
 		{
 			"name": "Register",
 			"item": [
 				{
 					"name": "/api/{version}/register",
-					"id": "0396106b-9560-43ea-b6fb-1b4d41f09121",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -3014,19 +3702,32 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/api/v1/register"
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"register"
+							]
+						}
 					},
 					"response": []
 				}
-			],
-			"id": "04bbf2d2-2a5c-4dae-9176-e9420c360ec3"
+			]
 		}
 	],
 	"auth": {
 		"type": "bearer",
-		"bearer": {
-			"token": "{{token}}"
-		}
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
 	},
 	"event": [
 		{
@@ -3035,8 +3736,7 @@
 				"type": "text/javascript",
 				"exec": [
 					""
-				],
-				"id": "b3093ca0-076d-444c-9022-8d70e5e6d1e7"
+				]
 			}
 		},
 		{
@@ -3045,8 +3745,7 @@
 				"type": "text/javascript",
 				"exec": [
 					""
-				],
-				"id": "55c4df9d-8e1f-4fef-b051-b0453c102613"
+				]
 			}
 		}
 	]
