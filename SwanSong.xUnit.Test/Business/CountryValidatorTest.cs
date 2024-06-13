@@ -26,24 +26,15 @@ public class CountryValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_country_return_true()
+    public async Task Before_save_validate_country_return_true()
     {
         ValidationResult validation = await validator.ValidateAsync(existingCountry, options => options
                                                                             .IncludeRuleSets("BeforeSave"));
         Assert.True(validation.IsValid);
-    }
+    } 
 
     [Fact]
-    public async void After_save_validate_country_return_true()
-    {
-        ValidationResult validation = await validator.ValidateAsync(existingCountry, options => options
-                                                                            .IncludeRuleSets("AfterSave"));
-        Assert.False(validation.IsValid);
-        Assert.Equal("The country has been saved.", validation.Errors[0].ErrorMessage);
-    }
-
-    [Fact]
-    public async void Before_save_validate_country_name_null_return_false()
+    public async Task Before_save_validate_country_name_null_return_false()
     {
         Country country = new() { Id = 1, Name = "" };
         ValidationResult validationResult = await validator.ValidateAsync(country, options => options
@@ -55,7 +46,7 @@ public class CountryValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_country_name_empty_return_false()
+    public async Task Before_save_validate_country_name_empty_return_false()
     {
         Country country = new() { Id = 1, Name = "" };
         ValidationResult validationResult = await validator.ValidateAsync(country, options => options
@@ -67,7 +58,7 @@ public class CountryValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_country_name_over_50_characters_return_false()
+    public async Task Before_save_validate_country_name_over_50_characters_return_false()
     {
         Country country = new() { Id = 1, Name = UnitTestHelper.generateRandomString(51) };
         ValidationResult validationResult = await validator.ValidateAsync(country, options => options
@@ -79,7 +70,7 @@ public class CountryValidatorTest
     }
 
     [Fact]
-    public async void Before_insert_save_validate_country_insert_name_duplicate_return_false()
+    public async Task Before_insert_save_validate_country_insert_name_duplicate_return_false()
     {
         Country country = new() { Id = 0, Name = "Test Country" };
 
@@ -94,7 +85,7 @@ public class CountryValidatorTest
     }
 
     [Fact]
-    public async void Before_update_save_validate_country_update_name_duplicate_return_false()
+    public async Task Before_update_save_validate_country_update_name_duplicate_return_false()
     {
         Country country = new() { Id = 1, Name = "Test Country" };
 

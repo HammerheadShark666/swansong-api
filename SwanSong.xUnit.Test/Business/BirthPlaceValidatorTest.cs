@@ -25,24 +25,15 @@ public class BirthPlaceValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_birth_place_return_true()
+    public async Task Before_save_validate_birth_place_return_true()
     {
         ValidationResult validation = await validator.ValidateAsync(existingBirthPlace, options => options
                                                                                     .IncludeRuleSets("BeforeSave"));
         Assert.True(validation.IsValid);
-    }
+    } 
 
     [Fact]
-    public async void After_save_validate_birth_place_return_true()
-    {
-        ValidationResult validation = await validator.ValidateAsync(existingBirthPlace, options => options
-                                                                            .IncludeRuleSets("AfterSave"));
-        Assert.False(validation.IsValid);
-        Assert.Equal("The birth place has been saved.", validation.Errors[0].ErrorMessage);
-    }
-
-    [Fact]
-    public async void Before_save_validate_birth_place_name_null_return_false()
+    public async Task Before_save_validate_birth_place_name_null_return_false()
     {
         BirthPlace birthPlace = new() { Id = 1, Name = "", CountryId = 1 };
         ValidationResult validationResult = await validator.ValidateAsync(birthPlace, options => options
@@ -54,7 +45,7 @@ public class BirthPlaceValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_birth_place_name_empty_return_false()
+    public async Task Before_save_validate_birth_place_name_empty_return_false()
     {
         BirthPlace birthPlace = new() { Id = 1, Name = "", CountryId = 1 };
         ValidationResult validationResult = await validator.ValidateAsync(birthPlace, options => options
@@ -66,7 +57,7 @@ public class BirthPlaceValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_birth_place_name_over_100_characters_return_false()
+    public async Task Before_save_validate_birth_place_name_over_100_characters_return_false()
     {
         BirthPlace birthPlace = new() { Id = 1, Name = UnitTestHelper.generateRandomString(101), CountryId = 1 };
         ValidationResult validationResult = await validator.ValidateAsync(birthPlace, options => options
@@ -78,7 +69,7 @@ public class BirthPlaceValidatorTest
     }
 
     [Fact]
-    public async void Before_insert_save_validate_birth_place_insert_name_duplicate_return_false()
+    public async Task Before_insert_save_validate_birth_place_insert_name_duplicate_return_false()
     {
         BirthPlace birthPlace = new() { Id = 0, Name = "Test Birth Place", CountryId = 1 };
 

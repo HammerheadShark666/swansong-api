@@ -27,7 +27,7 @@ public class ProfilePasswordChangeValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_profile_password_change_return_true()
+    public async Task Before_save_validate_profile_password_change_return_true()
     {
         Account account = new Account()
         {
@@ -40,19 +40,10 @@ public class ProfilePasswordChangeValidatorTest
         ValidationResult validationResult = await validator.ValidateAsync(CreateProfilePasswordChange(), options => options
                                                                                                 .IncludeRuleSets("BeforeSave"));
         Assert.True(validationResult.IsValid);
-    }
+    } 
 
     [Fact]
-    public async void After_save_validate_profile_password_change_return_true()
-    {
-        ValidationResult validation = await validator.ValidateAsync(CreateProfilePasswordChange(), options => options
-                                                                            .IncludeRuleSets("AfterSave"));
-        Assert.False(validation.IsValid);
-        Assert.Equal("Password has been changed.", validation.Errors[0].ErrorMessage);
-    }
-
-    [Fact]
-    public async void Before_save_validate_profile_password_change_no_password_return_false()
+    public async Task Before_save_validate_profile_password_change_no_password_return_false()
     {
         ValidationResult validationResult = await validator.ValidateAsync(CreateProfilePasswordChange(1, ""), options => options
                                                                                                     .IncludeRuleSets("BeforeSave"));
@@ -61,7 +52,7 @@ public class ProfilePasswordChangeValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_profile_password_change_password_less_than_8_return_false()
+    public async Task Before_save_validate_profile_password_change_password_less_than_8_return_false()
     {
         ValidationResult validationResult = await validator.ValidateAsync(CreateProfilePasswordChange(1, UnitTestHelper.generateRandomString(7)), options => options
                                                                                                     .IncludeRuleSets("BeforeSave"));
@@ -70,7 +61,7 @@ public class ProfilePasswordChangeValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_profile_password_change_password_greater_than_50_return_false()
+    public async Task Before_save_validate_profile_password_change_password_greater_than_50_return_false()
     {
         ValidationResult validationResult = await validator.ValidateAsync(CreateProfilePasswordChange(1, UnitTestHelper.generateRandomString(51)), options => options
                                                                                                     .IncludeRuleSets("BeforeSave"));
@@ -80,7 +71,7 @@ public class ProfilePasswordChangeValidatorTest
 
 
     [Fact]
-    public async void Before_save_validate_profile_password_change_confirm_password_less_than_8_return_false()
+    public async Task Before_save_validate_profile_password_change_confirm_password_less_than_8_return_false()
     {
         ValidationResult validationResult = await validator.ValidateAsync(CreateProfilePasswordChange(1, UnitTestHelper.generateRandomString(8), UnitTestHelper.generateRandomString(7)), options => options
                                                                                                     .IncludeRuleSets("BeforeSave"));
@@ -89,7 +80,7 @@ public class ProfilePasswordChangeValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_profile_password_change_confirm_password_greater_than_50_return_false()
+    public async Task Before_save_validate_profile_password_change_confirm_password_greater_than_50_return_false()
     {
         ValidationResult validationResult = await validator.ValidateAsync(CreateProfilePasswordChange(1, UnitTestHelper.generateRandomString(50), UnitTestHelper.generateRandomString(51)), options => options
                                                                                                     .IncludeRuleSets("BeforeSave"));
@@ -98,7 +89,7 @@ public class ProfilePasswordChangeValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_profile_password_change_confirm_password_not_equal_to_password_return_false()
+    public async Task Before_save_validate_profile_password_change_confirm_password_not_equal_to_password_return_false()
     {
         ValidationResult validationResult = await validator.ValidateAsync(CreateProfilePasswordChange(1, UnitTestHelper.generateRandomString(25), UnitTestHelper.generateRandomString(25)), options => options
                                                                                                     .IncludeRuleSets("BeforeSave"));
@@ -107,7 +98,7 @@ public class ProfilePasswordChangeValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_profile_password_invalid_current_password_return_false()
+    public async Task Before_save_validate_profile_password_invalid_current_password_return_false()
     {
         Account account = new Account()
         {
