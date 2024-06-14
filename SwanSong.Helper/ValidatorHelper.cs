@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
-using SwanSong.Domain;
 using SwanSong.Domain.Dto;
 using SwanSong.Helper.Exceptions;
 using SwanSong.Helper.Interfaces;
@@ -23,9 +21,4 @@ public class ValidatorHelper<T> : IValidatorHelper<T>
             throw new FailedValidationException(new FailedValidationResponse(validationResult.Errors, false));
         }
     }
-
-    public async Task<FluentValidation.Results.ValidationResult> AfterEventAsync(T itemToValidate, string ruleSet)
-    {
-        return await _validator.ValidateAsync(itemToValidate, options => options.IncludeRuleSets(ruleSet)); ;
-    } 
 }

@@ -31,13 +31,13 @@ public class RefreshTokenService : IRefreshTokenService
     public void RemoveExpiredRefreshTokens(int accountId)
     {
         _unitOfWork.RefreshTokens.RemoveExpired(EnvironmentVariablesHelper.JwtSettingsRefreshTokenTtl, accountId);
-        DataHelper.CompleteContextAction(null, null, _unitOfWork);
+        _unitOfWork.Complete();
     }
 
     public async Task AddRefreshToken(RefreshToken refreshToken)
     {
         await _unitOfWork.RefreshTokens.AddAsync(refreshToken);
-        await DataHelper.CompleteContextActionAsync(null, null, _unitOfWork);
+        await _unitOfWork.CompleteAsync();
     }
 
     public RefreshToken GenerateRefreshToken(string ipAddress, Account account)

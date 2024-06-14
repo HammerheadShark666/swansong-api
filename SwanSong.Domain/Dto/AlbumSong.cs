@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SwanSong.Domain.Dto;
+﻿namespace SwanSong.Domain.Dto;
 
 public record AlbumSongAddRequest(long AlbumId, int? Order, int? Side, AlbumSongSongAddRequest Song);
 
