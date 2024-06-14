@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SwanSong.Data.DefaultData;
 using SwanSong.Data.Repository.Interfaces;
 using SwanSong.Domain;
 using System.Collections.Generic;

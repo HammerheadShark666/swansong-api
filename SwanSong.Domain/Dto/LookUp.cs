@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SwanSong.Domain.Dto;
+﻿namespace SwanSong.Domain.Dto;
 
 public record BirthPlaceAddRequest(string Name, int CountryId);
 
