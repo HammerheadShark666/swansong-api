@@ -30,7 +30,7 @@ public class ProfileController : Controller
 
     [Authorize]
     [HttpPut("update")]
-    public async Task<ActionResult<ProfileActionResponse>> UpdateAsync(ProfileRequest profileRequest)
+    public async Task<ActionResult<ProfileActionResponse>> PutUpdateProfileAsync(ProfileRequest profileRequest)
     {
         await _profileService.UpdateAsync(LoggedInAccount().Id, profileRequest);
         return Ok();
@@ -38,7 +38,7 @@ public class ProfileController : Controller
 
     [Authorize]
     [HttpGet("")]
-    public async Task<ActionResult<ProfileResponse>> ProfileAsync()
+    public async Task<ActionResult<ProfileResponse>> GetProfileAsync()
     { 
         return Ok(await _profileService.GetAsync(LoggedInAccount().Id)); 
     }

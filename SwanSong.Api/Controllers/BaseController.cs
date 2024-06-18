@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace SwanSong.Api.Controllers;
 
 [Controller]
-public class BaseController<T> : Controller where T : class
+public class BaseController<T> : ControllerBase where T : class
 {
     private readonly IValidator<T> _validator;
 

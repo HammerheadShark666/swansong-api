@@ -23,12 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{C16D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwanSong.Azure", "SwanSong.Azure\SwanSong.Azure.csproj", "{80E7C629-D232-4116-AEF2-1CF0F6807E56}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Postman Integration Testing", "Postman Integration Testing", "{F9FBA49B-69A6-496C-B187-2031B0ADB2F4}"
-	ProjectSection(SolutionItems) = preProject
-		sandydenny.jpg = sandydenny.jpg
-		thesongremainsthesame.jpg = thesongremainsthesame.jpg
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D956F9C0-7B22-4CA4-BCD0-379E5CDB11C2}"
 	ProjectSection(SolutionItems) = preProject
 		PostmanCollections\SwanSongV1_postman_collection.json = PostmanCollections\SwanSongV1_postman_collection.json
@@ -86,7 +80,6 @@ Global
 		{4B7C57BB-DA23-4842-8463-3C62E712BB8A} = {E431F38D-BC4D-4175-AC4E-97CB46F8ED6C}
 		{99B75BCD-AF23-4C8E-9BF3-B42367598667} = {C16D609B-A6F7-4792-901B-0B0C24EBBD9B}
 		{80E7C629-D232-4116-AEF2-1CF0F6807E56} = {C16D609B-A6F7-4792-901B-0B0C24EBBD9B}
-		{F9FBA49B-69A6-496C-B187-2031B0ADB2F4} = {E431F38D-BC4D-4175-AC4E-97CB46F8ED6C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B8E4ACB-FDB8-45D5-A537-E260B9DEFF58}

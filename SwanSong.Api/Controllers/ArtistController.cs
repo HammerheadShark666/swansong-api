@@ -39,21 +39,21 @@ public class ArtistController : BaseController<Artist>
     }
 
     [HttpGet("lookups")]
-    public ActionResult<List<ArtistLookUpResponse>> GetAllAsync()
+    public ActionResult<List<ArtistLookUpResponse>> GetAllArtistsAsync()
     {
         var artists = _artistService.GetAll();
         return Ok(_mapper.Map<List<ArtistLookUpResponse>>(artists)); 
     } 
 
     [HttpGet("random")]
-    public async Task<ActionResult<List<ArtistResponse>>> GetRandomAsync()
+    public async Task<ActionResult<List<ArtistResponse>>> GetRandomArtistsAsync()
     {
-        var artists = await _artistService.GetRandomAsync(10);
+        var artists = await _artistService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords);
         return Ok(_mapper.Map<List<ArtistResponse>>(artists));
     } 
 
     [HttpGet("")]
-    public async Task<ActionResult<List<ArtistResponse>>> GetAllAsync([FromQuery] PaginationFilter filter)
+    public async Task<ActionResult<List<ArtistResponse>>> GetAllArtistsAsync([FromQuery] PaginationFilter filter)
     {
         var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
         var artists = await _artistService.GetAllAsync(validFilter);
@@ -63,13 +63,13 @@ public class ArtistController : BaseController<Artist>
     }
 
     [HttpGet("search/{criteria}")]
-    public async Task<ActionResult<List<ArtistResponse>>> SearchAsync(string criteria)
+    public async Task<ActionResult<List<ArtistResponse>>> GetSearchArtistsAsync(string criteria)
     {
         return Ok(_mapper.Map<List<ArtistLookUpResponse>>(await _artistService.SearchByNameAsync(criteria)));            
     } 
    
     [HttpGet("search-by-letter/{letter}")]
-    public async Task<ActionResult<List<ArtistResponse>>> SearchByLetterAsync(string letter)
+    public async Task<ActionResult<List<ArtistResponse>>> GetSearchAlbumsByLetterAsync(string letter)
     {
         return Ok(_mapper.Map<List<ArtistLookUpResponse>>(await _artistService.SearchByAlphaNumericAsync(letter)));
     }
@@ -81,7 +81,7 @@ public class ArtistController : BaseController<Artist>
     } 
 
     [HttpPost("artist/add")]
-    public async Task<ActionResult<ArtistActionResponse>> AddAsync([FromBody] ArtistAddRequest artistAddRequest)
+    public async Task<ActionResult<ArtistActionResponse>> PostAddArtistAsync([FromBody] ArtistAddRequest artistAddRequest)
     {
         Artist artist = _mapper.Map<Artist>(artistAddRequest);
 
@@ -95,7 +95,7 @@ public class ArtistController : BaseController<Artist>
     }
 
     [HttpPut("artist/update")]
-    public async Task<ActionResult<ArtistActionResponse>> UpdateAsync([FromBody] ArtistUpdateRequest artistUpdateRequest)
+    public async Task<ActionResult<ArtistActionResponse>> PutUpdateArtistAsync([FromBody] ArtistUpdateRequest artistUpdateRequest)
     {
         Artist artist = _mapper.Map<Artist>(artistUpdateRequest);
 
@@ -110,7 +110,7 @@ public class ArtistController : BaseController<Artist>
 
 
     [HttpDelete("artist/{id}")]
-    public async Task<ActionResult<ArtistResponse>> DeleteAsync(long id)
+    public async Task<ActionResult<ArtistResponse>> DeleteArtistAsync(long id)
     {
         await _artistService.DeleteAsync(await _artistService.GetAsync(id));
         return Ok(); 
@@ -119,7 +119,7 @@ public class ArtistController : BaseController<Artist>
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     [HttpPost("artist/upload-photo/{id}")]
-    public async Task<IActionResult> SavePhotoAsync(long id)
+    public async Task<ActionResult> SavePhotoAsync(long id)
     {
         if (Request.Form.Files.Count > 0)
         {

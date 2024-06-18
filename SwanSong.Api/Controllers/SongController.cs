@@ -27,7 +27,7 @@ public class SongController : Controller
     }  
 
     [HttpDelete("song/{id}")]
-    public async Task<ActionResult<AlbumSongActionResponse>> DeleteAsync(long id)
+    public async Task<ActionResult<AlbumSongActionResponse>> DeleteSongAsync(long id)
     {
         _songService.Delete(await _songService.GetSongAsync(id));
         return Ok();

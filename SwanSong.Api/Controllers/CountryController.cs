@@ -37,14 +37,14 @@ public class CountryController : BaseController<Country>
     }
 
     [HttpGet("")]
-    public async Task<ActionResult<List<CountryResponse>>> GetAllAsync()
+    public async Task<ActionResult<List<CountryResponse>>> GetAllCountriesAsync()
     {
         var countrys = await _countryService.GetAllAsync();
         return _mapper.Map<List<CountryResponse>>(countrys);
     }
 
     [HttpPost("country/add")]
-    public async Task<ActionResult<CountryActionResponse>> AddAsync([FromBody] CountryAddRequest countryAddRequest)
+    public async Task<ActionResult<CountryActionResponse>> PostAddCountryAsync([FromBody] CountryAddRequest countryAddRequest)
     {
         Country country = _mapper.Map<Country>(countryAddRequest);
 
@@ -58,7 +58,7 @@ public class CountryController : BaseController<Country>
     }
 
     [HttpPut("country/update")]
-    public async Task<ActionResult> UpdateAsync([FromBody] CountryUpdateRequest countryUpdateRequest)
+    public async Task<ActionResult> PutUpdateCountryAsync([FromBody] CountryUpdateRequest countryUpdateRequest)
     {  
         var country = await _countryService.GetAsync(countryUpdateRequest.Id);
 
@@ -74,7 +74,7 @@ public class CountryController : BaseController<Country>
     }
 
     [HttpDelete("country/{id}")]
-    public async Task<ActionResult> DeleteAsync(int id)
+    public async Task<ActionResult> DeleteCountryAsync(int id)
     { 
         _countryService.DeleteAsync(await _countryService.GetAsync(id));
 

@@ -35,14 +35,14 @@ public class AlbumSongController : BaseController<AlbumSong>
     }
 
     [HttpGet("{albumId}")]
-    public async Task<ActionResult<List<AlbumSongResponse>>> SearchAsync(long albumId)
+    public async Task<ActionResult<List<AlbumSongResponse>>> GetSearchAlbumSongsAsync(long albumId)
     {
         var albumSongs = await _albumSongService.GetAlbumSongsAsync(albumId);
         return Ok(_mapper.Map<List<AlbumSongResponse>>(albumSongs));            
     }
 
     [HttpPost("song/add")]
-    public async Task<ActionResult<AlbumSongActionResponse>> AddAsync([FromBody] AlbumSongAddRequest albumSongAddRequest)
+    public async Task<ActionResult<AlbumSongActionResponse>> PostAddAlbumSongAsync([FromBody] AlbumSongAddRequest albumSongAddRequest)
     {
         AlbumSong albumSong = _mapper.Map<AlbumSong>(albumSongAddRequest);
 
@@ -56,7 +56,7 @@ public class AlbumSongController : BaseController<AlbumSong>
     }
 
     [HttpPut("song/update")]
-    public async Task<ActionResult<AlbumSongActionResponse>> UpdateAsync([FromBody] AlbumSongUpdateRequest albumSongUpdateRequest)
+    public async Task<ActionResult<AlbumSongActionResponse>> PutUpdateAlbumSongAsync([FromBody] AlbumSongUpdateRequest albumSongUpdateRequest)
     {
         AlbumSong albumSong = _mapper.Map<AlbumSong>(albumSongUpdateRequest);
 
@@ -70,7 +70,7 @@ public class AlbumSongController : BaseController<AlbumSong>
     }
 
     [HttpDelete("song/{id}")]
-    public async Task<ActionResult<AlbumSongActionResponse>> DeleteAsync(long id)
+    public async Task<ActionResult<AlbumSongActionResponse>> DeleteAlbumSongAsync(long id)
     { 
         _albumSongService.DeleteAsync(await _albumSongService.GetAsync(id));
 

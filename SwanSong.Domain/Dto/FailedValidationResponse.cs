@@ -25,22 +25,5 @@ public class FailedValidationResponse
                 Messages.Add(new Message(validationFailure.ErrorMessage, Severity.Error.ToString().ToLower()));
             }
         }
-    }
-
-    //private string GetServerity(Severity severity)
-    //{
-    //    return severity switch
-    //    {
-    //        Severity.Error => "error",
-    //        Severity.Warning => "warning",
-    //        Severity.Info => "info",
-    //        _ => "",
-    //    };
-    //}
-
-    //public void SetValidationResponse(List<ValidationFailure> rules, bool isValid)
-    //{
-    //    IsValid = isValid;
-    //    Rules = rules;
-    //}
+    } 
 }

@@ -37,14 +37,14 @@ public class StudioController : BaseController<Studio>
     }
 
     [HttpGet("")]
-    public async Task<ActionResult<List<StudioResponse>>> GetAllAsync()
+    public async Task<ActionResult<List<StudioResponse>>> GetAllStudiosAsync()
     {
         var studios = await _studioService.GetAllAsync();
         return _mapper.Map<List<StudioResponse>>(studios);
     }
 
     [HttpPost("studio/add")]
-    public async Task<ActionResult<StudioActionResponse>> AddAsync([FromBody] StudioAddRequest studioAddRequest)
+    public async Task<ActionResult<StudioActionResponse>> PostAddStudioAsync([FromBody] StudioAddRequest studioAddRequest)
     {
         Studio studio = _mapper.Map<Studio>(studioAddRequest);
 
@@ -58,7 +58,7 @@ public class StudioController : BaseController<Studio>
     }
 
     [HttpPut("studio/update")]
-    public async Task<ActionResult> UpdateAsync([FromBody] StudioUpdateRequest studioUpdateRequest)
+    public async Task<ActionResult> PutUpdateStudioAsync([FromBody] StudioUpdateRequest studioUpdateRequest)
     {
         var studio = await _studioService.GetAsync(studioUpdateRequest.Id);
 
@@ -74,7 +74,7 @@ public class StudioController : BaseController<Studio>
     }
 
     [HttpDelete("studio/{id}")]
-    public async Task<ActionResult> DeleteAsync(int id)
+    public async Task<ActionResult> DeleteStudioAsync(int id)
     { 
         _studioService.DeleteAsync(await _studioService.GetAsync(id));
 

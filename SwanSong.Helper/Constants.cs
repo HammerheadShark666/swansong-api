@@ -26,6 +26,8 @@ public static class Constants
     public const string JwtSettingsRefreshTokenExpiryDays = "JWT_SETTINGS_REFRESH_TOKEN_EXPIRY_DAYS";
     public const string JwtSettingsPasswordTokenExpiryDays = "JWT_SETTINGS_RESET_PASSWORD_TOKEN_EXPIRY_DAYS";
 
+    public const string NumberOfRandomRecords = "NUMBER_OF_RANDOM_RECORDS";
+
     public const string RegisterSenderEmail = "DEFAULT_FROM_EMAIL";
     public const string SmtpGmailServer = "SMTP_GMAIL_SERVER";
     public const string SmtpGmailPort = "SMTP_GMAIL_PORT";

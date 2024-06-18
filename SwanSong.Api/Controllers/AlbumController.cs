@@ -43,7 +43,7 @@ public class AlbumController : BaseController<Album>
     }
      
     [HttpGet("")]
-    public async Task<ActionResult<List<AlbumLookUpResponse>>> GetAllAsync([FromQuery] PaginationFilter filter)
+    public async Task<ActionResult<List<AlbumLookUpResponse>>> GetAllAlbumsAsync([FromQuery] PaginationFilter filter)
     {
         var paginationFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
         var albums = await _albumService.GetAllAsync(paginationFilter);
@@ -53,21 +53,21 @@ public class AlbumController : BaseController<Album>
     }
 
     [HttpGet("random")]
-    public async Task<ActionResult<List<AlbumLookUpResponse>>> GetRandomAsync()
+    public async Task<ActionResult<List<AlbumLookUpResponse>>> GetRandomAlbumsAsync()
     {
-        var albums = await _albumService.GetRandomAsync(10);  
+        var albums = await _albumService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords);  
         return Ok(_albumHelper.GetAlbumLookUps(albums));
     } 
 
     [HttpGet("search/{criteria}")]
-    public async Task<ActionResult<List<AlbumLookUpResponse>>> SearchAsync(string criteria)
+    public async Task<ActionResult<List<AlbumLookUpResponse>>> SearchAlbumsAsync(string criteria)
     {
         var albums = await _albumService.SearchByNameAsync(criteria); 
         return Ok(_mapper.Map<List<AlbumLookUpResponse>>(albums));
     }
 
     [HttpGet("search-by-letter/{letter}")] 
-    public async Task<ActionResult<List<AlbumLookUpResponse>>> SearchByLetterAsync(string letter)
+    public async Task<ActionResult<List<AlbumLookUpResponse>>> SearchAlbumsByLetterAsync(string letter)
     {
         var albums = await _albumService.SearchByLetterAsync(letter);
         return Ok(_mapper.Map<List<AlbumLookUpResponse>>(albums));
@@ -87,7 +87,7 @@ public class AlbumController : BaseController<Album>
     }
 
     [HttpPost("album/add")]
-    public async Task<ActionResult<AlbumActionResponse>> AddAsync([FromBody] AlbumAddRequest albumAddRequest)
+    public async Task<ActionResult<AlbumActionResponse>> PostAddAlbumAsync([FromBody] AlbumAddRequest albumAddRequest)
     {
         Album album = _mapper.Map<Album>(albumAddRequest);
  
@@ -101,7 +101,7 @@ public class AlbumController : BaseController<Album>
     }
 
     [HttpPut("album/update")]
-    public async Task<ActionResult> UpdateAsync([FromBody] AlbumUpdateRequest albumUpdateRequest)
+    public async Task<ActionResult> PutUpdateAlbumAsync([FromBody] AlbumUpdateRequest albumUpdateRequest)
     {  
         Album album = _mapper.Map<Album>(albumUpdateRequest);
          
@@ -115,7 +115,7 @@ public class AlbumController : BaseController<Album>
     } 
 
     [HttpDelete("album/{id}")]
-    public async Task<ActionResult> DeleteAsync(long id)
+    public async Task<ActionResult> DeleteAlbumAsync(long id)
     {
         await _albumService.DeleteAsync(await _albumService.GetAsync(id));
         return Ok();
@@ -124,7 +124,7 @@ public class AlbumController : BaseController<Album>
     [HttpPost("album/upload-photo/{id}")]
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SaveAlbumPhotoAsync(long id)
+    public async Task<ActionResult> PostSaveAlbumPhotoAsync(long id)
     {
         if (Request.Form.Files.Count > 0)
         {

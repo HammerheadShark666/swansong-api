@@ -37,7 +37,7 @@ public class AuthenticateController : Controller
     } 
 
     [HttpPost("login")]
-    public async Task<ActionResult<LoginActionResponse>> LoginAsync(LoginRequest loginRequest)
+    public async Task<ActionResult<LoginActionResponse>> PostLoginAsync(LoginRequest loginRequest)
     { 
         await _validatorHelper.ValidateAsync(loginRequest, Constants.ValidationEventBeforeSave);
          
@@ -48,7 +48,7 @@ public class AuthenticateController : Controller
     } 
 
     [HttpPost("refresh-token")]
-    public async Task<ActionResult<JwtRefreshTokenActionResponse>> RefreshTokenAsync(JwtRefreshTokenRequest jwtRefreshTokenRequest)
+    public async Task<ActionResult<JwtRefreshTokenActionResponse>> PostRefreshTokenAsync(JwtRefreshTokenRequest jwtRefreshTokenRequest)
     {
         var jwtToken = await _authenticateService.RefreshTokenAsync(jwtRefreshTokenRequest.RefreshToken, AuthenticationHelper.IpAddress(Request, HttpContext));
         return Ok(_mapper.Map<JwtRefreshTokenActionResponse>(jwtToken));
