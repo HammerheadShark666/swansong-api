@@ -27,14 +27,14 @@ public class RegisterController : Controller
     }
 
     [HttpPost("")]
-    public async Task<IActionResult> RegisterAsync(RegisterRequest registerRequest)
+    public async Task<ActionResult> PostRegisterAsync(RegisterRequest registerRequest)
     {
         await _registerService.RegisterAsync(registerRequest);
         return Ok();        
     }
 
     [HttpPost("verify-email")]
-    public async Task<IActionResult> VerifyEmailAsync(RegisterVerifyEmailRequest registerVerifyEmailRequest)
+    public async Task<ActionResult> PostVerifyEmailAsync(RegisterVerifyEmailRequest registerVerifyEmailRequest)
     {
         await _registerVerifyEmailService.VerifyEmailAsync(registerVerifyEmailRequest);
         return Ok();

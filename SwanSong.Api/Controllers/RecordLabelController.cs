@@ -37,14 +37,14 @@ public class RecordLabelController : BaseController<RecordLabel>
     }
 
     [HttpGet("")]
-    public async Task<ActionResult<List<RecordLabelResponse>>> GetAllAsync()
+    public async Task<ActionResult<List<RecordLabelResponse>>> GetAllRecordLabelsAsync()
     {
         var recordLabels = await _recordLabelService.GetAllAsync();
         return _mapper.Map<List<RecordLabelResponse>>(recordLabels);
     }
 
     [HttpPost("record-label/add")]
-    public async Task<ActionResult<RecordLabelActionResponse>> AddAsync([FromBody] RecordLabelAddRequest recordLabelAddRequest)
+    public async Task<ActionResult<RecordLabelActionResponse>> PostAddRecordLabelAsync([FromBody] RecordLabelAddRequest recordLabelAddRequest)
     {
         RecordLabel recordLabel = _mapper.Map<RecordLabel>(recordLabelAddRequest);
 
@@ -58,7 +58,7 @@ public class RecordLabelController : BaseController<RecordLabel>
     }
 
     [HttpPut("record-label/update")]
-    public async Task<ActionResult> UpdateAsync([FromBody] RecordLabelUpdateRequest recordLabelUpdateRequest)
+    public async Task<ActionResult> PutUpdateRecordLabelAsync([FromBody] RecordLabelUpdateRequest recordLabelUpdateRequest)
     {
         var recordLabel = await _recordLabelService.GetAsync(recordLabelUpdateRequest.Id);
 
@@ -74,7 +74,7 @@ public class RecordLabelController : BaseController<RecordLabel>
     }
 
     [HttpDelete("record-label/{id}")]
-    public async Task<ActionResult> DeleteAsync(int id)
+    public async Task<ActionResult> DeleteRecordLabelAsync(int id)
     {  
         _recordLabelService.DeleteAsync(await _recordLabelService.GetAsync(id));
 

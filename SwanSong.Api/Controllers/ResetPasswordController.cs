@@ -27,21 +27,21 @@ public class ResetPasswordController : Controller
     }
 
     [HttpPost("")]
-    public async Task<IActionResult> ForgotPasswordAsync(ForgotPasswordRequest forgotPasswordRequest)
+    public async Task<ActionResult> PostForgotPasswordAsync(ForgotPasswordRequest forgotPasswordRequest)
     {
         await _resetPasswordService.ForgotPasswordAsync(forgotPasswordRequest);
         return Ok(new { message = ConstantMessages.PasswordResetEmailInstruction });
     }
 
     [HttpPost("validate-reset-token")]
-    public async Task<IActionResult> ValidateResetTokenAsync(ValidateResetTokenRequest validateResetTokenRequest)
+    public async Task<ActionResult> PostValidateResetTokenAsync(ValidateResetTokenRequest validateResetTokenRequest)
     {
         await _resetPasswordService.ValidateResetTokenAsync(validateResetTokenRequest);
         return Ok(new { message = ConstantMessages.TokenValid });
     }
 
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
+    public async Task<ActionResult> PostResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
     {
         if (!ModelState.IsValid)
         {

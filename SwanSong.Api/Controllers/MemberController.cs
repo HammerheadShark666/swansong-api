@@ -37,7 +37,7 @@ public class MemberController : BaseController<Member>
     }
 
     [HttpGet("")]
-    public async Task<ActionResult<List<MemberResponse>>> GetAllAsync([FromQuery] PaginationFilter filter)
+    public async Task<ActionResult<List<MemberResponse>>> GetAllMembersAsync([FromQuery] PaginationFilter filter)
     {
         var paginationFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
         var members = await _memberService.GetAllAsync(paginationFilter);
@@ -47,21 +47,21 @@ public class MemberController : BaseController<Member>
     } 
 
     [HttpGet("random")]
-    public async Task<ActionResult<List<MemberLookUpResponse>>> GetRandomAsync()
+    public async Task<ActionResult<List<MemberLookUpResponse>>> GetRandomMembersAsync()
     {
-        var members = await _memberService.GetRandomAsync(10);
+        var members = await _memberService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords);
         return Ok(_mapper.Map<List<MemberLookUpResponse>>(members)); 
     }
 
     [HttpGet("search/{criteria}")]
-    public async Task<ActionResult<List<MemberResponse>>> SearchAsync(string criteria)
+    public async Task<ActionResult<List<MemberResponse>>> GetSearchMembersAsync(string criteria)
     {
         var members = await _memberService.SearchByNameAsync(criteria);
         return Ok(_mapper.Map<List<MemberResponse>>(members));
     }
 
     [HttpGet("search-by-letter/{letter}")]
-    public async Task<ActionResult<List<MemberResponse>>> SearchByLetterAsync(string letter)
+    public async Task<ActionResult<List<MemberResponse>>> GetSearchMembersByLetterAsync(string letter)
     {
         var members = await _memberService.SearchByLetterAsync(letter);
         return Ok(_mapper.Map<List<MemberResponse>>(members));
@@ -82,7 +82,7 @@ public class MemberController : BaseController<Member>
     } 
 
     [HttpPost("member/add")]
-    public async Task<ActionResult<MemberActionResponse>> AddAsync([FromBody] MemberAddRequest memberAddRequest)
+    public async Task<ActionResult<MemberActionResponse>> PostAddMemberAsync([FromBody] MemberAddRequest memberAddRequest)
     {
         Member member = _mapper.Map<Member>(memberAddRequest);
 
@@ -96,7 +96,7 @@ public class MemberController : BaseController<Member>
     }
 
     [HttpPut("member/update")]
-    public async Task<ActionResult> UpdateAsync([FromBody] MemberUpdateRequest memberUpdateRequest)
+    public async Task<ActionResult> PutUpdateMemberAsync([FromBody] MemberUpdateRequest memberUpdateRequest)
     {
         Member member = _mapper.Map<Member>(memberUpdateRequest);
 
@@ -110,7 +110,7 @@ public class MemberController : BaseController<Member>
     }
 
     [HttpDelete("member/{id}")]
-    public async Task<ActionResult> DeleteAsync(long id)
+    public async Task<ActionResult> DeleteMemberAsync(long id)
     { 
         await _memberService.DeleteAsync(await _memberService.GetAsync(id));
 
@@ -120,7 +120,7 @@ public class MemberController : BaseController<Member>
     [HttpPost("member/upload-photo/{id}")]
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SaveMemberPhotoAsync(long id)
+    public async Task<ActionResult> SaveMemberPhotoAsync(long id)
     {
         if (Request.Form.Files.Count > 0)
         {

@@ -14,6 +14,8 @@ public class EnvironmentVariablesHelper
     public static int JwtSettingsRefreshTokenExpiryDays = Convert.ToInt16(Environment.GetEnvironmentVariable(Constants.JwtSettingsRefreshTokenExpiryDays));
     public static int JwtSettingsPasswordTokenExpiryDays = Convert.ToInt16(Environment.GetEnvironmentVariable(Constants.JwtSettingsPasswordTokenExpiryDays));
 
+    public static int NumberOfRandomRecords = Convert.ToInt16(Environment.GetEnvironmentVariable(Constants.NumberOfRandomRecords));
+
     public static string RegisterSenderEmail = Environment.GetEnvironmentVariable(Constants.RegisterSenderEmail);
       
     public static string SmtpGmailServer = Environment.GetEnvironmentVariable(Constants.SmtpGmailServer);

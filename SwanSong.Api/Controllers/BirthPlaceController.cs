@@ -37,14 +37,14 @@ public class BirthPlaceController : BaseController<BirthPlace>
     }
 
     [HttpGet("")]
-    public async Task<ActionResult<List<BirthPlaceResponse>>> GetAllAsync()
+    public async Task<ActionResult<List<BirthPlaceResponse>>> GetAllBirthPlacesAsync()
     {
         var birthPlaces = await _birthPlaceService.GetAllAsync();
         return _mapper.Map<List<BirthPlaceResponse>>(birthPlaces); 
     }
 
     [HttpPost("birth-place/add")]
-    public async Task<ActionResult<BirthPlaceActionResponse>> AddAsync([FromBody] BirthPlaceAddRequest birthPlaceAddRequest)
+    public async Task<ActionResult<BirthPlaceActionResponse>> PostAddBirthPlaceAsync([FromBody] BirthPlaceAddRequest birthPlaceAddRequest)
     {
         BirthPlace birthPlace = _mapper.Map<BirthPlace>(birthPlaceAddRequest);
 
@@ -58,7 +58,7 @@ public class BirthPlaceController : BaseController<BirthPlace>
     }
 
     [HttpPut("birth-place/update")]
-    public async Task<ActionResult> UpdateAsync([FromBody] BirthPlaceUpdateRequest birthPlaceUpdateRequest)
+    public async Task<ActionResult> PostUpdateBirthPlaceAsync([FromBody] BirthPlaceUpdateRequest birthPlaceUpdateRequest)
     {  
         var birthPlace = await _birthPlaceService.GetAsync(birthPlaceUpdateRequest.Id);
 
@@ -78,7 +78,7 @@ public class BirthPlaceController : BaseController<BirthPlace>
 
 
     [HttpDelete("birth-place/{id}")]
-    public async Task<ActionResult> DeleteAsync(int id)
+    public async Task<ActionResult> DeleteBirthPlaceAsync(int id)
     { 
         _birthPlaceService.DeleteAsync(await _birthPlaceService.GetAsync(id));
 

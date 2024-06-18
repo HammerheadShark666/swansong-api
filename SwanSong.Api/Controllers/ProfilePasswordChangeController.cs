@@ -31,7 +31,7 @@ public class ProfilePasswordChangeController : Controller
 
     [Authorize]
     [HttpPut("")]
-    public async Task<ActionResult<ProfilePasswordChangeActionResponse>> UpdatePasswordAsync(ProfilePasswordChangeRequest profilePasswordChangeRequest)
+    public async Task<ActionResult<ProfilePasswordChangeActionResponse>> PutUpdatePasswordAsync(ProfilePasswordChangeRequest profilePasswordChangeRequest)
     {
         profilePasswordChangeRequest = profilePasswordChangeRequest with { Id = LoggedInAccount().Id, Email = LoggedInAccount().Email };
         await _profilePasswordChangeService.UpdatePasswordAsync(profilePasswordChangeRequest);
