@@ -15,12 +15,5 @@ public class Song : BaseEntity
     [Required]
     public string Title { get; set; } 
 
-    public string Length { get; set; }      
-
-    public List<SongWriter> SongWriters { get; set; }         
-
-    public Song()
-    {
-        SongWriters = new List<SongWriter>(); 
-    }
+    public string Length { get; set; }        
 }
