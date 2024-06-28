@@ -1480,9 +1480,10 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "8a1b61bd-9684-4e0d-ba22-c4289c7e72f1",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"pm.test(\"Status code is 300\", function () {\r",
+									"    pm.response.to.have.status(300);\r",
 									"}); \r",
 									" \r",
 									"pm.test('Schema validation', () => {\r",
@@ -1499,7 +1500,7 @@
 									"pm.environment.set(\"artistId\", jsonData.id);"
 								],
 								"type": "text/javascript",
-								"id": "8a1b61bd-9684-4e0d-ba22-c4289c7e72f1"
+								"packages": {}
 							}
 						}
 					],
