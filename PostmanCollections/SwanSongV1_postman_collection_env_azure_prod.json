@@ -1,0 +1,249 @@
+{
+	"id": "dbb75dfd-7cb7-4bc6-9e6a-de93c160be13",
+	"name": "SwanSongAzureProductionEnv",
+	"values": [
+		{
+			"key": "baseUrl",
+			"value": "https://prod-ap-swansong-api.azurewebsites.net",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "albumId",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "albumSongId",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "songId",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "artistId",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "memberId",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "countryId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "studioId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "recordLabelId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "countryUpdateName",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "studioUpdateName",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "birthPlaceUpdateName",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "recordLabelUpdateName",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "albums_schema",
+			"value": "{\"type\":\"array\",\"items\":[{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"releaseDate\":{\"type\":[\"string\",\"null\"]},\"artistName\":{\"type\":[\"string\",\"null\"]},\"photo\":{\"type\":\"string\"},\"length\":{\"type\":\"string\"},\"tracks\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\",\"artistName\",\"photo\",\"length\",\"tracks\"]}]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "albums_paging_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"pageNumber\":{\"type\":\"integer\"},\"pageSize\":{\"type\":\"integer\"},\"totalPages\":{\"type\":\"integer\"},\"totalRecords\":{\"type\":\"integer\"},\"data\":{\"type\":\"array\"}},\"required\":[\"pageNumber\",\"pageSize\",\"totalPages\",\"totalRecords\",\"data\"]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "album_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"artistId\":{\"type\":\"integer\"},\"artistName\":{\"type\":\"string\"},\"releaseDate\":{\"type\":[\"string\",\"null\"]},\"recordedDate\":{\"type\":[\"string\",\"null\"]},\"labelId\":{\"type\":[\"integer\",\"null\"]},\"studioId\":{\"type\":[\"integer\",\"null\"]},\"producers\":{\"type\":[\"string\",\"null\"]},\"arrangers\":{\"type\":[\"string\",\"null\"]},\"engineers\":{\"type\":[\"string\",\"null\"]},\"artwork\":{\"type\":[\"string\",\"null\"]},\"photo\":{\"type\":[\"string\",\"null\"]},\"songs\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"albumId\":{\"type\":\"integer\"},\"songId\":{\"type\":\"integer\"},\"song\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"title\":{\"type\":\"string\"},\"length\":{\"type\":[\"string\",\"null\"]}},\"required\":[\"id\",\"title\"]},\"order\":{\"type\":[\"integer\",\"null\"]},\"side\":{\"type\":[\"integer\",\"null\"]}},\"required\":[\"id\",\"albumId\",\"songId\"]}}},\"required\":[\"id\",\"name\",\"artistId\"]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "album_actions_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"}},\"required\":[\"id\"]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "action_response_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"messages\":{\"type\":\"array\",\"items\":[{\"properties\":{\"text\":{\"type\":\"string\"},\"severity\":{\"type\":\"string\"}},\"required\":[\"text\",\"severity\"]}]},\"severity\":{\"type\":\"string\"}},\"required\":[\"messages\",\"severity\"]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "album_upload_photo_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"filename\":{\"type\":\"string\"}},\"required\":[\"filename\"]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "album_delete_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"messages\":{\"properties\":{\"text\":{\"type\":\"string\"},\"severity\":{\"type\":\"string\"}},\"required\":[\"text\",\"severity\"]},\"severity\":{\"type\":\"string\"}},\"required\":[\"messages\",\"severity\"]}",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "lookup_schema",
+			"value": "{\"type\":\"array\",\"items\":[{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\"]}]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "contains",
+			"value": "(json, keyname, value) => {\n    return Object.keys(json).some(key => {\n        return typeof json[key] === 'object' ? \n            contains(json[key], keyname, value) : key === keyname && json[key] === value;\n    });\n}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "album_song_schema",
+			"value": "{\"type\":\"array\",\"items\":[{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"albumId\":{\"type\":\"integer\"},\"songId\":{\"type\":\"integer\"},\"song\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"title\":{\"type\":\"string\"},\"length\":{\"type\":[\"string\",\"null\"]}},\"required\":[\"id\",\"title\"]},\"order\":{\"type\":[\"integer\",\"null\"]},\"side\":{\"type\":[\"integer\",\"null\"]}},\"required\":[\"id\",\"albumId\",\"songId\",\"song\"]}]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "album_song_add_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"songId\":{\"type\":\"integer\"}},\"required\":[\"id\",\"songId\"]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "album_song_delete_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"messages\":{\"properties\":{\"text\":{\"type\":\"string\"},\"severity\":{\"type\":\"string\"}},\"required\":[\"text\",\"severity\"]},\"isValid\":{\"type\":\"boolean\"}},\"required\":[\"id\",\"messages\",\"isValid\"]}",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "artist_paging_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"pageNumber\":{\"type\":\"integer\"},\"pageSize\":{\"type\":\"integer\"},\"totalPages\":{\"type\":\"integer\"},\"totalRecords\":{\"type\":\"integer\"},\"data\":{\"type\":\"array\"}},\"required\":[\"pageNumber\",\"pageSize\",\"totalPages\",\"totalRecords\",\"data\"]}",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "artists_schema",
+			"value": "{\"type\":\"array\",\"items\":[{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"photo\":{\"type\":\"string\"},\"formationYear\":{\"type\":[\"integer\",\"null\"]},\"disbandYear\":{\"type\":[\"integer\",\"null\"]},\"countryId\":{\"type\":\"integer\"},\"members\":{\"type\":\"array\"},\"albums\":{\"type\":\"array\"}},\"required\":[\"id\",\"name\"]}]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "artist_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"photo\":{\"type\":\"string\"},\"formationYear\":{\"type\":[\"integer\",\"null\"]},\"disbandYear\":{\"type\":[\"integer\",\"null\"]},\"countryId\":{\"type\":\"integer\"},\"members\":{\"type\":\"array\"},\"albums\":{\"type\":\"array\"}},\"required\":[\"id\",\"name\"]}",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "members_schema",
+			"value": "{\"type\":\"array\",\"items\":[{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"artistId\":{\"type\":[\"integer\",\"null\"]},\"stageName\":{\"type\":\"string\"},\"firstName\":{\"type\":\"string\"},\"middleName\":{\"type\":[\"string\",\"null\"]},\"surname\":{\"type\":\"string\"},\"photo\":{\"type\":[\"string\",\"null\"]},\"dateOfBirth\":{\"type\":[\"string\",\"null\"]},\"dateOfDeath\":{\"type\":[\"string\",\"null\"]}},\"required\":[\"id\",\"stageName\",\"firstName\",\"surname\"]}]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "lookup_action_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\"]}",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "lookup_action_validation_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"messages\":{\"properties\":{\"text\":{\"type\":\"string\"},\"severity\":{\"type\":\"string\"}},\"required\":[\"text\",\"severity\"]},\"isValid\":{\"type\":\"boolean\"}},\"required\":[\"messages\",\"isValid\"]}",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "lookup_action_fail_validation_schema_name",
+			"value": "{\"type\":\"object\",\"properties\":{\"messages\":{\"properties\":{\"text\":{\"type\":\"string\"},\"severity\":{\"type\":\"string\"}},\"required\":[\"text\",\"severity\"]}},\"required\":[\"messages\"]}",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "counter",
+			"value": "1000",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "username",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "action_fail_response_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"messages\":{\"properties\":{\"text\":{\"type\":\"string\"},\"severity\":{\"type\":\"string\"}},\"required\":[\"text\",\"severity\"]}},\"required\":[\"messages\"]}",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "artists_lookup_schema",
+			"value": "{\"type\":\"array\",\"items\":[{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"}},\"required\":[\"id\",\"name\"]}]}",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "lookup_action_fail_validation_schema_exists",
+			"value": "{\"type\":\"object\",\"properties\":{\"messages\":{\"properties\":{\"text\":{\"type\":\"string\"},\"severity\":{\"type\":\"string\"}},\"required\":[\"text\",\"severity\"]}},\"required\":[\"messages\"]}",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "birthPlaceId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "member_schema",
+			"value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"artistId\":{\"type\":[\"integer\",\"null\"]},\"stageName\":{\"type\":\"string\"},\"firstName\":{\"type\":\"string\"},\"middleName\":{\"type\":[\"string\",\"null\"]},\"surname\":{\"type\":\"string\"},\"photo\":{\"type\":[\"string\",\"null\"]},\"dateOfBirth\":{\"type\":[\"string\",\"null\"]},\"dateOfDeath\":{\"type\":[\"string\",\"null\"]}},\"required\":[\"id\",\"stageName\",\"firstName\",\"surname\"]}\n",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-06-28T10:12:33.774Z",
+	"_postman_exported_using": "Postman/11.2.25"
+}
