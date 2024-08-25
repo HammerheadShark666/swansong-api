@@ -24,10 +24,7 @@ jobs:
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
-
-      - name: Unit Tests
-        run: dotnet test SwanSong.xUnit.Test/SwanSong.xUnit.Test.csproj --logger "console;verbosity=detailed"
-
+ 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
@@ -58,10 +55,27 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F3132F7A9A9740D48B085E008BF8C41F }}
-          
+
+  unit-tests:
+    runs-on: ubuntu-latest 
+    needs: deploy
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Build with dotnet
+        run: dotnet build MicroserviceSwanSong.xUnit.Test/Microservice.SwanSong.xUnit.Test.csproj --configuration Release
+
+      - name: Unit Tests
+        run: dotnet test Microservice.SwanSong.xUnit.Test.Unit/Microservice.SwanSong.xUnit.Test.Unit.csproj --logger "console;verbosity=detailed"
+ 
   automated-api-tests:
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: unit-tests
     steps:
       - uses: actions/checkout@v4
       - name: Install Postman CLI
