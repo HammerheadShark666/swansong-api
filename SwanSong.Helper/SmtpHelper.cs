@@ -18,13 +18,11 @@ public class SmtpHelper
 
         email.From.Add(new MailboxAddress("Sender Name", EnvironmentVariablesHelper.RegisterSenderEmail));
         email.To.Add(new MailboxAddress("Receiver Name", recipientAddress));
-        
-        using (var smtp = new SmtpClient())
-        {
-            smtp.Connect(EnvironmentVariablesHelper.SmtpGmailServer, EnvironmentVariablesHelper.SmtpGmailPort, false);             
-            smtp.Authenticate(EnvironmentVariablesHelper.SmtpGmailUsername, EnvironmentVariablesHelper.SmtpGmailPassword);
-            smtp.Send(email);
-            smtp.Disconnect(true);
-        } 
+
+        using var smtp = new SmtpClient();
+        smtp.Connect(EnvironmentVariablesHelper.SmtpGmailServer, EnvironmentVariablesHelper.SmtpGmailPort, false);
+        smtp.Authenticate(EnvironmentVariablesHelper.SmtpGmailUsername, EnvironmentVariablesHelper.SmtpGmailPassword);
+        smtp.Send(email);
+        smtp.Disconnect(true);
     }
 }

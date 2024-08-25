@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SwanSong.Domain;
@@ -13,7 +12,7 @@ public class Song : BaseEntity
 
     [Column(TypeName = "nvarchar(150)")]
     [Required]
-    public string Title { get; set; } 
+    public string Title { get; set; }
 
-    public string Length { get; set; }        
+    public string Length { get; set; }
 }

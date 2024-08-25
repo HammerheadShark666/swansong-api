@@ -13,24 +13,19 @@ namespace SwanSong.Api.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Route("api/v{version:apiVersion}/register")]
-public class RegisterController : Controller
+public class RegisterController(IRegisterService registerService,
+                                IRegisterVerifyEmailService registerVerifyEmailService,
+                                ILogger<RegisterController> logger) : Controller
 {
-    private readonly ILogger<RegisterController> _logger;
-    private readonly IRegisterService _registerService;
-    private readonly IRegisterVerifyEmailService _registerVerifyEmailService;
-
-    public RegisterController(IRegisterService registerService, IRegisterVerifyEmailService registerVerifyEmailService, ILogger<RegisterController> logger)
-    {
-        _registerService = registerService;
-        _registerVerifyEmailService = registerVerifyEmailService;
-        _logger = logger;
-    }
+    private readonly ILogger<RegisterController> _logger = logger;
+    private readonly IRegisterService _registerService = registerService;
+    private readonly IRegisterVerifyEmailService _registerVerifyEmailService = registerVerifyEmailService;
 
     [HttpPost("")]
     public async Task<ActionResult> PostRegisterAsync(RegisterRequest registerRequest)
     {
         await _registerService.RegisterAsync(registerRequest);
-        return Ok();        
+        return Ok();
     }
 
     [HttpPost("verify-email")]

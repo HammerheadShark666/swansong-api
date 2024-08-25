@@ -17,7 +17,7 @@ public class RecordLabelValidatorTest
 
     private static readonly RecordLabel newRecordLabel = new() { Id = 0, Name = "Test RecordLabel 1" };
     private static readonly RecordLabel existingRecordLabel = new() { Id = 1, Name = "Test RecordLabel 1" };
-             
+
     public RecordLabelValidatorTest()
     {
         recordLabelRepositoryMock = new Mock<IRecordLabelRepository>();
@@ -29,7 +29,7 @@ public class RecordLabelValidatorTest
     {
         ValidationResult validation = await validator.ValidateAsync(existingRecordLabel);
         Assert.True(validation.IsValid);
-    } 
+    }
 
     [Fact]
     public async Task Before_save_validate_record_label_name_null_return_false()
@@ -95,5 +95,5 @@ public class RecordLabelValidatorTest
         Assert.False(validationResult.IsValid);
         Assert.Single(validationResult.Errors);
         Assert.Equal("Test Label already exists.", validationResult.Errors[0].ErrorMessage);
-    } 
+    }
 }

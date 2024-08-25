@@ -10,7 +10,7 @@ public class Member : BaseEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long Id { get; set; } 
+    public long Id { get; set; }
 
     [ForeignKey("ArtistId")]
     public long? ArtistId { get; set; }
@@ -41,11 +41,11 @@ public class Member : BaseEntity
 
     [ForeignKey("BirthPlaceId")]
     public BirthPlace BirthPlace { get; set; }
-    
+
     [Column(TypeName = "int")]
     public int? BirthPlaceId { get; set; }
 
     public bool IsSongWriter { get; set; }
 
-    public ICollection<Song> SongsWritten { get; set; }        
+    public ICollection<Song> SongsWritten { get; set; }
 }

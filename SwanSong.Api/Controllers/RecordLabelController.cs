@@ -20,21 +20,14 @@ namespace SwanSong.Api.Controllers;
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
-public class RecordLabelController : BaseController<RecordLabel>
+public class RecordLabelController(ILogger<RecordLabelController> logger,
+                                   IRecordLabelService recordLabelService,
+                                   IValidator<RecordLabel> validator,
+                                   IMapper mapper) : BaseController<RecordLabel>(validator)
 {
-    private readonly ILogger<RecordLabelController> _logger;      
-    private readonly IRecordLabelService _recordLabelService;
-    private readonly IMapper _mapper;
-
-    public RecordLabelController(ILogger<RecordLabelController> logger, 
-                                 IRecordLabelService recordLabelService,
-                                 IValidator<RecordLabel> validator,
-                                 IMapper mapper) : base(validator)
-    {
-        _logger = logger;
-        _mapper = mapper;
-        _recordLabelService = recordLabelService;
-    }
+    private readonly ILogger<RecordLabelController> _logger = logger;
+    private readonly IRecordLabelService _recordLabelService = recordLabelService;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet("")]
     public async Task<ActionResult<List<RecordLabelResponse>>> GetAllRecordLabelsAsync()
@@ -75,9 +68,9 @@ public class RecordLabelController : BaseController<RecordLabel>
 
     [HttpDelete("record-label/{id}")]
     public async Task<ActionResult> DeleteRecordLabelAsync(int id)
-    {  
+    {
         _recordLabelService.DeleteAsync(await _recordLabelService.GetAsync(id));
 
         return Ok();
-    }   
+    }
 }

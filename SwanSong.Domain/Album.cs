@@ -16,7 +16,7 @@ public class Album : BaseEntity
     public long Id { get; set; }
 
     [Column(TypeName = "nvarchar(120)")]
-    [Required]         
+    [Required]
     public string Name { get; set; }
 
     [Column(TypeName = "nvarchar(100)")]
@@ -25,7 +25,7 @@ public class Album : BaseEntity
     [Column(TypeName = "datetime2(7)")]
     public DateTime? RecordedDate { get; set; }
 
-    [Column(TypeName = "datetime2(7)")]     
+    [Column(TypeName = "datetime2(7)")]
     public DateTime? ReleaseDate { get; set; }
 
     [Column(TypeName = "int")]
@@ -60,11 +60,11 @@ public class Album : BaseEntity
 
     public Studio Studio { get; set; }
 
-    [Column(TypeName = "bigint")] 
+    [Column(TypeName = "bigint")]
     public long ArtistId { get; set; }
 
-    public virtual Artist Artist { get; set;}       
-     
+    public virtual Artist Artist { get; set; }
+
     [Column(TypeName = "nvarchar(250)")]
     public string Producers { get; set; }
 
@@ -85,5 +85,5 @@ public class Album : BaseEntity
         Photo = DefaultAlbumPhotoFileName;
         StudioId = null;
         labelId = null;
-    }     
+    }
 }

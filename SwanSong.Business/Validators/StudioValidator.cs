@@ -13,13 +13,15 @@ public class StudioValidator : BaseValidator<Studio>
     {
         _studioRepository = studioRepository;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(studio => studio.Name)
                 .NotEmpty().WithMessage("Name is required.")
-                .Length(1, 250).WithMessage("Name length between 1 and 250."); 
+                .Length(1, 250).WithMessage("Name length between 1 and 250.");
 
-            RuleFor(studio => studio).MustAsync(async (studio, cancellation) => {
+            RuleFor(studio => studio).MustAsync(async (studio, cancellation) =>
+            {
                 return await StudioNameExists(studio);
             }).WithMessage(studio => $"{studio.Name} already exists.");
         });
@@ -30,5 +32,5 @@ public class StudioValidator : BaseValidator<Studio>
         return studio.Id == 0
             ? !(await _studioRepository.ExistsAsync(studio.Name))
             : !(await _studioRepository.ExistsAsync(studio.Id, studio.Name));
-    }         
+    }
 }

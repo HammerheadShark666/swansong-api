@@ -16,32 +16,21 @@ using static SwanSong.Helper.PhotoHelper;
 
 namespace SwanSong.Service;
 
-public class AlbumService : IAlbumService
+public class AlbumService(IMapper mapper,
+                          ICacheHelper cacheHelper,
+                          IPhotoHelper photoHelper,
+                          IValidatorHelper<Album> validatorHelper,
+                          IMemoryCache memoryCache,
+                          IUnitOfWork unitOfWork,
+                          IAzureStorageBlobHelper azureStorageHelper) : IAlbumService
 {
-    public readonly ICacheHelper _cacheHelper;
-    public readonly IPhotoHelper _photoHelper;
-    public readonly IMemoryCache _memoryCache;
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<Album> _validatorHelper;
-    public readonly IAzureStorageBlobHelper _azureStorageHelper; 
-
-    public AlbumService(IMapper mapper,
-                        ICacheHelper cacheHelper,
-                        IPhotoHelper photoHelper,
-                        IValidatorHelper<Album> validatorHelper,
-                        IMemoryCache memoryCache,
-                        IUnitOfWork unitOfWork,
-                        IAzureStorageBlobHelper azureStorageHelper)
-    {
-        _azureStorageHelper = azureStorageHelper;
-        _validatorHelper = validatorHelper;
-        _photoHelper = photoHelper;
-        _memoryCache = memoryCache;
-        _unitOfWork = unitOfWork;
-        _cacheHelper = cacheHelper;
-        _mapper = mapper;
-    }
+    public readonly ICacheHelper _cacheHelper = cacheHelper;
+    public readonly IPhotoHelper _photoHelper = photoHelper;
+    public readonly IMemoryCache _memoryCache = memoryCache;
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<Album> _validatorHelper = validatorHelper;
+    public readonly IAzureStorageBlobHelper _azureStorageHelper = azureStorageHelper;
 
     #region Public Functions
 
@@ -53,44 +42,40 @@ public class AlbumService : IAlbumService
     public async Task<List<Album>> GetAllAsync(PaginationFilter filter)
     {
         return await _unitOfWork.Albums.GetAllAsync(filter.PageNumber, filter.PageSize);
-    } 
+    }
 
     public async Task<List<Album>> GetRandomAsync(int numberOfAlbums)
     {
-        return (await _unitOfWork.Albums.GetRandomAsync(numberOfAlbums)).OrderBy(a => a.Name).ToList();
-    } 
+        return [.. (await _unitOfWork.Albums.GetRandomAsync(numberOfAlbums)).OrderBy(a => a.Name)];
+    }
 
     public async Task<List<Album>> SearchByNameAsync(string criteria)
     {
         return (List<Album>)await _unitOfWork.Albums.SearchByNameAsync(criteria);
-    } 
-  
+    }
+
     public async Task<List<Album>> SearchByLetterAsync(string letter)
     {
         return (List<Album>)await _unitOfWork.Albums.SearchByLetterAsync(letter);
-    } 
+    }
 
     public async Task<List<Album>> GetAlbumsForArtistAsync(long artistId)
     {
         return (List<Album>)await _unitOfWork.Albums.GetAlbumsForArtistAsync(artistId);
-    } 
+    }
 
     public async Task<Album> GetAsync(long id)
     {
-        var album = await _unitOfWork.Albums.GetAsync(id);
-        if (album == null)
-            throw new AlbumNotFoundException("Album not found.");
-
-        return album;
+        return await _unitOfWork.Albums.GetAsync(id) ?? throw new AlbumNotFoundException("Album not found.");
     }
 
     public async Task<Album> AddAsync(Album album)
-    { 
+    {
         await _unitOfWork.Albums.AddAsync(album);
-        _unitOfWork.Complete(); 
+        _unitOfWork.Complete();
 
         return album;
-    } 
+    }
 
     public void Update(Album album)
     {
@@ -103,7 +88,7 @@ public class AlbumService : IAlbumService
     public async Task DeleteAsync(Album album)
     {
         _unitOfWork.Albums.Delete(album);
-        _unitOfWork.Complete();  
+        _unitOfWork.Complete();
 
         if (_photoHelper.NotDefaultImage(album.Photo, Constants.DefaultAlbumPhotoFileName))
         {
@@ -115,9 +100,7 @@ public class AlbumService : IAlbumService
 
     public async Task<string> UpdateAlbumPhotoAsync(long id, IFormFile file)
     {
-        var album = await _unitOfWork.Albums.GetAsync(id);
-        if (album == null) 
-            throw new AlbumNotFoundException("Album not found."); 
+        var album = await _unitOfWork.Albums.GetAsync(id) ?? throw new AlbumNotFoundException("Album not found.");
 
         string newFileName = FileHelper.getGuidFileName(Constants.FileExtensionJpg);
         string originalFileName = album.Photo;
@@ -141,7 +124,7 @@ public class AlbumService : IAlbumService
         {
             await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(editPhoto.originalPhotoName, container);
         }
-    } 
+    }
 
     #endregion
 }

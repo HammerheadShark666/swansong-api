@@ -12,5 +12,5 @@ public interface IRecordLabelRepository
     Task AddAsync(RecordLabel recordLabel);
     void Update(RecordLabel recordLabel);
     void Delete(RecordLabel recordLabel);
-    Task<RecordLabel> ByIdAsync(int id); 
+    Task<RecordLabel> ByIdAsync(int id);
 }

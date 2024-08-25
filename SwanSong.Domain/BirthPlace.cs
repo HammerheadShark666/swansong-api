@@ -13,11 +13,11 @@ public class BirthPlace : BaseEntity
     [Column(TypeName = "nvarchar(100)")]
     [Required]
     public string Name { get; set; }
-                    
+
     public int? CountryId { get; set; }
-    
+
     public Country Country { get; set; }
-     
+
     public BirthPlace()
     { }
 

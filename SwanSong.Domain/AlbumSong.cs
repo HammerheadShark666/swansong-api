@@ -17,8 +17,8 @@ public class AlbumSong : BaseEntity
     public long SongId { get; set; }
 
     public virtual Song Song { get; set; }
-     
+
     public int? Order { get; set; }
-     
+
     public int? Side { get; set; }
 }

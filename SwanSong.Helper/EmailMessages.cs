@@ -100,7 +100,7 @@ public class EmailMessages
 
         email = email.Replace("{resetUrl}", resetUrl);
 
-        return email; 
+        return email;
     }
 
     public static string PasswordResetNoResetUrlEmail(string passwordResetToken)
@@ -114,11 +114,11 @@ public class EmailMessages
     {
         return $@"<h4>Email Already Registered</h4>
                       <p>If you don't know your password please visit the <a href=""{baseUrl}/forgot-password"">forgot password</a> page.</p>";
-    }    
-     
+    }
+
     public static string AlreadyRegisteredNoBaseUrlEmail()
     {
         return $@"<h4>Email Already Registered</h4>
                       <p>If you don't know your password you can reset it via the <code>/forgot-password</code> api route.</p>";
-    }    
+    }
 }

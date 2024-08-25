@@ -14,20 +14,22 @@ public class AlbumValidator : BaseValidator<Album>
     {
         _albumRepository = albumRepository;
 
-        RuleSet("BeforeSave", () => {
-                            
-            RuleFor(album => album.Name) 
-                .NotEmpty().WithMessage("Album name is required.")
-                .Length(1, 120).WithMessage("Album name length between 1 and 120.");                 
+        RuleSet("BeforeSave", () =>
+        {
 
-            RuleFor(album => album).MustAsync(async (album, cancellation) => {
-                return await AlbumNameExists(album); 
+            RuleFor(album => album.Name)
+                .NotEmpty().WithMessage("Album name is required.")
+                .Length(1, 120).WithMessage("Album name length between 1 and 120.");
+
+            RuleFor(album => album).MustAsync(async (album, cancellation) =>
+            {
+                return await AlbumNameExists(album);
             }).WithMessage(album => $"{album.Name} already exists.");
 
-            RuleFor(album => album.ArtistId) 
+            RuleFor(album => album.ArtistId)
                 .NotNull()
                 .GreaterThan(0)
-                .WithMessage("Artist is required."); 
+                .WithMessage("Artist is required.");
 
             RuleFor(album => album.ReleaseDate)
                 .GreaterThan(new DateTime(1900, 1, 1))
@@ -41,9 +43,9 @@ public class AlbumValidator : BaseValidator<Album>
 
             RuleFor(album => album.RecordedDate)
                 .GreaterThan(new DateTime(1900, 1, 1))
-                .WithMessage("Recorded date must be after 1/1/1900.");                
+                .WithMessage("Recorded date must be after 1/1/1900.");
 
-            RuleFor(album => album.Producers) 
+            RuleFor(album => album.Producers)
                 .Length(0, 250)
                 .WithMessage("Producers maximum length is 250.");
 

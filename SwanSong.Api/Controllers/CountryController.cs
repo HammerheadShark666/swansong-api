@@ -20,21 +20,14 @@ namespace SwanSong.Api.Controllers;
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
-public class CountryController : BaseController<Country>
+public class CountryController(ILogger<CountryController> logger,
+                         ICountryService countryService,
+                         IValidator<Country> validator,
+                         IMapper mapper) : BaseController<Country>(validator)
 {
-    private readonly ILogger<CountryController> _logger;      
-    private readonly ICountryService _countryService;
-    private readonly IMapper _mapper;
-
-    public CountryController(ILogger<CountryController> logger, 
-                             ICountryService countryService, 
-                             IValidator<Country> validator,
-                             IMapper mapper) : base(validator)
-    {
-        _logger = logger;
-        _mapper = mapper;
-        _countryService = countryService; 
-    }
+    private readonly ILogger<CountryController> _logger = logger;
+    private readonly ICountryService _countryService = countryService;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet("")]
     public async Task<ActionResult<List<CountryResponse>>> GetAllCountriesAsync()
@@ -59,10 +52,10 @@ public class CountryController : BaseController<Country>
 
     [HttpPut("country/update")]
     public async Task<ActionResult> PutUpdateCountryAsync([FromBody] CountryUpdateRequest countryUpdateRequest)
-    {  
+    {
         var country = await _countryService.GetAsync(countryUpdateRequest.Id);
 
-        country.Name = countryUpdateRequest.Name; 
+        country.Name = countryUpdateRequest.Name;
 
         var validationResult = await Validate(country, Constants.ValidationEventBeforeSave);
         if (validationResult != null)
@@ -75,7 +68,7 @@ public class CountryController : BaseController<Country>
 
     [HttpDelete("country/{id}")]
     public async Task<ActionResult> DeleteCountryAsync(int id)
-    { 
+    {
         _countryService.DeleteAsync(await _countryService.GetAsync(id));
 
         return Ok();

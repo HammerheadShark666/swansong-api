@@ -16,29 +16,19 @@ using static SwanSong.Helper.PhotoHelper;
 
 namespace SwanSong.Service;
 
-public class ArtistService : IArtistService
+public class ArtistService(IMapper mapper,
+                           IPhotoHelper photoHelper,
+                           IValidatorHelper<Artist> validatorHelper,
+                           IMemoryCache memoryCache,
+                           IUnitOfWork unitOfWork,
+                           IAzureStorageBlobHelper azureStorageHelper) : IArtistService
 {
-    public readonly IMemoryCache _memoryCache;
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<Artist> _validatorHelper;
-    public readonly IAzureStorageBlobHelper _azureStorageHelper;
-    public readonly IPhotoHelper _photoHelper; 
-
-    public ArtistService(IMapper mapper,
-                         IPhotoHelper photoHelper,
-                         IValidatorHelper<Artist> validatorHelper,
-                         IMemoryCache memoryCache,
-                         IUnitOfWork unitOfWork,
-                         IAzureStorageBlobHelper azureStorageHelper)
-    {
-        _azureStorageHelper = azureStorageHelper;
-        _validatorHelper = validatorHelper;
-        _photoHelper = photoHelper;
-        _memoryCache = memoryCache;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+    public readonly IMemoryCache _memoryCache = memoryCache;
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<Artist> _validatorHelper = validatorHelper;
+    public readonly IAzureStorageBlobHelper _azureStorageHelper = azureStorageHelper;
+    public readonly IPhotoHelper _photoHelper = photoHelper;
 
     #region Public Functions
 
@@ -59,37 +49,30 @@ public class ArtistService : IArtistService
 
     public async Task<List<Artist>> SearchByNameAsync(string criteria)
     {
-        return (List<Artist>)await _unitOfWork.Artists.SearchByNameAsync(criteria); 
+        return (List<Artist>)await _unitOfWork.Artists.SearchByNameAsync(criteria);
     }
 
-    public async Task<List<Artist>> SearchByAlphaNumericAsync(string alphanumeric) 
-    { 
-        return (List<Artist>)await _unitOfWork.Artists.SearchByAlphaNumericAsync(alphanumeric); 
+    public async Task<List<Artist>> SearchByAlphaNumericAsync(string alphanumeric)
+    {
+        return (List<Artist>)await _unitOfWork.Artists.SearchByAlphaNumericAsync(alphanumeric);
     }
 
     public async Task<Artist> GetAsync(long id)
     {
-        var artist = await _unitOfWork.Artists.ByIdAsync(id);
-        if (artist == null)
-            throw new ArtistNotFoundException("Artist not found.");
-
-        return artist;
+        return await _unitOfWork.Artists.ByIdAsync(id) ?? throw new ArtistNotFoundException("Artist not found.");
     }
 
     public async Task<string> UpdateArtistPhotoAsync(long id, IFormFile file)
-    {  
-        var artist = await _unitOfWork.Artists.ByIdAsync(id);
-        if (artist == null)
-            throw new ArtistNotFoundException("Artist not found.");
-
+    {
+        var artist = await _unitOfWork.Artists.ByIdAsync(id) ?? throw new ArtistNotFoundException("Artist not found.");
         string newFileName = FileHelper.getGuidFileName(Constants.FileExtensionJpg);
         string originalFileName = artist.Photo;
- 
+
         await _azureStorageHelper.SaveBlobToAzureStorageContainerAsync(file, Constants.AzureStorageContainerArtists, newFileName);
         await DeleteOriginalFileAsync(originalFileName, newFileName, Constants.AzureStorageContainerArtists);
         await _unitOfWork.Artists.UpdateArtistPhotoAsync(id, newFileName);
 
-        return newFileName; 
+        return newFileName;
     }
 
     public async Task<Artist> AddAsync(Artist artist)
@@ -115,10 +98,10 @@ public class ArtistService : IArtistService
 
         await DeleteArtistPhotosAsync(artist.Photo);
         await DeleteMembersPhotosAsync(artist.Members);
-  
+
         return;
     }
-     
+
     public List<Artist> GetAll()
     {
         return _unitOfWork.Artists.GetAllForLookup().ToList();
@@ -127,7 +110,7 @@ public class ArtistService : IArtistService
     #endregion
 
     #region Private Function
-  
+
     private async Task DeleteMembersPhotosAsync(List<Member> members)
     {
         foreach (Member member in members)
@@ -140,7 +123,7 @@ public class ArtistService : IArtistService
         {
             await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(artistPhotoFileName, Constants.AzureStorageContainerArtists);
         }
-    } 
+    }
 
     private async Task DeleteOriginalFileAsync(string originalFileName, string newFileName, string container)
     {
@@ -149,7 +132,7 @@ public class ArtistService : IArtistService
         {
             await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(editPhoto.originalPhotoName, container);
         }
-    } 
-     
+    }
+
     #endregion
 }

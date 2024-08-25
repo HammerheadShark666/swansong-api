@@ -13,30 +13,22 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Service;
 
-public class CountryService : ICountryService
-{ 
-    public readonly IMemoryCache _memoryCache;
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper; 
-    public readonly IValidatorHelper<Country> _validatorHelper;
-
-    public CountryService(IMapper mapper,
-                          IValidatorHelper<Country> validatorHelper,
-                          IMemoryCache memoryCache,
-                          IUnitOfWork unitOfWork)
-    {
-        _validatorHelper = validatorHelper;
-        _memoryCache = memoryCache;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+public class CountryService(IMapper mapper,
+                            IValidatorHelper<Country> validatorHelper,
+                            IMemoryCache memoryCache,
+                            IUnitOfWork unitOfWork) : ICountryService
+{
+    public readonly IMemoryCache _memoryCache = memoryCache;
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<Country> _validatorHelper = validatorHelper;
 
     public async Task<List<Country>> GetAllAsync()
     {
         return await _memoryCache.GetOrCreateAsync<List<Country>>(CacheKeys.Country, async cache =>
         {
             cache.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
-            return (await _unitOfWork.Countries.AllAsync()).OrderBy(c => c.Name).ToList();
+            return [.. (await _unitOfWork.Countries.AllAsync()).OrderBy(c => c.Name)];
         });
     }
 
@@ -68,16 +60,10 @@ public class CountryService : ICountryService
         _memoryCache.Remove(CacheKeys.Country);
 
         return;
-    } 
+    }
 
     public async Task<Country> GetAsync(int id)
     {
-        var country = await _unitOfWork.Countries.ByIdAsync(id);
-        if (country == null)
-        {
-            throw new CountryNotFoundException("Country not found.");
-        }
-
-        return country;
+        return await _unitOfWork.Countries.ByIdAsync(id) ?? throw new CountryNotFoundException("Country not found.");
     }
 }

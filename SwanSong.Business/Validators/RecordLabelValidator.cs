@@ -13,7 +13,8 @@ public class RecordLabelValidator : BaseValidator<RecordLabel>
     {
         _recordLabelRepository = recordLabelRepository;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(recordLabel => recordLabel)
                 .NotEmpty().WithMessage("Record label not found.");
@@ -21,8 +22,9 @@ public class RecordLabelValidator : BaseValidator<RecordLabel>
             RuleFor(recordLabel => recordLabel.Name)
                 .NotEmpty().WithMessage("Name is required.")
                 .Length(1, 100).WithMessage("Name length between 1 and 100.");
-             
-            RuleFor(recordLabel => recordLabel).MustAsync(async (recordLabel, cancellation) => {
+
+            RuleFor(recordLabel => recordLabel).MustAsync(async (recordLabel, cancellation) =>
+            {
                 return await RecordLabelNameExists(recordLabel);
             }).WithMessage(recordLabel => $"{recordLabel.Name} already exists.");
         });
@@ -30,8 +32,8 @@ public class RecordLabelValidator : BaseValidator<RecordLabel>
 
     protected async Task<bool> RecordLabelNameExists(RecordLabel recordLabel)
     {
-        return recordLabel.Id == 0 
+        return recordLabel.Id == 0
             ? !(await _recordLabelRepository.ExistsAsync(recordLabel.Name))
             : !(await _recordLabelRepository.ExistsAsync(recordLabel.Id, recordLabel.Name));
-    }         
+    }
 }

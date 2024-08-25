@@ -10,29 +10,22 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Service;
 
-public class RegisterVerifyEmailService : IRegisterVerifyEmailService
-{ 
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<RegisterVerifyEmailRequest> _validatorHelper;
-
-    public RegisterVerifyEmailService(IMapper mapper,
-                                      IValidatorHelper<RegisterVerifyEmailRequest> validatorHelper, 
-                                      IUnitOfWork unitOfWork)
-    {
-        _validatorHelper = validatorHelper; 
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+public class RegisterVerifyEmailService(IMapper mapper,
+                                        IValidatorHelper<RegisterVerifyEmailRequest> validatorHelper,
+                                        IUnitOfWork unitOfWork) : IRegisterVerifyEmailService
+{
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<RegisterVerifyEmailRequest> _validatorHelper = validatorHelper;
 
     #region Public Functions
 
     public async Task VerifyEmailAsync(RegisterVerifyEmailRequest registerVerifyEmailRequest)
-    { 
+    {
         var registerVerifyEmail = _mapper.Map<RegisterVerifyEmailRequest>(registerVerifyEmailRequest);
 
         await _validatorHelper.ValidateAsync(registerVerifyEmailRequest, Constants.ValidationEventBeforeSave);
-        await UpdateAccountAsync(registerVerifyEmail); 
+        await UpdateAccountAsync(registerVerifyEmail);
 
         return;
     }
@@ -40,7 +33,7 @@ public class RegisterVerifyEmailService : IRegisterVerifyEmailService
     #endregion
 
     #region Private Functions     
- 
+
     private async Task<Account> UpdateAccountAsync(RegisterVerifyEmailRequest registerVerifyEmailRequest)
     {
         var account = await _unitOfWork.Accounts.GetByVerificationTokenAsync(registerVerifyEmailRequest.Token);

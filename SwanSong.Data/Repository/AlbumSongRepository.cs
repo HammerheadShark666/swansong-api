@@ -7,14 +7,9 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Data.Repository;
 
-public class AlbumSongRepository : IAlbumSongRepository
+public class AlbumSongRepository(SwanSongContext context) : IAlbumSongRepository
 {
-    private readonly SwanSongContext _context;
-
-    public AlbumSongRepository(SwanSongContext context)
-    {
-        _context = context;
-    }
+    private readonly SwanSongContext _context = context;
 
     public async Task<IEnumerable<AlbumSong>> GetAlbumSongsAsync(long albumId)
     {
@@ -25,7 +20,7 @@ public class AlbumSongRepository : IAlbumSongRepository
                                     .ThenBy(e => e.Order)
                                 .AsNoTracking()
                                 .ToListAsync();
-    } 
+    }
 
     public async Task<bool> ExistsAsync(long? albumId, string title)
     {
@@ -55,7 +50,7 @@ public class AlbumSongRepository : IAlbumSongRepository
                                             && a.Order.Equals(order))
                                .AsNoTracking()
                                .AnyAsync();
-    } 
+    }
 
     public async Task AddAsync(AlbumSong albumSong)
     {
@@ -77,6 +72,6 @@ public class AlbumSongRepository : IAlbumSongRepository
         return await _context.AlbumSongs
                         .Include(e => e.Song)
                             .Where(e => e.Id.Equals(id))
-                        .FirstOrDefaultAsync(); 
+                        .FirstOrDefaultAsync();
     }
 }

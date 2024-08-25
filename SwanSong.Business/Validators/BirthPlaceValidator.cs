@@ -13,13 +13,15 @@ public class BirthPlaceValidator : BaseValidator<BirthPlace>
     {
         _birthPlaceRepository = birthPlaceRepository;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(birthPlace => birthPlace.Name)
                 .NotEmpty().WithMessage("Name is required.")
-                .Length(1, 100).WithMessage("Name length between 1 and 100.");                    
+                .Length(1, 100).WithMessage("Name length between 1 and 100.");
 
-            RuleFor(birthPlace => birthPlace).MustAsync(async (birthPlace, cancellation) => {
+            RuleFor(birthPlace => birthPlace).MustAsync(async (birthPlace, cancellation) =>
+            {
                 return await BirthPlaceNameExists(birthPlace);
             }).WithMessage(birthPlace => $"{birthPlace.Name} already exists.");
         });
@@ -30,5 +32,5 @@ public class BirthPlaceValidator : BaseValidator<BirthPlace>
         return birthPlace.Id == 0
             ? !(await _birthPlaceRepository.ExistsAsync(birthPlace.Name))
             : !(await _birthPlaceRepository.ExistsAsync(birthPlace.Id, birthPlace.Name));
-    }         
+    }
 }

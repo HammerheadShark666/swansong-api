@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Data.Repository;
 
-public class StudioRepository : IStudioRepository
+public class StudioRepository(SwanSongContext context) : IStudioRepository
 {
-    private readonly SwanSongContext _context;
-
-    public StudioRepository(SwanSongContext context)
-    {
-        _context = context;
-    }
+    private readonly SwanSongContext _context = context;
 
     public async Task<bool> ExistsAsync(string name)
     {

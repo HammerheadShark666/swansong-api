@@ -20,21 +20,14 @@ namespace SwanSong.Api.Controllers;
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
-public class StudioController : BaseController<Studio>
+public class StudioController(ILogger<StudioController> logger,
+                             IStudioService studioService,
+                             IValidator<Studio> validator,
+                             IMapper mapper) : BaseController<Studio>(validator)
 {
-    private readonly ILogger<StudioController> _logger;
-    private readonly IStudioService _studioService;
-    private readonly IMapper _mapper;
-
-    public StudioController(ILogger<StudioController> logger,
-                                 IStudioService studioService,
-                                 IValidator<Studio> validator,
-                                 IMapper mapper) : base(validator)
-    {
-        _logger = logger;
-        _mapper = mapper;
-        _studioService = studioService;
-    }
+    private readonly ILogger<StudioController> _logger = logger;
+    private readonly IStudioService _studioService = studioService;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet("")]
     public async Task<ActionResult<List<StudioResponse>>> GetAllStudiosAsync()
@@ -75,7 +68,7 @@ public class StudioController : BaseController<Studio>
 
     [HttpDelete("studio/{id}")]
     public async Task<ActionResult> DeleteStudioAsync(int id)
-    { 
+    {
         _studioService.DeleteAsync(await _studioService.GetAsync(id));
 
         return Ok();

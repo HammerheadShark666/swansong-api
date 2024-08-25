@@ -20,25 +20,20 @@ namespace SwanSong.Api.Controllers;
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
-public class AlbumSongController : BaseController<AlbumSong>
-{ 
-    private readonly ILogger<AlbumSongController> _logger;
-    private readonly IAlbumSongService _albumSongService; 
-    private readonly IMapper _mapper; 
-
-    public AlbumSongController(ILogger<AlbumSongController> logger, IAlbumSongService albumSongService,
-                               IValidator<AlbumSong> validator, IMapper mapper) : base(validator)
-    {
-        _logger = logger;
-        _albumSongService = albumSongService; 
-        _mapper = mapper; 
-    }
+public class AlbumSongController(ILogger<AlbumSongController> logger,
+                                 IAlbumSongService albumSongService,
+                                 IValidator<AlbumSong> validator,
+                                 IMapper mapper) : BaseController<AlbumSong>(validator)
+{
+    private readonly ILogger<AlbumSongController> _logger = logger;
+    private readonly IAlbumSongService _albumSongService = albumSongService;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet("{albumId}")]
     public async Task<ActionResult<List<AlbumSongResponse>>> GetSearchAlbumSongsAsync(long albumId)
     {
         var albumSongs = await _albumSongService.GetAlbumSongsAsync(albumId);
-        return Ok(_mapper.Map<List<AlbumSongResponse>>(albumSongs));            
+        return Ok(_mapper.Map<List<AlbumSongResponse>>(albumSongs));
     }
 
     [HttpPost("song/add")]
@@ -66,14 +61,14 @@ public class AlbumSongController : BaseController<AlbumSong>
 
         _albumSongService.Update(albumSong);
 
-        return Ok(); 
+        return Ok();
     }
 
     [HttpDelete("song/{id}")]
     public async Task<ActionResult<AlbumSongActionResponse>> DeleteAlbumSongAsync(long id)
-    { 
+    {
         _albumSongService.DeleteAsync(await _albumSongService.GetAsync(id));
 
-        return Ok(); 
+        return Ok();
     }
 }

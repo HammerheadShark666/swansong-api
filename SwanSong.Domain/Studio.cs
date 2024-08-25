@@ -13,7 +13,7 @@ public class Studio : BaseEntity
     [Column(TypeName = "nvarchar(250)")]
     [Required]
     public string Name { get; set; }
-     
+
     public Studio()
     { }
 

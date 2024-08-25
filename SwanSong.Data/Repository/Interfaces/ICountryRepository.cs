@@ -7,7 +7,7 @@ namespace SwanSong.Data.Repository.Interfaces;
 public interface ICountryRepository
 {
     Task<bool> ExistsAsync(int ignoreId, string name);
-    Task<bool> ExistsAsync(string name); 
+    Task<bool> ExistsAsync(string name);
     Task<IEnumerable<Country>> AllAsync();
     Task AddAsync(Country country);
     void Update(Country country);

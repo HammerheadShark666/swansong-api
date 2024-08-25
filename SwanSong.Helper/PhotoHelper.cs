@@ -3,8 +3,8 @@
 namespace SwanSong.Helper;
 
 public class PhotoHelper : IPhotoHelper
-{  
-    public PhotoHelper(){}
+{
+    public PhotoHelper() { }
 
     public record EditPhoto(bool photoWasChanged, string originalPhotoName);
 

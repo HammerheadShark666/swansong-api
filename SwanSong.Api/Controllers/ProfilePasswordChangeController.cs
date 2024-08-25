@@ -15,19 +15,13 @@ namespace SwanSong.Api.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Route("api/v{version:apiVersion}/profile/password-change")]
-public class ProfilePasswordChangeController : Controller
+public class ProfilePasswordChangeController(IProfilePasswordChangeService profilePasswordChangeService,
+                                             IHttpContextAccessor httpContextAccessor,
+                                             ILogger<ProfilePasswordChangeController> logger) : Controller
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IProfilePasswordChangeService _profilePasswordChangeService;
-    private readonly ILogger<ProfilePasswordChangeController> _logger; 
-
-    public ProfilePasswordChangeController(IProfilePasswordChangeService profilePasswordChangeService, IHttpContextAccessor httpContextAccessor, ILogger<ProfilePasswordChangeController> logger)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _profilePasswordChangeService = profilePasswordChangeService;
-        _logger = logger;
-    }
-     
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly IProfilePasswordChangeService _profilePasswordChangeService = profilePasswordChangeService;
+    private readonly ILogger<ProfilePasswordChangeController> _logger = logger;
 
     [Authorize]
     [HttpPut("")]

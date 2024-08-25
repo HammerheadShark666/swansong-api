@@ -17,7 +17,8 @@ public class RegisterValidator : BaseValidator<RegisterRequest>
         _accountRepository = accountRepository;
         _logger = logger;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(register => register.Email)
                 .NotEmpty().WithMessage("Email is required.")
@@ -44,7 +45,8 @@ public class RegisterValidator : BaseValidator<RegisterRequest>
                 .Equal(register => register.ConfirmPassword)
                 .WithMessage("Password and Confirm Password must be same");
 
-            RuleFor(register => register).MustAsync(async (register, cancellation) => {
+            RuleFor(register => register).MustAsync(async (register, cancellation) =>
+            {
                 return await EmailExists(register);
             }).WithMessage("Account with email already exists");
         });
@@ -53,9 +55,9 @@ public class RegisterValidator : BaseValidator<RegisterRequest>
     protected async Task<bool> EmailExists(RegisterRequest register)
     {
         var emailExists = await _accountRepository.AccountExistsAsync(register.Email);
-        if(emailExists)
+        if (emailExists)
             _logger.LogWarning("Email exists (Email = {email}", register.Email);
 
-        return !emailExists;                
-    }                    
+        return !emailExists;
+    }
 }

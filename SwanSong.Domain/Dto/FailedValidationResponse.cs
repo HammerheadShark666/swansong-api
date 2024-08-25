@@ -8,7 +8,7 @@ public class FailedValidationResponse
 {
     public List<Message> Messages { get; set; }
     public bool IsValid { get; set; }
-     
+
     public FailedValidationResponse(List<ValidationFailure> rules, bool isValid)
     {
         IsValid = isValid;
@@ -25,5 +25,5 @@ public class FailedValidationResponse
                 Messages.Add(new Message(validationFailure.ErrorMessage, Severity.Error.ToString().ToLower()));
             }
         }
-    } 
+    }
 }

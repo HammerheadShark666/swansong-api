@@ -15,16 +15,11 @@ namespace SwanSong.Api.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Route("api/v{version:apiVersion}/forgot-password")]
-public class ResetPasswordController : Controller
+public class ResetPasswordController(IResetPasswordService resetPasswordService,
+                                     ILogger<ResetPasswordController> logger) : Controller
 {
-    private readonly ILogger<ResetPasswordController> _logger;
-    private readonly IResetPasswordService _resetPasswordService;
-
-    public ResetPasswordController(IResetPasswordService resetPasswordService, ILogger<ResetPasswordController> logger)
-    { 
-        _resetPasswordService = resetPasswordService;
-        _logger = logger;
-    }
+    private readonly ILogger<ResetPasswordController> _logger = logger;
+    private readonly IResetPasswordService _resetPasswordService = resetPasswordService;
 
     [HttpPost("")]
     public async Task<ActionResult> PostForgotPasswordAsync(ForgotPasswordRequest forgotPasswordRequest)

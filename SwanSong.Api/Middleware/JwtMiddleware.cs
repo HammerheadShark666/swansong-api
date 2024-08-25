@@ -10,14 +10,9 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Api.Middleware;
 
-public class JwtMiddleware
+public class JwtMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next; 
-    
-    public JwtMiddleware(RequestDelegate next)
-    {
-        _next = next;     
-    }
+    private readonly RequestDelegate _next = next;
 
     public async Task Invoke(HttpContext context, SwanSongContext swanSongContext)
     {
@@ -26,7 +21,7 @@ public class JwtMiddleware
         if (token != null)
         {
             await AttachAccountToContext(context, swanSongContext, token);
-        }            
+        }
 
         await _next(context);
     }
@@ -53,7 +48,7 @@ public class JwtMiddleware
             // attach account to context on successful jwt validation
             context.Items[ConstantMessages.Account] = await swanSongContext.Accounts.FindAsync(accountId);
         }
-        catch 
+        catch
         {
             // do nothing if jwt validation fails
             // account is not attached to context so request won't have access to secure routes

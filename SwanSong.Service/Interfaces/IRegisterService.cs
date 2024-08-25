@@ -5,5 +5,5 @@ namespace SwanSong.Service.Interfaces;
 
 public interface IRegisterService
 {
-    Task RegisterAsync(RegisterRequest registerRequest); 
+    Task RegisterAsync(RegisterRequest registerRequest);
 }

@@ -21,11 +21,11 @@ public class Account
     public bool IsAuthenticated => Verified.HasValue || PasswordReset.HasValue;
     public string ResetToken { get; set; }
     public DateTime? ResetTokenExpires { get; set; }
-    public DateTime? PasswordReset { get; set; }    
+    public DateTime? PasswordReset { get; set; }
     public DateTime Created { get; set; }
     public DateTime? Updated { get; set; }
     public List<RefreshToken> RefreshTokens { get; set; }
-     
+
     public Account()
     {
         RefreshTokens = new List<RefreshToken> { };

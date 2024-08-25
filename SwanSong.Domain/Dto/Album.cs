@@ -17,7 +17,7 @@ public record AlbumLookUpResponse(long Id, string Name, DateTime? ReleaseDate, s
 public record AlbumResponse(long Id, string Name, long? ArtistId, string ArtistName,
                             DateTime? ReleaseDate, DateTime? RecordedDate, int? LabelId, int? StudioId,
                             string Producers, string Arrangers, string Engineers, string Artwork,
-                            string Photo, List<AlbumSongResponse> Songs); 
+                            string Photo, List<AlbumSongResponse> Songs);
 public record AlbumActionResponse(long Id);
 
 public record AlbumPhotoActionResponse(string filename);

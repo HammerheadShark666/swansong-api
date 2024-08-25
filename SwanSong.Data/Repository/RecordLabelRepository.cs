@@ -6,18 +6,13 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Data.Repository;
 
-public class RecordLabelRepository : IRecordLabelRepository
+public class RecordLabelRepository(SwanSongContext context) : IRecordLabelRepository
 {
-    private readonly SwanSongContext _context;
-
-    public RecordLabelRepository(SwanSongContext context)
-    {
-        _context = context;
-    }
+    private readonly SwanSongContext _context = context;
 
     public async Task<bool> ExistsAsync(string name)
     {
-        return await _context.RecordLabels            
+        return await _context.RecordLabels
                                 .AsNoTracking()
                                 .AnyAsync(a => a.Name.Equals(name));
     }

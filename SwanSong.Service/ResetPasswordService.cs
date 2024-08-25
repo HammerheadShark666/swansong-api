@@ -14,23 +14,15 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace SwanSong.Service;
 
-public class ResetPasswordService : IResetPasswordService
-{ 
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly IValidatorHelper<ResetPasswordRequest> _validatorHelper;
-    private readonly ILogger<ResetPasswordService> _logger;
-
-    public ResetPasswordService(IMapper mapper,
-                                IValidatorHelper<ResetPasswordRequest> validatorHelper, 
-                                IUnitOfWork unitOfWork,
-                                ILogger<ResetPasswordService> logger)
-    {
-        _validatorHelper = validatorHelper; 
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-        _logger = logger;
-    }
+public class ResetPasswordService(IMapper mapper,
+                                  IValidatorHelper<ResetPasswordRequest> validatorHelper,
+                                  IUnitOfWork unitOfWork,
+                                  ILogger<ResetPasswordService> logger) : IResetPasswordService
+{
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
+    private readonly IValidatorHelper<ResetPasswordRequest> _validatorHelper = validatorHelper;
+    private readonly ILogger<ResetPasswordService> _logger = logger;
 
     #region Public Functions
 
@@ -42,20 +34,20 @@ public class ResetPasswordService : IResetPasswordService
             _logger.LogWarning("Account not found (Email - {email}", forgotPasswordRequest.Email);
             throw new AppException("Account not found");
         }
-         
+
         await UpdateResetTokenAsync(GetResetToken(account));
 
         SendPasswordResetEmail(account.Email, account.ResetToken);
     }
 
     public async Task ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
-    { 
+    {
         await BeforeResetPasswordAsync(resetPasswordRequest); ;
         await UpdateAccountAsync(resetPasswordRequest.Token, resetPasswordRequest.Password);
 
-        return; 
-    }  
-     
+        return;
+    }
+
     public async Task ValidateResetTokenAsync(ValidateResetTokenRequest validateResetTokenRequest)
     {
         if (!await _unitOfWork.Accounts.ValidResetTokenAsync(validateResetTokenRequest.Token))
@@ -97,21 +89,21 @@ public class ResetPasswordService : IResetPasswordService
         return account;
     }
 
-    private Account GetResetToken(Account account)
+    private static Account GetResetToken(Account account)
     {
         account.ResetToken = AuthenticationHelper.CreateRandomToken();
         account.ResetTokenExpires = DateTime.Now.AddDays(EnvironmentVariablesHelper.JwtSettingsPasswordTokenExpiryDays);
-        
+
         return account;
     }
 
-    private void SendPasswordResetEmail(string toEmail, string resetToken)
-    { 
+    private static void SendPasswordResetEmail(string toEmail, string resetToken)
+    {
         string message = !string.IsNullOrEmpty(EnvironmentVariablesHelper.FrontEndBaseUrl)
                              ? EmailMessages.PasswordResetEmail(EnvironmentVariablesHelper.FrontEndBaseUrl, resetToken)
                              : EmailMessages.PasswordResetNoResetUrlEmail(resetToken);
 
-        SmtpHelper.SendEmail(toEmail, ConstantMessages.PasswordResetEmailInstruction, message); 
+        SmtpHelper.SendEmail(toEmail, ConstantMessages.PasswordResetEmailInstruction, message);
     }
 
     #endregion

@@ -14,17 +14,20 @@ public class AlbumSongValidator : BaseValidator<AlbumSong>
     {
         _albumSongRepository = albumSongRepository;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(albumSong => albumSong.Song.Title)
                 .NotEmpty().WithMessage("Song title is required.")
                 .Length(1, 120).WithMessage("Song title length between 1 and 150.");
 
-            RuleFor(albumSong => albumSong).MustAsync(async (albumSong, cancellation) => {
+            RuleFor(albumSong => albumSong).MustAsync(async (albumSong, cancellation) =>
+            {
                 return await AlbumSongNameExists(albumSong);
             }).WithMessage(albumSong => $"{albumSong.Song.Title} already exists.");
 
-            RuleFor(albumSong => albumSong).MustAsync(async (albumSong, cancellation) => {
+            RuleFor(albumSong => albumSong).MustAsync(async (albumSong, cancellation) =>
+            {
                 return await AlbumSongSideOrderExists(albumSong);
             }).WithMessage(albumSong => $"Side and track position already exists.");
 
@@ -35,10 +38,10 @@ public class AlbumSongValidator : BaseValidator<AlbumSong>
     }
 
     protected async Task<bool> AlbumSongNameExists(AlbumSong albumSong)
-    {      
+    {
         return albumSong.Id == 0
             ? !(await _albumSongRepository.ExistsAsync(albumSong.AlbumId, albumSong.Song.Title))
-            : !(await _albumSongRepository.ExistsAsync(albumSong.Id, albumSong.AlbumId, albumSong.Song.Title));             
+            : !(await _albumSongRepository.ExistsAsync(albumSong.Id, albumSong.AlbumId, albumSong.Song.Title));
     }
 
     protected async Task<bool> AlbumSongSideOrderExists(AlbumSong albumSong)
@@ -47,12 +50,12 @@ public class AlbumSongValidator : BaseValidator<AlbumSong>
     }
 
     protected static bool SongLengthValid(AlbumSong albumSong)
-    {         
-        if(string.IsNullOrEmpty(albumSong.Song.Length)) 
+    {
+        if (string.IsNullOrEmpty(albumSong.Song.Length))
         {
             return true;
-        }            
-          
+        }
+
         Regex rg = new(@"^[0-5]?\d:[0-5]\d$");
         return rg.IsMatch(albumSong.Song.Length);
     }

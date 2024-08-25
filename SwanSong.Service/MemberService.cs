@@ -16,32 +16,21 @@ using static SwanSong.Helper.PhotoHelper;
 
 namespace SwanSong.Service;
 
-public class MemberService : IMemberService
+public class MemberService(IMapper mapper,
+                           ICacheHelper cacheHelper,
+                           IPhotoHelper photoHelper,
+                           IValidatorHelper<Member> validatorHelper,
+                           IMemoryCache memoryCache,
+                           IUnitOfWork unitOfWork,
+                           IAzureStorageBlobHelper azureStorageHelper) : IMemberService
 {
-    public readonly ICacheHelper _cacheHelper;
-    public readonly IPhotoHelper _photoHelper;
-    public readonly IMemoryCache _memoryCache;
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<Member> _validatorHelper;
-    public readonly IAzureStorageBlobHelper _azureStorageHelper; 
-
-    public MemberService(IMapper mapper,
-                         ICacheHelper cacheHelper,
-                         IPhotoHelper photoHelper,
-                         IValidatorHelper<Member> validatorHelper,
-                         IMemoryCache memoryCache,
-                         IUnitOfWork unitOfWork,
-                         IAzureStorageBlobHelper azureStorageHelper)
-    {
-        _azureStorageHelper = azureStorageHelper;
-        _validatorHelper = validatorHelper;
-        _photoHelper = photoHelper;
-        _memoryCache = memoryCache;
-        _unitOfWork = unitOfWork;
-        _cacheHelper = cacheHelper;
-        _mapper = mapper;
-    }
+    public readonly ICacheHelper _cacheHelper = cacheHelper;
+    public readonly IPhotoHelper _photoHelper = photoHelper;
+    public readonly IMemoryCache _memoryCache = memoryCache;
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<Member> _validatorHelper = validatorHelper;
+    public readonly IAzureStorageBlobHelper _azureStorageHelper = azureStorageHelper;
 
     #region Public Functions
 
@@ -57,17 +46,17 @@ public class MemberService : IMemberService
 
     public async Task<List<Member>> GetRandomAsync(int numberOfMembers)
     {
-        return (await _unitOfWork.Members.GetRandomAsync(numberOfMembers)).OrderBy(a => a.StageName).ToList();
+        return [.. (await _unitOfWork.Members.GetRandomAsync(numberOfMembers)).OrderBy(a => a.StageName)];
     }
 
     public async Task<List<Member>> SearchByNameAsync(string criteria)
     {
-        return (List<Member>)await _unitOfWork.Members.SearchByNameAsync(criteria);
+        return await _unitOfWork.Members.SearchByNameAsync(criteria);
     }
 
     public async Task<List<Member>> SearchByLetterAsync(string letter)
     {
-        return (List<Member>)await _unitOfWork.Members.SearchByLetterAsync(letter);
+        return await _unitOfWork.Members.SearchByLetterAsync(letter);
     }
 
     public async Task<List<Member>> GetMembersByArtistAsync(long artistId)
@@ -77,11 +66,7 @@ public class MemberService : IMemberService
 
     public async Task<Member> GetAsync(long id)
     {
-        var member = await _unitOfWork.Members.GetAsync(id);
-        if (member == null)
-            throw new MemberNotFoundException("Member not found.");
-
-        return member;
+        return await _unitOfWork.Members.GetAsync(id) ?? throw new MemberNotFoundException("Member not found.");
     }
 
     public async Task<Member> AddAsync(Member member)
@@ -115,10 +100,7 @@ public class MemberService : IMemberService
 
     public async Task<string> UpdateMemberPhotoAsync(long id, IFormFile file)
     {
-        var member = await _unitOfWork.Members.GetAsync(id);
-        if (member == null)
-            throw new MemberNotFoundException("Member not found.");
-
+        var member = await _unitOfWork.Members.GetAsync(id) ?? throw new MemberNotFoundException("Member not found.");
         string newFileName = FileHelper.getGuidFileName(Constants.FileExtensionJpg);
         string originalFileName = member.Photo;
 
@@ -133,7 +115,7 @@ public class MemberService : IMemberService
     #endregion
 
     #region Private Functions 
-     
+
     private async Task DeleteOriginalFileAsync(string originalFileName, string newFileName, string container)
     {
         EditPhoto editPhoto = _photoHelper.WasPhotoEdited(originalFileName, newFileName, Constants.DefaultMemberPhotoFileName);
@@ -141,7 +123,7 @@ public class MemberService : IMemberService
         {
             await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(editPhoto.originalPhotoName, container);
         }
-    } 
+    }
 
     #endregion
 }

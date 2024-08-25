@@ -8,14 +8,9 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Data.Repository;
 
-public class MemberRepository : IMemberRepository
+public class MemberRepository(SwanSongContext context) : IMemberRepository
 {
-    private readonly SwanSongContext _context;
-
-    public MemberRepository(SwanSongContext context)
-    {
-        _context = context;
-    }
+    private readonly SwanSongContext _context = context;
 
     public async Task<List<Member>> GetAllAsync(int pageNumber, int pageSize)
     {
@@ -29,7 +24,7 @@ public class MemberRepository : IMemberRepository
 
     public async Task<List<Member>> GetRandomAsync(int numberOfMembers)
     {
-        return await _context.Members            
+        return await _context.Members
                                 .OrderByDescending(x => Guid.NewGuid()).Take(numberOfMembers)
                                 .AsNoTracking()
                                 .ToListAsync();
@@ -76,7 +71,7 @@ public class MemberRepository : IMemberRepository
                                 .Include(p => p.BirthPlace)
                                 .Where(a => a.Id.Equals(id))
                                 .FirstOrDefaultAsync();
-    } 
+    }
 
     public async Task<bool> ExistsAsync(long id, long? artistId, string stageName)
     {
@@ -86,7 +81,7 @@ public class MemberRepository : IMemberRepository
                                     && !a.Id.Equals(id))
                                .AsNoTracking()
                                .AnyAsync();
-    } 
+    }
 
     public async Task<Member> UpdateMemberPhotoAsync(long id, string filename)
     {
@@ -96,7 +91,7 @@ public class MemberRepository : IMemberRepository
         _context.SaveChanges();
 
         return member;
-    } 
+    }
 
     public async Task<bool> ExistsAsync(long id, string stageName)
     {
@@ -121,7 +116,7 @@ public class MemberRepository : IMemberRepository
     {
         _context.Members.Remove(member);
     }
- 
+
     public async Task<Member> ByIdAsync(long id)
     {
         return await _context.Members.FindAsync(id);

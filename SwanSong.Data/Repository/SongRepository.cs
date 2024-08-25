@@ -4,15 +4,10 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Data.Repository;
 
-public class SongRepository : ISongRepository
+public class SongRepository(SwanSongContext context) : ISongRepository
 {
-    private readonly SwanSongContext _context;
+    private readonly SwanSongContext _context = context;
 
-    public SongRepository(SwanSongContext context)
-    {
-        _context = context;
-    }
-     
     public void Delete(Song song)
     {
         _context.Songs.Remove(song);

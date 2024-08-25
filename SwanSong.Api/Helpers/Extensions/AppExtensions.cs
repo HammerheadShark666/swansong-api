@@ -28,7 +28,7 @@ public static class AppExtensions
 
     public static void ConfigureCors(this WebApplication app)
     {
-        app.UseCors(x => x 
+        app.UseCors(x => x
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()

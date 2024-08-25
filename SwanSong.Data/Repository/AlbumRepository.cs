@@ -8,14 +8,9 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Data.Repository;
 
-public class AlbumRepository : IAlbumRepository
+public class AlbumRepository(SwanSongContext context) : IAlbumRepository
 {
-    private readonly SwanSongContext _context;
-
-    public AlbumRepository(SwanSongContext context)
-    {
-        _context = context;
-    }
+    private readonly SwanSongContext _context = context;
 
     public async Task<List<Album>> GetAllAsync(int pageNumber, int pageSize)
     {
@@ -34,7 +29,7 @@ public class AlbumRepository : IAlbumRepository
                              .Include(s => s.AlbumSongs).ThenInclude(t => t.Song)
                              .OrderByDescending(x => Guid.NewGuid()).Take(numberOfAlbums)
                              .AsNoTracking()
-                             .ToListAsync(); 
+                             .ToListAsync();
     }
 
     public async Task<long> CountAsync()
@@ -45,9 +40,9 @@ public class AlbumRepository : IAlbumRepository
     public async Task<IEnumerable<Album>> SearchByNameAsync(string criteria)
     {
         return await (from album in _context.Albums
-                        join label in _context.RecordLabels on album.LabelId equals label.Id into lbl
+                      join label in _context.RecordLabels on album.LabelId equals label.Id into lbl
                       from label in lbl.DefaultIfEmpty()
-                        where album.Name.ToUpper().Contains(criteria.ToUpper())
+                      where album.Name.ToUpper().Contains(criteria.ToUpper())
                       select album)
                       .AsNoTracking()
                       .ToListAsync();
@@ -56,7 +51,7 @@ public class AlbumRepository : IAlbumRepository
     public async Task<IEnumerable<Album>> SearchByLetterAsync(string letter)
     {
         return await (from album in _context.Albums
-                        where album.Name.ToUpper().Substring(0, 1).Equals(letter.ToUpper())
+                      where album.Name.ToUpper().Substring(0, 1).Equals(letter.ToUpper())
                       select album)
                       .AsNoTracking()
                       .ToListAsync();
@@ -65,7 +60,7 @@ public class AlbumRepository : IAlbumRepository
     public async Task<IEnumerable<Album>> GetAlbumsForArtistAsync(long artistId)
     {
         return await (from album in _context.Albums
-                        where album.ArtistId.Equals(artistId)
+                      where album.ArtistId.Equals(artistId)
                       select album)
                       .AsNoTracking()
                       .ToListAsync();

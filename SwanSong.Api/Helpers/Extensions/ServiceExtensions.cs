@@ -64,7 +64,7 @@ public static class ServiceExtensions
             });
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             option.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-        }); 
+        });
     }
 
     public static void ConfigureDbContext(this IServiceCollection services, ConfigurationManager configuration)
@@ -72,7 +72,7 @@ public static class ServiceExtensions
         services.AddDbContext<SwanSongContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString(Constants.DatabaseConnectionString),
             options => options.EnableRetryOnFailure()
-            .MigrationsAssembly(typeof(SwanSongContext).Assembly.FullName))); 
+            .MigrationsAssembly(typeof(SwanSongContext).Assembly.FullName)));
     }
 
     public static void ConfigureDI(this IServiceCollection services)
@@ -90,7 +90,7 @@ public static class ServiceExtensions
         services.AddScoped<IBirthPlaceRepository, BirthPlaceRepository>();
         services.AddScoped<IBirthPlaceService, BirthPlaceService>();
         services.AddScoped<ICountryRepository, CountryRepository>();
-        services.AddScoped<ICountryService, CountryService>(); 
+        services.AddScoped<ICountryService, CountryService>();
         services.AddScoped<IStudioRepository, StudioRepository>();
         services.AddScoped<IStudioService, StudioService>();
         services.AddScoped<IProfileService, ProfileService>();
@@ -102,23 +102,23 @@ public static class ServiceExtensions
         services.AddScoped<IResetPasswordService, ResetPasswordService>();
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         services.AddScoped<ISongRepository, SongRepository>();
-        services.AddScoped<ISongService, SongService>();  
+        services.AddScoped<ISongService, SongService>();
         services.AddScoped<IAzureStorageBlobHelper, AzureStorageBlobHelper>();
         services.AddScoped<ICacheHelper, CacheHelper>();
         services.AddScoped<IAlbumHelper, AlbumHelper>();
         services.AddScoped<IPhotoHelper, PhotoHelper>();
-        services.AddTransient(typeof(IValidatorHelper<>), typeof(ValidatorHelper<>)); 
-        services.AddValidatorsFromAssemblyContaining<AlbumValidator>(); 
-        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>(); 
-        services.AddTransient<IUnitOfWork, UnitOfWork>(); 
+        services.AddTransient(typeof(IValidatorHelper<>), typeof(ValidatorHelper<>));
+        services.AddValidatorsFromAssemblyContaining<AlbumValidator>();
+        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddTransient<IUnitOfWork, UnitOfWork>();
 
         services.AddMemoryCache();
-    }         
+    }
 
     public static void ConfigureApplicationInsights(this IServiceCollection services)
     {
         var options = new ApplicationInsightsServiceOptions { ConnectionString = EnvironmentVariablesHelper.ApplicationInsightsConnectionString };
-        services.AddApplicationInsightsTelemetry(options: options); 
+        services.AddApplicationInsightsTelemetry(options: options);
     }
 
     public static void ConfigureControllers(this IServiceCollection services)
@@ -129,21 +129,21 @@ public static class ServiceExtensions
     }
 
     public static void ConfigureMvc(this IServiceCollection services)
-    { 
+    {
         services.AddMvc(options =>
         {
             options.SuppressAsyncSuffixInActionNames = false;
         })
         .ConfigureApiBehaviorOptions(options =>
         {
-             options.SuppressModelStateInvalidFilter = true;
+            options.SuppressModelStateInvalidFilter = true;
         });
     }
 
     public static void ConfigureAutoMapper(this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
-    }       
+    }
 
     public static void ConfigureVersioning(this IServiceCollection services)
     {

@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Data.Repository;
 
-public class CountryRepository : ICountryRepository
+public class CountryRepository(SwanSongContext context) : ICountryRepository
 {
-    private readonly SwanSongContext _context;
-
-    public CountryRepository(SwanSongContext context)
-    {
-        _context = context;
-    }    
+    private readonly SwanSongContext _context = context;
 
     public async Task<bool> ExistsAsync(string name)
     {
@@ -24,7 +19,7 @@ public class CountryRepository : ICountryRepository
 
     public async Task<bool> ExistsAsync(int ignoreId, string name)
     {
-        return await _context.Countries 
+        return await _context.Countries
                                 .AsNoTracking()
                                 .AnyAsync(a => a.Name.Equals(name) && !a.Id.Equals(ignoreId));
     }

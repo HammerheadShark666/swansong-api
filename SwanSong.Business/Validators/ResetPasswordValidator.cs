@@ -8,7 +8,7 @@ namespace SwanSong.Business.Validator;
 
 public class ResetPasswordValidator : BaseValidator<ResetPasswordRequest>
 {
-    private readonly IAccountRepository _accountRepository; 
+    private readonly IAccountRepository _accountRepository;
     private ILogger<ResetPasswordValidator> _logger;
 
     public ResetPasswordValidator(IAccountRepository accountRepository, ILogger<ResetPasswordValidator> logger)
@@ -16,7 +16,8 @@ public class ResetPasswordValidator : BaseValidator<ResetPasswordRequest>
         _accountRepository = accountRepository;
         _logger = logger;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(resetPassword => resetPassword.Password)
                 .NotEmpty().WithMessage("Password is required.")
@@ -30,12 +31,13 @@ public class ResetPasswordValidator : BaseValidator<ResetPasswordRequest>
                 .Equal(resetPassword => resetPassword.ConfirmPassword)
                 .WithMessage("Password and Confirm Password must be same");
 
-            RuleFor(resetPassword => resetPassword).MustAsync(async (resetPassword, cancellation) => {
+            RuleFor(resetPassword => resetPassword).MustAsync(async (resetPassword, cancellation) =>
+            {
                 return await TokenValid(resetPassword);
             }).WithMessage("Token is invalid");
         });
     }
-  
+
     protected async Task<bool> TokenValid(ResetPasswordRequest resetPasswordRequest)
     {
         var tokenValid = await _accountRepository.ValidResetTokenAsync(resetPasswordRequest.Token);
@@ -43,5 +45,5 @@ public class ResetPasswordValidator : BaseValidator<ResetPasswordRequest>
             _logger.LogWarning("Token invalid for reset password (Token - {token})", resetPasswordRequest.Token);
 
         return tokenValid;
-    }        
+    }
 }
