@@ -68,10 +68,10 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build with dotnet
-        run: dotnet build Microservice.SwanSong.xUnit.Test.csproj --configuration Release
+        run: dotnet build SwanSong.xUnit.Test/SwanSong.xUnit.Test.csproj --configuration Release
 
       - name: Unit Tests
-        run: dotnet test Microservice.SwanSong.xUnit.Test.Unit.csproj --logger "console;verbosity=detailed"
+        run: dotnet test SwanSong.xUnit.Test/SwanSong.xUnit.Test.csproj --logger "console;verbosity=detailed"
  
   automated-api-tests:
     runs-on: ubuntu-latest
