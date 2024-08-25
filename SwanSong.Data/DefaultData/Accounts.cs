@@ -10,8 +10,7 @@ public class Accounts
     {
         return new List<Account>()
         {
-            new Account
-            {
+            new() {
                 Id = 1,
                 FirstName = "test",
                 LastName = "test",

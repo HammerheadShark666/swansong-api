@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SwanSong.Data.Helper;
 using SwanSong.Data.UnitOfWork.Interfaces;
 using SwanSong.Domain;
 using SwanSong.Domain.Dto;
@@ -13,20 +12,13 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Service;
 
-public class RefreshTokenService : IRefreshTokenService
+public class RefreshTokenService(IMapper mapper,
+                                 IValidatorHelper<LoginRequest> validatorHelper,
+                                 IUnitOfWork unitOfWork) : IRefreshTokenService
 {
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<LoginRequest> _validatorHelper;
-
-    public RefreshTokenService(IMapper mapper,
-                               IValidatorHelper<LoginRequest> validatorHelper,
-                               IUnitOfWork unitOfWork)
-    {
-        _validatorHelper = validatorHelper;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<LoginRequest> _validatorHelper = validatorHelper;
 
     public void RemoveExpiredRefreshTokens(int accountId)
     {

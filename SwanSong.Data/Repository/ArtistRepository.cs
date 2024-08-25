@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwanSong.Data.Repository.Interfaces;
-using SwanSong.Domain; 
+using SwanSong.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +8,9 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Data.Repository;
 
-public class ArtistRepository : IArtistRepository
+public class ArtistRepository(SwanSongContext context) : IArtistRepository
 {
-    private readonly SwanSongContext _context;
-
-    public ArtistRepository(SwanSongContext context)
-    {
-        _context = context;
-    }
+    private readonly SwanSongContext _context = context;
 
     public async Task<List<Artist>> GetAllAsync(int pageNumber, int pageSize)
     {
@@ -24,7 +19,7 @@ public class ArtistRepository : IArtistRepository
                              .Skip((pageNumber - 1) * pageSize)
                              .Take(pageSize)
                              .AsNoTracking()
-                             .ToListAsync(); 
+                             .ToListAsync();
     }
 
     public async Task<List<Artist>> GetRandomAsync(int numberOfArtists)
@@ -41,7 +36,7 @@ public class ArtistRepository : IArtistRepository
         return await _context.Artists
                                 .AsNoTracking()
                                 .CountAsync();
-    } 
+    }
 
     public async Task<IEnumerable<Artist>> SearchByNameAsync(string criteria)
     {
@@ -60,18 +55,18 @@ public class ArtistRepository : IArtistRepository
                       .AsNoTracking()
                       .ToListAsync();
     }
-           
+
     public async Task<Artist> GetAsync(long id)
     {
         return await _context.Artists
                                 .Include(e => e.Country)
                                 .Where(a => a.Id.Equals(id))
                                 .FirstOrDefaultAsync();
-    } 
+    }
 
     public async Task<Artist> UpdateArtistPhotoAsync(long id, string filename)
     {
-        Artist artist = await GetAsync(id); 
+        Artist artist = await GetAsync(id);
 
         artist.Photo = filename;
         _context.SaveChanges();
@@ -112,11 +107,11 @@ public class ArtistRepository : IArtistRepository
     }
 
     public IEnumerable<Artist> GetAllForLookup()
-    { 
+    {
         return
            (from artist in _context.Artists
-                orderby artist.Name
-            select artist) 
+            orderby artist.Name
+            select artist)
                .AsNoTracking()
                .ToList();
     }
@@ -124,5 +119,5 @@ public class ArtistRepository : IArtistRepository
     public async Task<Artist> ByIdAsync(long id)
     {
         return await _context.Artists.FindAsync(id);
-    } 
+    }
 }

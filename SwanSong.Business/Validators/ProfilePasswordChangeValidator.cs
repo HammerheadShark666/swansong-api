@@ -17,7 +17,8 @@ public class ProfilePasswordChangeValidator : BaseValidator<ProfilePasswordChang
         _accountRepository = accountRepository;
         _logger = logger;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(profilePasswordChange => profilePasswordChange.Password)
                 .NotEmpty().WithMessage("Password is required.")
@@ -31,7 +32,8 @@ public class ProfilePasswordChangeValidator : BaseValidator<ProfilePasswordChang
                 .Equal(profilePasswordChange => profilePasswordChange.ConfirmPassword)
                 .WithMessage("Password and Confirm Password must be same.");
 
-            RuleFor(login => login).MustAsync(async (profilePasswordChange, cancellation) => {
+            RuleFor(login => login).MustAsync(async (profilePasswordChange, cancellation) =>
+            {
                 return await ValidAccountDetails(profilePasswordChange);
             }).WithMessage("Current password is invalid.");
         });
@@ -44,7 +46,7 @@ public class ProfilePasswordChangeValidator : BaseValidator<ProfilePasswordChang
         {
             _logger.LogWarning("Invalid authentication (Username - {username})", profilePasswordChangeRequest.Email);
             return false;
-        }           
+        }
 
         return true;
     }

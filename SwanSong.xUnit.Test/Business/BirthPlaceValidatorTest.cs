@@ -17,7 +17,7 @@ public class BirthPlaceValidatorTest
 
     private static readonly BirthPlace newBirthPlace = new() { Id = 0, Name = "Test BirthPlace 1", CountryId = 1 };
     private static readonly BirthPlace existingBirthPlace = new() { Id = 1, Name = "Test BirthPlace 1", CountryId = 1 };
-             
+
     public BirthPlaceValidatorTest()
     {
         birthPlaceRepositoryMock = new Mock<IBirthPlaceRepository>();
@@ -30,7 +30,7 @@ public class BirthPlaceValidatorTest
         ValidationResult validation = await validator.ValidateAsync(existingBirthPlace, options => options
                                                                                     .IncludeRuleSets("BeforeSave"));
         Assert.True(validation.IsValid);
-    } 
+    }
 
     [Fact]
     public async Task Before_save_validate_birth_place_name_null_return_false()
@@ -84,7 +84,7 @@ public class BirthPlaceValidatorTest
     }
 
     [Fact]
-    public async void Before_update_save_validate_birth_place_update_name_duplicate_return_false()
+    public async Task Before_update_save_validate_birth_place_update_name_duplicate_return_false()
     {
         BirthPlace birthPlace = new() { Id = 1, Name = "Test Birth Place", CountryId = 1 };
 
@@ -96,5 +96,5 @@ public class BirthPlaceValidatorTest
         Assert.False(validationResult.IsValid);
         Assert.Single(validationResult.Errors);
         Assert.Equal("Test Birth Place already exists.", validationResult.Errors[0].ErrorMessage);
-    }         
+    }
 }

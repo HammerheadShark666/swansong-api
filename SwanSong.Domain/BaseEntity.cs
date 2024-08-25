@@ -3,9 +3,9 @@
 namespace SwanSong.Domain;
 
 public class BaseEntity
-{        
+{
     public DateTime AddedDate { get; set; }
-    
+
     public DateTime ModifiedDate { get; set; }
 
     public BaseEntity()

@@ -18,5 +18,5 @@ public class RefreshToken
     public DateTime? Revoked { get; set; }
     public string RevokedByIp { get; set; }
     public string ReplacedByToken { get; set; }
-    public bool IsActive => Revoked == null && !IsExpired; 
+    public bool IsActive => Revoked == null && !IsExpired;
 }

@@ -14,36 +14,26 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace SwanSong.Service;
 
-public class RegisterService : IRegisterService
+public class RegisterService(IMapper mapper,
+                             IValidatorHelper<RegisterRequest> validatorHelper,
+                             IMemoryCache memoryCache,
+                             IUnitOfWork unitOfWork) : IRegisterService
 {
-    public readonly IMemoryCache _memoryCache;
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<RegisterRequest> _validatorHelper;
-
-    public RegisterService(IMapper mapper,
-                           IValidatorHelper<RegisterRequest> validatorHelper,
-                           IMemoryCache memoryCache,
-                           IUnitOfWork unitOfWork)
-    {
-        _validatorHelper = validatorHelper;
-        _memoryCache = memoryCache;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+    public readonly IMemoryCache _memoryCache = memoryCache;
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<RegisterRequest> _validatorHelper = validatorHelper;
 
     #region Private Functions
 
     public async Task RegisterAsync(RegisterRequest registerRequest)
     {
-        var register = _mapper.Map<RegisterRequest>(registerRequest);
-
         await BeforeRegisterAsync(registerRequest);
         Account account = await SaveAccountAsync(await CreateAccountAsync(registerRequest));
 
         SendVerificationEmail(account.Email, account.VerificationToken);
 
-        return;       
+        return;
     }
 
     #endregion
@@ -59,24 +49,24 @@ public class RegisterService : IRegisterService
     {
         var account = _mapper.Map<Account>(registerRequest);
 
-        var isFirstAccount = await _unitOfWork.Accounts.AnyAccountExistAsync(); 
+        var isFirstAccount = await _unitOfWork.Accounts.AnyAccountExistAsync();
         account.Role = isFirstAccount ? Role.Admin : Role.User;
         account.Created = DateTime.Now;
         account.VerificationToken = AuthenticationHelper.CreateRandomToken();
         account.PasswordHash = BC.HashPassword(registerRequest.Password);
 
         return account;
-    }         
+    }
 
-    private void SendVerificationEmail(string toEmail, string verificationToken)
-    {  
+    private static void SendVerificationEmail(string toEmail, string verificationToken)
+    {
         string message = !string.IsNullOrEmpty(EnvironmentVariablesHelper.FrontEndBaseUrl)
                               ? EmailMessages.VerifyEmailAddressEmail(EnvironmentVariablesHelper.FrontEndBaseUrl, verificationToken)
-                              : EmailMessages.VerifyEmailAddressNoVerifyUrlEmail(verificationToken); 
+                              : EmailMessages.VerifyEmailAddressNoVerifyUrlEmail(verificationToken);
 
-        SmtpHelper.SendEmail(toEmail, ConstantMessages.RegistrationVerifyEmailSubject, message); 
+        SmtpHelper.SendEmail(toEmail, ConstantMessages.RegistrationVerifyEmailSubject, message);
     }
-     
+
     public async Task<Account> SaveAccountAsync(Account account)
     {
         _unitOfWork.Accounts.Add(account);

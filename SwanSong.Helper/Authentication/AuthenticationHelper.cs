@@ -10,28 +10,26 @@ using System.Text;
 namespace SwanSong.Helpers.Authentication;
 
 public class AuthenticationHelper
-{      
+{
     public static string IpAddress(HttpRequest request, HttpContext httpContext)
     {
-        if (request.Headers.ContainsKey("X-Forwarded-For"))
+        if (request.Headers.TryGetValue("X-Forwarded-For", out Microsoft.Extensions.Primitives.StringValues value))
         {
-            return request.Headers["X-Forwarded-For"];
+            return value;
         }
-         
+
         return httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
     }
 
     public static string CreateRandomToken()
-    {            
-        using (var rng = RandomNumberGenerator.Create())
-        {
-            var randomNumber = new byte[40];
-            rng.GetBytes(randomNumber);
-            return CleanToken(randomNumber);
-        } 
+    {
+        using var rng = RandomNumberGenerator.Create();
+        var randomNumber = new byte[40];
+        rng.GetBytes(randomNumber);
+        return CleanToken(randomNumber);
     }
 
-    public static string CleanToken(byte[] randomNumber )
+    public static string CleanToken(byte[] randomNumber)
     {
         return Convert.ToBase64String(randomNumber).Replace('+', '-')
                                                    .Replace('/', '_')
@@ -56,7 +54,7 @@ public class AuthenticationHelper
         JwtSecurityTokenHandler tokenHandler = new();
 
         var key = Encoding.ASCII.GetBytes(secret);
-        
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[] {

@@ -16,12 +16,14 @@ public class RegisterVerifyEmailValidator : BaseValidator<RegisterVerifyEmailReq
         _accountRepository = accountRepository;
         _logger = logger;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(registerVerifyEmail => registerVerifyEmail.Token)
-                .NotEmpty().WithMessage("Token is required."); 
-             
-            RuleFor(registerVerifyEmail => registerVerifyEmail).MustAsync(async (registerVerifyEmail, cancellation) => {
+                .NotEmpty().WithMessage("Token is required.");
+
+            RuleFor(registerVerifyEmail => registerVerifyEmail).MustAsync(async (registerVerifyEmail, cancellation) =>
+            {
                 return await AccountWithTokenExists(registerVerifyEmail);
             }).WithMessage("Token is invalid");
         });
@@ -33,6 +35,6 @@ public class RegisterVerifyEmailValidator : BaseValidator<RegisterVerifyEmailReq
         if (!accountWithTokenExists)
             _logger.LogWarning("Account with register token not found (Token - {token})", registerVerifyEmailRequest.Token);
 
-        return accountWithTokenExists;                
-    }                    
+        return accountWithTokenExists;
+    }
 }

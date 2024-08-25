@@ -13,30 +13,22 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Service;
 
-public class RecordLabelService : IRecordLabelService
+public class RecordLabelService(IMapper mapper,
+                                IValidatorHelper<RecordLabel> validatorHelper,
+                                IMemoryCache memoryCache,
+                                IUnitOfWork unitOfWork) : IRecordLabelService
 {
-    public readonly IMemoryCache _memoryCache;
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<RecordLabel> _validatorHelper;
-
-    public RecordLabelService(IMapper mapper,
-                              IValidatorHelper<RecordLabel> validatorHelper,
-                              IMemoryCache memoryCache,
-                              IUnitOfWork unitOfWork)
-    {
-        _validatorHelper = validatorHelper;
-        _memoryCache = memoryCache;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+    public readonly IMemoryCache _memoryCache = memoryCache;
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<RecordLabel> _validatorHelper = validatorHelper;
 
     public async Task<List<RecordLabel>> GetAllAsync()
     {
         return await _memoryCache.GetOrCreateAsync<List<RecordLabel>>(CacheKeys.RecordLabel, async cache =>
         {
             cache.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
-            return (await _unitOfWork.RecordLabels.AllAsync()).OrderBy(c => c.Name).ToList();
+            return [.. (await _unitOfWork.RecordLabels.AllAsync()).OrderBy(c => c.Name)];
         });
     }
 
@@ -72,12 +64,6 @@ public class RecordLabelService : IRecordLabelService
 
     public async Task<RecordLabel> GetAsync(int id)
     {
-        var recordLabel = await _unitOfWork.RecordLabels.ByIdAsync(id);
-        if (recordLabel == null)
-        {
-            throw new RecordLabelNotFoundException("RecordLabel not found.");
-        }
-
-        return recordLabel;
+        return await _unitOfWork.RecordLabels.ByIdAsync(id) ?? throw new RecordLabelNotFoundException("RecordLabel not found.");
     }
 }

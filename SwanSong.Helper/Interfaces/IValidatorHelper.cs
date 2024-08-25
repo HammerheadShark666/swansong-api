@@ -4,5 +4,5 @@ namespace SwanSong.Helper.Interfaces;
 
 public interface IValidatorHelper<T>
 {
-    Task ValidateAsync(T itemToValidate, string ruleSet); 
+    Task ValidateAsync(T itemToValidate, string ruleSet);
 }

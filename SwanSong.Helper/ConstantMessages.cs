@@ -10,7 +10,7 @@ public class ConstantMessages
     public static string InvalidToken = "Invalid Token";
 
     public static string Unauthorized = "Unauthorized";
-    public static string Account = "Account"; 
+    public static string Account = "Account";
     public static string ProfileNotFound = "Profile not found";
 
     public static string RegistrationVerifyEmailSubject = "SwanSong Registration - Verify Email";

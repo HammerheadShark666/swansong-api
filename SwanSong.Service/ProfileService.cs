@@ -10,20 +10,13 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Service;
 
-public class ProfileService : IProfileService
-{ 
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<ProfileRequest> _validatorHelper;
-
-    public ProfileService(IMapper mapper,
-                          IValidatorHelper<ProfileRequest> validatorHelper, 
-                          IUnitOfWork unitOfWork)
-    {
-        _validatorHelper = validatorHelper; 
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+public class ProfileService(IMapper mapper,
+                            IValidatorHelper<ProfileRequest> validatorHelper,
+                            IUnitOfWork unitOfWork) : IProfileService
+{
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<ProfileRequest> _validatorHelper = validatorHelper;
 
     #region Public Functions
 
@@ -33,7 +26,7 @@ public class ProfileService : IProfileService
     }
 
     public async Task UpdateAsync(int id, ProfileRequest profileRequest)
-    { 
+    {
         profileRequest = profileRequest with { Id = id };
 
         await _validatorHelper.ValidateAsync(profileRequest, Constants.ValidationEventBeforeSave);
@@ -45,7 +38,7 @@ public class ProfileService : IProfileService
     #endregion
 
     #region Private Functions
-    
+
     private async Task UpdateAccountAsync(ProfileRequest profileRequest)
     {
         Account account = await GetAccountAsync(profileRequest.Id);
@@ -57,13 +50,7 @@ public class ProfileService : IProfileService
 
     private async Task<Account> GetAccountAsync(int id)
     {
-        var account = await _unitOfWork.Accounts.ByIdAsync(id);
-        if (account == null)
-        {
-            throw new KeyNotFoundException(ConstantMessages.ProfileNotFound);
-        }
-
-        return account;
+        return await _unitOfWork.Accounts.ByIdAsync(id) ?? throw new KeyNotFoundException(ConstantMessages.ProfileNotFound);
     }
 
     #endregion

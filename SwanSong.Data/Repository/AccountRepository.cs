@@ -7,24 +7,19 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Data.Repository;
 
-public class AccountRepository : IAccountRepository
-{ 
-    private readonly SwanSongContext _context;
-
-    public AccountRepository(SwanSongContext context)
-    {
-        _context = context;
-    }
+public class AccountRepository(SwanSongContext context) : IAccountRepository
+{
+    private readonly SwanSongContext _context = context;
 
     public async Task<Account> GetAsync(string email)
     {
         return await _context.Accounts
-                                .Where(a => a.Email.Equals(email))   
+                                .Where(a => a.Email.Equals(email))
                                 .FirstOrDefaultAsync();
     }
 
     public async Task<Account> GetByResetTokenAsync(string resetToken)
-    { 
+    {
         return await _context.Accounts
                                 .AsNoTracking()
                                 .SingleOrDefaultAsync(u => u.ResetToken.Equals(resetToken));

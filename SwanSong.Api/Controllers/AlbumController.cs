@@ -18,36 +18,31 @@ namespace SwanSong.Api.Controllers;
 
 [Authorize]
 [ApiVersion("1.0")]
-[Route("api/v{version:apiVersion}/albums")] 
+[Route("api/v{version:apiVersion}/albums")]
 [ApiController]
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Consumes(MediaTypeNames.Application.Json)]
-[Produces(MediaTypeNames.Application.Json)] 
+[Produces(MediaTypeNames.Application.Json)]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
 [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-public class AlbumController : BaseController<Album>
+public class AlbumController(ILogger<AlbumController> logger,
+                             IAlbumService albumService,
+                             IValidator<Album> validator,
+                             IMapper mapper,
+                             IAlbumHelper albumHelper) : BaseController<Album>(validator)
 {
-    private readonly ILogger<AlbumController> _logger;
-    private readonly IAlbumService _albumService;
-    private readonly IMapper _mapper;
-    private readonly IAlbumHelper _albumHelper;
+    private readonly ILogger<AlbumController> _logger = logger;
+    private readonly IAlbumService _albumService = albumService;
+    private readonly IMapper _mapper = mapper;
+    private readonly IAlbumHelper _albumHelper = albumHelper;
 
-    public AlbumController(ILogger<AlbumController> logger, IAlbumService albumService, 
-                           IValidator<Album> validator, IMapper mapper, IAlbumHelper albumHelper) : base(validator)
-    {
-        _logger = logger;
-        _mapper = mapper;
-        _albumService = albumService;
-        _albumHelper = albumHelper;
-    }
-     
     [HttpGet("")]
     public async Task<ActionResult<List<AlbumLookUpResponse>>> GetAllAlbumsAsync([FromQuery] PaginationFilter filter)
     {
         var paginationFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
         var albums = await _albumService.GetAllAsync(paginationFilter);
-        var totalRecords = await _albumService.CountAsync(); 
+        var totalRecords = await _albumService.CountAsync();
 
         return Ok(PagingHelper.CreatePagedReponse<AlbumLookUpResponse>(_mapper.Map<List<AlbumLookUpResponse>>(albums), paginationFilter, totalRecords));
     }
@@ -55,18 +50,18 @@ public class AlbumController : BaseController<Album>
     [HttpGet("random")]
     public async Task<ActionResult<List<AlbumLookUpResponse>>> GetRandomAlbumsAsync()
     {
-        var albums = await _albumService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords);  
+        var albums = await _albumService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords);
         return Ok(_albumHelper.GetAlbumLookUps(albums));
-    } 
+    }
 
     [HttpGet("search/{criteria}")]
     public async Task<ActionResult<List<AlbumLookUpResponse>>> SearchAlbumsAsync(string criteria)
     {
-        var albums = await _albumService.SearchByNameAsync(criteria); 
+        var albums = await _albumService.SearchByNameAsync(criteria);
         return Ok(_mapper.Map<List<AlbumLookUpResponse>>(albums));
     }
 
-    [HttpGet("search-by-letter/{letter}")] 
+    [HttpGet("search-by-letter/{letter}")]
     public async Task<ActionResult<List<AlbumLookUpResponse>>> SearchAlbumsByLetterAsync(string letter)
     {
         var albums = await _albumService.SearchByLetterAsync(letter);
@@ -75,7 +70,7 @@ public class AlbumController : BaseController<Album>
 
     [HttpGet("album/{id}")]
     public async Task<ActionResult<AlbumResponse>> GetAlbumAsync(long id)
-    {         
+    {
         return Ok(_mapper.Map<AlbumResponse>(await _albumService.GetAsync(id)));
     }
 
@@ -90,21 +85,21 @@ public class AlbumController : BaseController<Album>
     public async Task<ActionResult<AlbumActionResponse>> PostAddAlbumAsync([FromBody] AlbumAddRequest albumAddRequest)
     {
         Album album = _mapper.Map<Album>(albumAddRequest);
- 
+
         var validationResult = await Validate(album, Constants.ValidationEventBeforeSave);
         if (validationResult != null)
             return BadRequest(validationResult);
 
         var savedAlbum = await _albumService.AddAsync(album);
 
-        return Ok(new AlbumActionResponse(album.Id));        
+        return Ok(new AlbumActionResponse(savedAlbum.Id));
     }
 
     [HttpPut("album/update")]
     public async Task<ActionResult> PutUpdateAlbumAsync([FromBody] AlbumUpdateRequest albumUpdateRequest)
-    {  
+    {
         Album album = _mapper.Map<Album>(albumUpdateRequest);
-         
+
         var validationResult = await Validate(album, Constants.ValidationEventBeforeSave);
         if (validationResult != null)
             return BadRequest(validationResult);
@@ -112,15 +107,15 @@ public class AlbumController : BaseController<Album>
         _albumService.Update(album);
 
         return Ok();
-    } 
+    }
 
     [HttpDelete("album/{id}")]
     public async Task<ActionResult> DeleteAlbumAsync(long id)
     {
         await _albumService.DeleteAsync(await _albumService.GetAsync(id));
         return Ok();
-    } 
-      
+    }
+
     [HttpPost("album/upload-photo/{id}")]
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]

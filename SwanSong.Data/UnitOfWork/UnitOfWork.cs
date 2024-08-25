@@ -10,7 +10,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly SwanSongContext _context;
     public IRecordLabelRepository RecordLabels { get; private set; }
-    public IStudioRepository Studios { get; private set; } 
+    public IStudioRepository Studios { get; private set; }
     public ICountryRepository Countries { get; private set; }
     public ISongRepository Songs { get; private set; }
     public IMemberRepository Members { get; private set; }
@@ -34,9 +34,9 @@ public class UnitOfWork : IUnitOfWork
         RecordLabels = new RecordLabelRepository(_context);
         RefreshTokens = new RefreshTokenRepository(_context);
         Songs = new SongRepository(_context);
-        Studios = new StudioRepository(_context); 
-    }        
-    
+        Studios = new StudioRepository(_context);
+    }
+
     public async Task<int> CompleteAsync()
     {
         return await _context.SaveChangesAsync();

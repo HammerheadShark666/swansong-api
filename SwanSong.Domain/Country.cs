@@ -16,7 +16,7 @@ public class Country : BaseEntity
     public string Name { get; set; }
 
     [ForeignKey("CountryId")]
-    public ICollection<Artist> Artists{ get; set; }
+    public ICollection<Artist> Artists { get; set; }
 
     [ForeignKey("CountryId")]
     public ICollection<BirthPlace> BirthPlaces { get; set; }

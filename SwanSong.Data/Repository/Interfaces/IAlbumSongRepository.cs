@@ -6,7 +6,7 @@ namespace SwanSong.Data.Repository.Interfaces;
 
 public interface IAlbumSongRepository
 {
-    Task<IEnumerable<AlbumSong>> GetAlbumSongsAsync(long albumId); 
+    Task<IEnumerable<AlbumSong>> GetAlbumSongsAsync(long albumId);
     Task<bool> ExistsAsync(long? albumId, string title);
     Task<bool> ExistsAsync(long id, long? albumId, string title);
     Task<bool> TrackPositionExistsAsync(long albumId, long songId, int? side, int? order);

@@ -13,30 +13,22 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Service;
 
-public class StudioService : IStudioService
+public class StudioService(IMapper mapper,
+                          IValidatorHelper<Studio> validatorHelper,
+                          IMemoryCache memoryCache,
+                          IUnitOfWork unitOfWork) : IStudioService
 {
-    public readonly IMemoryCache _memoryCache;
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<Studio> _validatorHelper;
-
-    public StudioService(IMapper mapper,
-                              IValidatorHelper<Studio> validatorHelper,
-                              IMemoryCache memoryCache,
-                              IUnitOfWork unitOfWork)
-    {
-        _validatorHelper = validatorHelper;
-        _memoryCache = memoryCache;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+    public readonly IMemoryCache _memoryCache = memoryCache;
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<Studio> _validatorHelper = validatorHelper;
 
     public async Task<List<Studio>> GetAllAsync()
     {
         return await _memoryCache.GetOrCreateAsync<List<Studio>>(CacheKeys.Studio, async cache =>
         {
             cache.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
-            return (await _unitOfWork.Studios.AllAsync()).OrderBy(c => c.Name).ToList();
+            return [.. (await _unitOfWork.Studios.AllAsync()).OrderBy(c => c.Name)];
         });
     }
 
@@ -72,12 +64,6 @@ public class StudioService : IStudioService
 
     public async Task<Studio> GetAsync(int id)
     {
-        var studio = await _unitOfWork.Studios.ByIdAsync(id);
-        if (studio == null)
-        {
-            throw new StudioNotFoundException("Studio not found.");
-        }
-
-        return studio;
+        return await _unitOfWork.Studios.ByIdAsync(id) ?? throw new StudioNotFoundException("Studio not found.");
     }
 }

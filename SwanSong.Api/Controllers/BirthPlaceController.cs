@@ -20,27 +20,20 @@ namespace SwanSong.Api.Controllers;
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
-public class BirthPlaceController : BaseController<BirthPlace>
+public class BirthPlaceController(ILogger<BirthPlaceController> logger,
+                            IBirthPlaceService birthPlaceService,
+                            IValidator<BirthPlace> validator,
+                            IMapper mapper) : BaseController<BirthPlace>(validator)
 {
-    private readonly ILogger<BirthPlaceController> _logger;      
-    private readonly IBirthPlaceService _birthPlaceService;
-    private readonly IMapper _mapper;
-
-    public BirthPlaceController(ILogger<BirthPlaceController> logger, 
-                                IBirthPlaceService birthPlaceService,
-                                IValidator<BirthPlace> validator,
-                                IMapper mapper) : base(validator)
-    {
-        _logger = logger;
-        _mapper = mapper;
-        _birthPlaceService = birthPlaceService; 
-    }
+    private readonly ILogger<BirthPlaceController> _logger = logger;
+    private readonly IBirthPlaceService _birthPlaceService = birthPlaceService;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet("")]
     public async Task<ActionResult<List<BirthPlaceResponse>>> GetAllBirthPlacesAsync()
     {
         var birthPlaces = await _birthPlaceService.GetAllAsync();
-        return _mapper.Map<List<BirthPlaceResponse>>(birthPlaces); 
+        return _mapper.Map<List<BirthPlaceResponse>>(birthPlaces);
     }
 
     [HttpPost("birth-place/add")]
@@ -54,17 +47,17 @@ public class BirthPlaceController : BaseController<BirthPlace>
 
         var savedBirthPlace = await _birthPlaceService.AddAsync(birthPlace);
 
-        return Ok(new BirthPlaceActionResponse(birthPlace.Id, birthPlace.Name));
+        return Ok(new BirthPlaceActionResponse(savedBirthPlace.Id, savedBirthPlace.Name));
     }
 
     [HttpPut("birth-place/update")]
     public async Task<ActionResult> PostUpdateBirthPlaceAsync([FromBody] BirthPlaceUpdateRequest birthPlaceUpdateRequest)
-    {  
+    {
         var birthPlace = await _birthPlaceService.GetAsync(birthPlaceUpdateRequest.Id);
 
         birthPlace.Name = birthPlaceUpdateRequest.Name;
 
-        if(birthPlaceUpdateRequest.CountryId > 0)
+        if (birthPlaceUpdateRequest.CountryId > 0)
             birthPlace.CountryId = birthPlaceUpdateRequest.CountryId;
 
         var validationResult = await Validate(birthPlace, Constants.ValidationEventBeforeSave);
@@ -79,7 +72,7 @@ public class BirthPlaceController : BaseController<BirthPlace>
 
     [HttpDelete("birth-place/{id}")]
     public async Task<ActionResult> DeleteBirthPlaceAsync(int id)
-    { 
+    {
         _birthPlaceService.DeleteAsync(await _birthPlaceService.GetAsync(id));
 
         return Ok();

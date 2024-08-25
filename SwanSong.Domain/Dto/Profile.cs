@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SwanSong.Domain.Dto; 
+namespace SwanSong.Domain.Dto;
 
 public record ProfilePasswordChangeRequest(int Id, string Password, string ConfirmPassword,
                                            string CurrentPassword, string Email);

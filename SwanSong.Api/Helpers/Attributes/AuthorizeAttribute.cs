@@ -9,14 +9,9 @@ using System.Linq;
 using static SwanSong.Domain.Helper.Enums;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public class AuthorizeAttribute : Attribute, IAuthorizationFilter
+public class AuthorizeAttribute(params SwanSong.Domain.Helper.Enums.Role[] roles) : Attribute, IAuthorizationFilter
 {
-    private readonly IList<Role> _roles;
-
-    public AuthorizeAttribute(params Role[] roles)
-    {
-        _roles = roles ?? Array.Empty<Role>();
-    }
+    private readonly IList<Role> _roles = roles ?? Array.Empty<Role>();
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {

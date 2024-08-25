@@ -12,17 +12,19 @@ public class SongValidator : BaseValidator<Song>
     {
         _songRepository = songRepository;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(song => song.Title)
                 .NotEmpty().WithMessage("Title is required.")
                 .Length(1, 150).WithMessage("Title length between 1 and 150.");
 
-            When(song => song.Length != null, () => {
+            When(song => song.Length != null, () =>
+            {
                 RuleFor(song => song.Length)
                     .Matches(@"(?:[012345]\d):(?:[012345]\d)")
                     .WithMessage("Length must be in format mm:ss, e.g. 45:23");
-            }); 
+            });
         });
-    }            
+    }
 }

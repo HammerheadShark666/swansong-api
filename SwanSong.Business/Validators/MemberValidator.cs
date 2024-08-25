@@ -17,16 +17,18 @@ public class MemberValidator : BaseValidator<Member>
         _artistMemberRepository = artistMemberRepository;
         _artistRepository = artistRepository;
 
-        RuleSet("BeforeSave", () => {
-                       
-            RuleFor(member => member.StageName) 
+        RuleSet("BeforeSave", () =>
+        {
+
+            RuleFor(member => member.StageName)
                 .NotEmpty()
                     .WithMessage("Stage name is required.")
                 .Length(1, 150)
                     .When(x => x.StageName.Count() > 0, ApplyConditionTo.CurrentValidator)
                         .WithMessage("Stage name length between 1 and 150.");
 
-            RuleFor(member => member).MustAsync(async (member, cancellation) => {
+            RuleFor(member => member).MustAsync(async (member, cancellation) =>
+            {
                 return await MemberStageNameExists(member);
             })
             .When(x => x.StageName.Count() > 0, ApplyConditionTo.CurrentValidator)
@@ -43,7 +45,7 @@ public class MemberValidator : BaseValidator<Member>
                 return await ArtistExists((long)member.ArtistId);
             }).When(x => x.ArtistId > 0, ApplyConditionTo.CurrentValidator)
                .WithMessage(member => $"Artist not found.");
-             
+
             RuleFor(member => member.Surname)
                 .NotEmpty()
                     .WithMessage("Surname is required.")
@@ -87,6 +89,6 @@ public class MemberValidator : BaseValidator<Member>
 
     protected async Task<bool> ArtistExists(long artistId)
     {
-        return await _artistRepository.ByIdAsync(artistId) != null; 
+        return await _artistRepository.ByIdAsync(artistId) != null;
     }
 }

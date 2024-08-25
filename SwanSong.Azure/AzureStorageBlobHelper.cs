@@ -1,6 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
 using SwanSong.Azure.Storage.Interfaces;
 using SwanSong.Helper;
 using System.IO;
@@ -18,9 +18,9 @@ public class AzureStorageBlobHelper : Base, IAzureStorageBlobHelper
         Stream fileStream = new MemoryStream();
         fileStream = file.OpenReadStream();
         var blobClient = new BlobContainerClient(GetStorageConnection(), containerName);
-        var blob = blobClient.GetBlobClient(fileName);            
-		await blob.UploadAsync(fileStream, new BlobHttpHeaders { ContentType = Constants.ContentTypeImageJpg });
-        
+        var blob = blobClient.GetBlobClient(fileName);
+        await blob.UploadAsync(fileStream, new BlobHttpHeaders { ContentType = Constants.ContentTypeImageJpg });
+
         return;
     }
 
@@ -31,7 +31,7 @@ public class AzureStorageBlobHelper : Base, IAzureStorageBlobHelper
             return;
         }
 
-        BlobServiceClient blobServiceClient = new BlobServiceClient(GetStorageConnection()); 
+        BlobServiceClient blobServiceClient = new(GetStorageConnection());
         BlobContainerClient container = blobServiceClient.GetBlobContainerClient(containerName);
         await container.DeleteBlobIfExistsAsync(fileName);
 

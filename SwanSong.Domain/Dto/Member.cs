@@ -14,7 +14,7 @@ public record MemberResponse(long Id, long ArtistId, string StageName,
                              string FirstName, string MiddleName, string Surname,
                              string Photo, DateTime? DateOfBirth, DateTime? DateOfDeath);
 
-public record MemberLookUpResponse(long Id,string StageName, string Photo);
+public record MemberLookUpResponse(long Id, string StageName, string Photo);
 
 public record MemberActionResponse(long Id);
 

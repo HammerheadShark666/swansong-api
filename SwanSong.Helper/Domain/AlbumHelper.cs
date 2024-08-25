@@ -8,14 +8,9 @@ using System.Linq;
 
 namespace SwanSong.Helper.Domain;
 
-public class AlbumHelper : IAlbumHelper
-{ 
-    public readonly IMapper _mapper;  
-
-    public AlbumHelper(IMapper mapper)
-    { 
-        _mapper = mapper;
-    }
+public class AlbumHelper(IMapper mapper) : IAlbumHelper
+{
+    public readonly IMapper _mapper = mapper;
 
     public List<AlbumLookUpResponse> GetAlbumLookUps(List<Album> albums)
     {
@@ -32,14 +27,14 @@ public class AlbumHelper : IAlbumHelper
 
     public string GetAlbumLength(List<AlbumSong> albumSongs)
     {
-        TimeSpan time = new TimeSpan();
+        TimeSpan time = new();
 
         foreach (AlbumSong albumSong in albumSongs)
         {
             try
             {
                 string[] timeParts = albumSong.Song.Length.Split(':');
-                TimeSpan t = new TimeSpan(0, int.Parse(timeParts[0]), int.Parse(timeParts[1]));
+                TimeSpan t = new(0, int.Parse(timeParts[0]), int.Parse(timeParts[1]));
                 time = time.Add(t);
             }
             catch { }

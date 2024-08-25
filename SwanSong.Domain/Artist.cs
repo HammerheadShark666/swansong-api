@@ -11,27 +11,27 @@ public class Artist : BaseEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
 
-    [Column(TypeName = "nvarchar(100)")]        
+    [Column(TypeName = "nvarchar(100)")]
     [Required]
     public string Name { get; set; }
 
-    [Column(TypeName = "nvarchar(100)")]   
+    [Column(TypeName = "nvarchar(100)")]
     public string Photo { get; set; }
 
-    [Column(TypeName = "int")]         
+    [Column(TypeName = "int")]
     public int? FormationYear { get; set; }
 
-    [Column(TypeName = "int")]        
+    [Column(TypeName = "int")]
     public int? DisbandYear { get; set; }
 
-    [Column(TypeName = "int")]        
+    [Column(TypeName = "int")]
     public int? CountryId { get; set; }
-     
+
     public Country Country { get; set; }
 
-    public virtual List<Album> Albums { get; set; } 
+    public virtual List<Album> Albums { get; set; }
 
-    public List<Member> Members { get; set; }         
+    public List<Member> Members { get; set; }
 
     public Artist()
     {

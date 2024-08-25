@@ -29,7 +29,7 @@ public class ProfilePasswordChangeValidatorTest
     [Fact]
     public async Task Before_save_validate_profile_password_change_return_true()
     {
-        Account account = new Account()
+        Account account = new()
         {
             Verified = new DateTime(),
             PasswordHash = "$2a$11$cHlJvvDHx8AZhGkRBJZCGeUYSbllmnU8y5B9JlB/hj/QxPwRjlOOq"
@@ -40,7 +40,7 @@ public class ProfilePasswordChangeValidatorTest
         ValidationResult validationResult = await validator.ValidateAsync(CreateProfilePasswordChange(), options => options
                                                                                                 .IncludeRuleSets("BeforeSave"));
         Assert.True(validationResult.IsValid);
-    } 
+    }
 
     [Fact]
     public async Task Before_save_validate_profile_password_change_no_password_return_false()
@@ -100,7 +100,7 @@ public class ProfilePasswordChangeValidatorTest
     [Fact]
     public async Task Before_save_validate_profile_password_invalid_current_password_return_false()
     {
-        Account account = new Account()
+        Account account = new()
         {
             Verified = new DateTime(),
             PasswordHash = "$2a$11$cHlJvvDHx8AZhGkRBJZCGeUYSbllmnU8y5B9JlB/hj/QxPwRjlOOq"

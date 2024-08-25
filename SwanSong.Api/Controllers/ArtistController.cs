@@ -22,35 +22,28 @@ namespace SwanSong.Api.Controllers;
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
-public class ArtistController : BaseController<Artist>
+public class ArtistController(ILogger<AlbumController> logger,
+                              IArtistService artistService,
+                              IValidator<Artist> validator,
+                              IMapper mapper) : BaseController<Artist>(validator)
 {
-    private readonly ILogger<AlbumController> _logger;      
-    private readonly IArtistService _artistService;
-    private readonly IMapper _mapper;
-
-    public ArtistController(ILogger<AlbumController> logger, 
-                            IArtistService artistService, 
-                            IValidator<Artist> validator, 
-                            IMapper mapper) : base(validator)
-    {
-        _logger = logger; 
-        _artistService = artistService;
-        _mapper = mapper;
-    }
+    private readonly ILogger<AlbumController> _logger = logger;
+    private readonly IArtistService _artistService = artistService;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet("lookups")]
     public ActionResult<List<ArtistLookUpResponse>> GetAllArtistsAsync()
     {
         var artists = _artistService.GetAll();
-        return Ok(_mapper.Map<List<ArtistLookUpResponse>>(artists)); 
-    } 
+        return Ok(_mapper.Map<List<ArtistLookUpResponse>>(artists));
+    }
 
     [HttpGet("random")]
     public async Task<ActionResult<List<ArtistResponse>>> GetRandomArtistsAsync()
     {
         var artists = await _artistService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords);
         return Ok(_mapper.Map<List<ArtistResponse>>(artists));
-    } 
+    }
 
     [HttpGet("")]
     public async Task<ActionResult<List<ArtistResponse>>> GetAllArtistsAsync([FromQuery] PaginationFilter filter)
@@ -59,15 +52,15 @@ public class ArtistController : BaseController<Artist>
         var artists = await _artistService.GetAllAsync(validFilter);
         var totalRecords = await _artistService.CountAsync();
 
-        return Ok(PagingHelper.CreatePagedReponse<ArtistResponse>(_mapper.Map<List<ArtistResponse>>(artists), validFilter, totalRecords)); 
+        return Ok(PagingHelper.CreatePagedReponse<ArtistResponse>(_mapper.Map<List<ArtistResponse>>(artists), validFilter, totalRecords));
     }
 
     [HttpGet("search/{criteria}")]
     public async Task<ActionResult<List<ArtistResponse>>> GetSearchArtistsAsync(string criteria)
     {
-        return Ok(_mapper.Map<List<ArtistLookUpResponse>>(await _artistService.SearchByNameAsync(criteria)));            
-    } 
-   
+        return Ok(_mapper.Map<List<ArtistLookUpResponse>>(await _artistService.SearchByNameAsync(criteria)));
+    }
+
     [HttpGet("search-by-letter/{letter}")]
     public async Task<ActionResult<List<ArtistResponse>>> GetSearchAlbumsByLetterAsync(string letter)
     {
@@ -76,9 +69,9 @@ public class ArtistController : BaseController<Artist>
 
     [HttpGet("artist/{id}")]
     public async Task<ActionResult<ArtistResponse>> GetArtistAsync(long id)
-    {  
+    {
         return Ok(_mapper.Map<ArtistResponse>(await _artistService.GetAsync(id)));
-    } 
+    }
 
     [HttpPost("artist/add")]
     public async Task<ActionResult<ArtistActionResponse>> PostAddArtistAsync([FromBody] ArtistAddRequest artistAddRequest)
@@ -91,7 +84,7 @@ public class ArtistController : BaseController<Artist>
 
         var savedArtist = await _artistService.AddAsync(artist);
 
-        return Ok(new ArtistActionResponse(savedArtist.Id));         
+        return Ok(new ArtistActionResponse(savedArtist.Id));
     }
 
     [HttpPut("artist/update")]
@@ -105,7 +98,7 @@ public class ArtistController : BaseController<Artist>
 
         _artistService.Update(artist);
 
-        return Ok();         
+        return Ok();
     }
 
 
@@ -113,7 +106,7 @@ public class ArtistController : BaseController<Artist>
     public async Task<ActionResult<ArtistResponse>> DeleteArtistAsync(long id)
     {
         await _artistService.DeleteAsync(await _artistService.GetAsync(id));
-        return Ok(); 
+        return Ok();
     }
 
     [Consumes("multipart/form-data")]
@@ -129,6 +122,6 @@ public class ArtistController : BaseController<Artist>
         else
         {
             return BadRequest(ConstantMessages.NoFileToSave);
-        } 
+        }
     }
 }

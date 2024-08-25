@@ -13,8 +13,8 @@ namespace SwanSong.xUnit.Test.Business;
 
 public class AlbumValidatorTest
 {
-    private Mock<IAlbumRepository> albumRepositoryMock;
-    private IValidator<Album> validator;
+    private readonly Mock<IAlbumRepository> albumRepositoryMock;
+    private readonly IValidator<Album> validator;
 
     public AlbumValidatorTest()
     {
@@ -23,15 +23,15 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_album_return_true()
+    public async Task Before_save_validate_album_return_true()
     {
         ValidationResult validation = await validator.ValidateAsync(CreateAlbum(), options => options
                                                                             .IncludeRuleSets("BeforeSave"));
         Assert.True(validation.IsValid);
     }
- 
+
     [Fact]
-    public async void Before_save_validate_album_no_artist_id_return_false()
+    public async Task Before_save_validate_album_no_artist_id_return_false()
     {
         Album album = CreateAlbum();
         album.ArtistId = 0;
@@ -42,7 +42,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_album_album_name_null_return_false()
+    public async Task Before_save_validate_album_album_name_null_return_false()
     {
         Album album = CreateAlbum(1, null);
         ValidationResult validation = await validator.ValidateAsync(album, options => options
@@ -52,7 +52,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_album_album_name_empty_return_false()
+    public async Task Before_save_validate_album_album_name_empty_return_false()
     {
         Album album = CreateAlbum(1, "");
         ValidationResult validation = await validator.ValidateAsync(album, options => options
@@ -62,7 +62,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_album_album_name_greater_than_120_return_false()
+    public async Task Before_save_validate_album_album_name_greater_than_120_return_false()
     {
         Album album = CreateAlbum(1, "AbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijX");
         ValidationResult validation = await validator.ValidateAsync(album, options => options
@@ -72,7 +72,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_existing_album_album_name_exists_return_false()
+    public async Task Before_save_validate_existing_album_album_name_exists_return_false()
     {
         albumRepositoryMock.Setup(p => p.ExistsAsync(1, "Test Album")).Returns(Task.FromResult(true));
 
@@ -84,7 +84,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_new_album_album_name_exists_return_false()
+    public async Task Before_save_validate_new_album_album_name_exists_return_false()
     {
         albumRepositoryMock.Setup(p => p.ExistsAsync("Test Album")).Returns(Task.FromResult(true));
 
@@ -93,10 +93,10 @@ public class AlbumValidatorTest
                                                                             .IncludeRuleSets("BeforeSave"));
         Assert.False(validation.IsValid);
         Assert.Equal("Test Album already exists.", validation.Errors[0].ErrorMessage);
-    }         
+    }
 
     [Fact]
-    public async void Before_save_validate_album_release_date_less_than_1900_01_01_return_false()
+    public async Task Before_save_validate_album_release_date_less_than_1900_01_01_return_false()
     {
         Album album = CreateAlbum();
         album.ReleaseDate = new DateTime(1899, 12, 31);
@@ -107,7 +107,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_album_recorded_date_less_than_1900_01_01_return_false()
+    public async Task Before_save_validate_album_recorded_date_less_than_1900_01_01_return_false()
     {
         Album album = CreateAlbum();
         album.RecordedDate = new DateTime(1899, 12, 31);
@@ -118,7 +118,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_album_release_date_less_than_recorded_date_return_false()
+    public async Task Before_save_validate_album_release_date_less_than_recorded_date_return_false()
     {
         Album album = CreateAlbum();
         album.RecordedDate = new DateTime(1990, 1, 1);
@@ -130,7 +130,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_album_album_producers_greater_than_250_return_false()
+    public async Task Before_save_validate_album_album_producers_greater_than_250_return_false()
     {
         Album album = CreateAlbum();
         album.Producers = UnitTestHelper.generateRandomString(251);
@@ -141,7 +141,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_album_album_arrangers_greater_than_250_return_false()
+    public async Task Before_save_validate_album_album_arrangers_greater_than_250_return_false()
     {
         Album album = CreateAlbum();
         album.Arrangers = UnitTestHelper.generateRandomString(251);
@@ -152,7 +152,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_album_album_engineers_greater_than_250_return_false()
+    public async Task Before_save_validate_album_album_engineers_greater_than_250_return_false()
     {
         Album album = CreateAlbum();
         album.Engineers = UnitTestHelper.generateRandomString(251);
@@ -163,7 +163,7 @@ public class AlbumValidatorTest
     }
 
     [Fact]
-    public async void Before_save_validate_album_album_artwork_greater_than_250_return_false()
+    public async Task Before_save_validate_album_album_artwork_greater_than_250_return_false()
     {
         Album album = CreateAlbum();
         album.Artwork = UnitTestHelper.generateRandomString(101);
@@ -173,7 +173,7 @@ public class AlbumValidatorTest
         Assert.Equal("Artwork maximum length is 100.", validation.Errors[0].ErrorMessage);
     }
 
-    private Album CreateAlbum(int id = 1, string name = "Test Album", int artistId = 1)
+    private static Album CreateAlbum(int id = 1, string name = "Test Album", int artistId = 1)
     {
         return new Album()
         {
@@ -184,7 +184,7 @@ public class AlbumValidatorTest
             RecordedDate = new DateTime(1990, 12, 1),
             ReleaseDate = new DateTime(1991, 6, 1),
             LabelId = 1,
-            StudioId = 1, 
+            StudioId = 1,
             Producers = "Test Producers",
             Arrangers = "Test Arrangers",
             Engineers = "Test Engineers",

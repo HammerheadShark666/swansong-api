@@ -16,18 +16,18 @@ builder.Services.ConfigureMvc();
 builder.Services.ConfigureControllers();
 builder.Services.ConfigureDbContext(builder.Configuration);
 builder.Services.ConfigureAutoMapper();
-builder.Services.ConfigureSwagger(); 
+builder.Services.ConfigureSwagger();
 builder.Services.ConfigureDI();
-builder.Services.ConfigureVersioning(); 
+builder.Services.ConfigureVersioning();
 
 var app = builder.Build();
- 
+
 app.UseDeveloperExceptionPage();
 app.ConfigureSwagger();
-app.UseRouting(); 
+app.UseRouting();
 app.ConfigureCors();
 app.UseMiddleware<ErrorHandlerMiddleware>();
-app.UseMiddleware<JwtMiddleware>(); 
+app.UseMiddleware<JwtMiddleware>();
 app.MapControllers();
 
 app.Run();

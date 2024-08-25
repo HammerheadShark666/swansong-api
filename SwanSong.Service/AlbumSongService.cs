@@ -10,23 +10,15 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Service;
 
-public class AlbumSongService : IAlbumSongService
+public class AlbumSongService(IMapper mapper,
+                              IValidatorHelper<AlbumSong> validatorHelper,
+                              IMemoryCache memoryCache,
+                              IUnitOfWork unitOfWork) : IAlbumSongService
 {
-    public readonly IMemoryCache _memoryCache;
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<AlbumSong> _validatorHelper; 
-
-    public AlbumSongService(IMapper mapper,
-                            IValidatorHelper<AlbumSong> validatorHelper,
-                            IMemoryCache memoryCache,
-                            IUnitOfWork unitOfWork)
-    { 
-        _validatorHelper = validatorHelper;
-        _memoryCache = memoryCache;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+    public readonly IMemoryCache _memoryCache = memoryCache;
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<AlbumSong> _validatorHelper = validatorHelper;
 
     #region Public Functions 
 
@@ -37,21 +29,15 @@ public class AlbumSongService : IAlbumSongService
 
     public async Task<AlbumSong> GetAsync(long id)
     {
-        var albumSong = await _unitOfWork.AlbumSongs.ByIdAsync(id);
-        if (albumSong == null)
-        {
-            throw new AlbumSongNotFoundException("Album Song not found.");
-        }
-
-        return albumSong;
+        return await _unitOfWork.AlbumSongs.ByIdAsync(id) ?? throw new AlbumSongNotFoundException("Album Song not found.");
     }
 
     public async Task<AlbumSong> AddAsync(AlbumSong albumSong)
-    { 
+    {
         await _unitOfWork.AlbumSongs.AddAsync(albumSong);
         _unitOfWork.Complete();
 
-        return albumSong; 
+        return albumSong;
     }
 
     public void Update(AlbumSong albumSong)
@@ -66,9 +52,9 @@ public class AlbumSongService : IAlbumSongService
     {
         _unitOfWork.AlbumSongs.Delete(albumSong);
         _unitOfWork.Complete();
-  
+
         return;
-    }  
+    }
 
     #endregion
 }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace SwanSong.Data.Repository.Interfaces;
 
 public interface IAccountRepository
-{  
+{
     Task<Account> GetAsync(string email);
     Task<Account> GetByResetTokenAsync(string resetToken);
     Task<Account> GetByVerificationTokenAsync(string verificationToken);

@@ -15,18 +15,13 @@ namespace SwanSong.Api.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
 [Route("api/v{version:apiVersion}/profile")]
-public class ProfileController : Controller
+public class ProfileController(IProfileService profileService,
+                               IHttpContextAccessor httpContextAccessor,
+                               ILogger<ProfileController> logger) : Controller
 {
-    private readonly ILogger<ProfileController> _logger;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IProfileService _profileService; 
-
-    public ProfileController(IProfileService profileService, IHttpContextAccessor httpContextAccessor, ILogger<ProfileController> logger)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _profileService = profileService; 
-        _logger = logger;
-    }
+    private readonly ILogger<ProfileController> _logger = logger;
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly IProfileService _profileService = profileService;
 
     [Authorize]
     [HttpPut("update")]
@@ -39,8 +34,8 @@ public class ProfileController : Controller
     [Authorize]
     [HttpGet("")]
     public async Task<ActionResult<ProfileResponse>> GetProfileAsync()
-    { 
-        return Ok(await _profileService.GetAsync(LoggedInAccount().Id)); 
+    {
+        return Ok(await _profileService.GetAsync(LoggedInAccount().Id));
     }
 
     private Account LoggedInAccount()

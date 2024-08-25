@@ -18,7 +18,7 @@ public class StudioValidatorTest
     private static readonly Studio newStudio = new() { Id = 0, Name = "Test Studio 1" };
     private static readonly Studio existingStudio = new() { Id = 1, Name = "Test Studio 1" };
 
-     
+
     public StudioValidatorTest()
     {
         studioRepositoryMock = new Mock<IStudioRepository>();
@@ -31,7 +31,7 @@ public class StudioValidatorTest
         ValidationResult validation = await validator.ValidateAsync(existingStudio);
         Assert.True(validation.IsValid);
     }
-     
+
     [Fact]
     public async Task Before_save_validate_studio_name_null_return_false()
     {
@@ -96,5 +96,5 @@ public class StudioValidatorTest
         Assert.False(validationResult.IsValid);
         Assert.Single(validationResult.Errors);
         Assert.Equal("Test Studio already exists.", validationResult.Errors[0].ErrorMessage);
-    } 
+    }
 }

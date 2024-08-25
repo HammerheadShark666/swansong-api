@@ -15,16 +15,11 @@ namespace SwanSong.Api.Controllers;
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
-public class SongController : Controller
+public class SongController(ILogger<AlbumSongController> logger,
+                            ISongService songService) : Controller
 {
-    private readonly ILogger<AlbumSongController> _logger;
-    private readonly ISongService _songService; 
-
-    public SongController(ILogger<AlbumSongController> logger, ISongService songService)
-    { 
-        _logger = logger;
-        _songService = songService; 
-    }  
+    private readonly ILogger<AlbumSongController> _logger = logger;
+    private readonly ISongService _songService = songService;
 
     [HttpDelete("song/{id}")]
     public async Task<ActionResult<AlbumSongActionResponse>> DeleteSongAsync(long id)

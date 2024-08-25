@@ -8,14 +8,9 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Data.Repository;
 
-public class RefreshTokenRepository : IRefreshTokenRepository
+public class RefreshTokenRepository(SwanSongContext context) : IRefreshTokenRepository
 {
-    private readonly SwanSongContext _context;
-
-    public RefreshTokenRepository(SwanSongContext context)
-    {
-        _context = context;
-    }    
+    private readonly SwanSongContext _context = context;
 
     public async Task<bool> ExistsAsync(string token)
     {
@@ -23,7 +18,7 @@ public class RefreshTokenRepository : IRefreshTokenRepository
                                 .AsNoTracking()
                                 .AnyAsync(a => a.Token.Equals(token));
     }
-     
+
     public async Task AddAsync(RefreshToken refreshToken)
     {
         await _context.RefreshTokens.AddAsync(refreshToken);
@@ -53,8 +48,8 @@ public class RefreshTokenRepository : IRefreshTokenRepository
     }
 
     public void RemoveExpired(int expireDays, int accountId)
-    {  
-        var refreshTokens = _context.RefreshTokens.Where(a => a.Account.Id.Equals(accountId) 
+    {
+        var refreshTokens = _context.RefreshTokens.Where(a => a.Account.Id.Equals(accountId)
                                                             && DateTime.Now >= a.Expires
                                                                 && a.Created.AddDays(expireDays) <= DateTime.Now).ToList();
 

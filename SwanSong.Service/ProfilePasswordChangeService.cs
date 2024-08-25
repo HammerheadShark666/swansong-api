@@ -11,20 +11,13 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace SwanSong.Service;
 
-public class ProfilePasswordChangeService : IProfilePasswordChangeService
+public class ProfilePasswordChangeService(IMapper mapper,
+                                          IValidatorHelper<ProfilePasswordChangeRequest> validatorHelper,
+                                          IUnitOfWork unitOfWork) : IProfilePasswordChangeService
 {
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<ProfilePasswordChangeRequest> _validatorHelper;
-
-    public ProfilePasswordChangeService(IMapper mapper,
-                                        IValidatorHelper<ProfilePasswordChangeRequest> validatorHelper, 
-                                        IUnitOfWork unitOfWork)
-    {
-        _validatorHelper = validatorHelper; 
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<ProfilePasswordChangeRequest> _validatorHelper = validatorHelper;
 
     #region Public Functions
 
@@ -62,13 +55,7 @@ public class ProfilePasswordChangeService : IProfilePasswordChangeService
 
     private async Task<Account> GetAccountAsync(int id)
     {
-        var account = await _unitOfWork.Accounts.ByIdAsync(id);
-        if (account == null)
-        {
-            throw new KeyNotFoundException(ConstantMessages.ProfileNotFound);
-        }
-
-        return account;
+        return await _unitOfWork.Accounts.ByIdAsync(id) ?? throw new KeyNotFoundException(ConstantMessages.ProfileNotFound);
     }
 
     #endregion

@@ -11,4 +11,4 @@ public class BaseValidator<T> : AbstractValidator<T>
             ? new ValidationResult(new[] { new ValidationFailure(nameof(T), "Not Found") })
             : base.Validate(context);
     }
-} 
+}

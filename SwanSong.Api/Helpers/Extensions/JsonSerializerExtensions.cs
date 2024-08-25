@@ -4,7 +4,7 @@ namespace SwanSong.Api.Helpers.Extensions;
 
 public static class JsonSerializerExtensions
 {
-    public static T DeserializeFromCamelCase<T>(this string json)     
+    public static T DeserializeFromCamelCase<T>(this string json)
     {
         return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions
         {

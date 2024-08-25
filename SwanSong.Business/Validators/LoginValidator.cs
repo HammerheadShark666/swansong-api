@@ -12,13 +12,14 @@ public class LoginValidator : BaseValidator<LoginRequest>
     private readonly IAccountRepository _accountRepository;
 
     private ILogger<LoginValidator> _logger;
-     
+
     public LoginValidator(IAccountRepository accountRepository, ILogger<LoginValidator> logger)
     {
         _accountRepository = accountRepository;
         _logger = logger;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(login => login.Email)
                 .NotEmpty().WithMessage("Email is required.")
@@ -28,11 +29,12 @@ public class LoginValidator : BaseValidator<LoginRequest>
             RuleFor(login => login.Password)
                 .NotEmpty().WithMessage("Password is required.")
                 .Length(8, 50).WithMessage("Password length between 8 and 50.");
-              
-            RuleFor(login => login).MustAsync(async (login, cancellation) => {
+
+            RuleFor(login => login).MustAsync(async (login, cancellation) =>
+            {
                 return await ValidLoginDetails(login);
             }).WithMessage("Invalid login");
-        }); 
+        });
     }
 
     protected async Task<bool> ValidLoginDetails(LoginRequest loginRequest)
@@ -42,8 +44,8 @@ public class LoginValidator : BaseValidator<LoginRequest>
         {
             _logger.LogWarning("Invalid Login (Username - {username})", loginRequest.Email);
             return false;
-        }            
+        }
 
-        return true;          
-    }                    
+        return true;
+    }
 }

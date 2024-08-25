@@ -18,7 +18,7 @@ public class CountryValidatorTest
     private static readonly Country newCountry = new() { Id = 0, Name = "Test Country 1" };
     private static readonly Country existingCountry = new() { Id = 1, Name = "Test Country 1" };
 
-     
+
     public CountryValidatorTest()
     {
         countryRepositoryMock = new Mock<ICountryRepository>();
@@ -31,7 +31,7 @@ public class CountryValidatorTest
         ValidationResult validation = await validator.ValidateAsync(existingCountry, options => options
                                                                             .IncludeRuleSets("BeforeSave"));
         Assert.True(validation.IsValid);
-    } 
+    }
 
     [Fact]
     public async Task Before_save_validate_country_name_null_return_false()
@@ -97,5 +97,5 @@ public class CountryValidatorTest
         Assert.False(validationResult.IsValid);
         Assert.Single(validationResult.Errors);
         Assert.Equal("Test Country already exists.", validationResult.Errors[0].ErrorMessage);
-    } 
+    }
 }

@@ -4,7 +4,7 @@ namespace SwanSong.Azure.Storage;
 
 public class Base
 {
-    public Base(){}
+    public Base() { }
 
     public string GetStorageConnection()
     {

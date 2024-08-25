@@ -11,23 +11,15 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Service;
 
-public class AuthenticateService : IAuthenticateService
+public class AuthenticateService(IMapper mapper,
+                                 IValidatorHelper<LoginRequest> validatorHelper,
+                                 IUnitOfWork unitOfWork,
+                                 IRefreshTokenService refreshTokenService) : IAuthenticateService
 {
-    public readonly IUnitOfWork _unitOfWork;
-    public readonly IMapper _mapper;
-    public readonly IValidatorHelper<LoginRequest> _validatorHelper;
-    public readonly IRefreshTokenService _refreshTokenService;
-     
-    public AuthenticateService(IMapper mapper,
-                               IValidatorHelper<LoginRequest> validatorHelper,
-                               IUnitOfWork unitOfWork,
-                               IRefreshTokenService refreshTokenService)
-    {
-        _validatorHelper = validatorHelper;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-        _refreshTokenService = refreshTokenService;
-    }
+    public readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly IMapper _mapper = mapper;
+    public readonly IValidatorHelper<LoginRequest> _validatorHelper = validatorHelper;
+    public readonly IRefreshTokenService _refreshTokenService = refreshTokenService;
 
     #region Public Functions
 
@@ -66,17 +58,11 @@ public class AuthenticateService : IAuthenticateService
     #endregion
 
     #region Private Functions
-  
+
     private async Task<Account> GetAccountAsync(string email)
     {
-        var account = await _unitOfWork.Accounts.GetAsync(email);
-        if (account == null)
-        {
-            throw new AppException(ConstantMessages.InvalidToken);
-        }
-
-        return account;
-    }     
+        return await _unitOfWork.Accounts.GetAsync(email) ?? throw new AppException(ConstantMessages.InvalidToken);
+    }
 
     #endregion
 }

@@ -13,7 +13,8 @@ public class ProfileValidator : BaseValidator<ProfileRequest>
     {
         _accountRepository = accountRepository;
 
-        RuleSet("BeforeSave", () => {
+        RuleSet("BeforeSave", () =>
+        {
 
             RuleFor(profile => profile.Email)
                 .NotEmpty().WithMessage("Email is required.")
@@ -28,7 +29,8 @@ public class ProfileValidator : BaseValidator<ProfileRequest>
                 .NotEmpty().WithMessage("Last Name is required.")
                 .Length(2, 50).WithMessage("Last Name length between 2 and 50.");
 
-            RuleFor(register => register).MustAsync(async (register, cancellation) => {
+            RuleFor(register => register).MustAsync(async (register, cancellation) =>
+            {
                 return await EmailExists(register);
             }).WithMessage("Account with email already exists");
         });

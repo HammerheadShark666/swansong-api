@@ -14,12 +14,13 @@ public class ArtistValidator : BaseValidator<Artist>
         _artistRepository = artistRepository;
 
         RuleSet("BeforeSave", () =>
-        {               
+        {
             RuleFor(artist => artist.Name)
                 .NotEmpty().WithMessage("Artist name is required.")
-                .Length(1, 100).WithMessage("Artist name length between 1 and 100.");                    
+                .Length(1, 100).WithMessage("Artist name length between 1 and 100.");
 
-            RuleFor(artist => artist).MustAsync(async (artist, cancellation) => {
+            RuleFor(artist => artist).MustAsync(async (artist, cancellation) =>
+            {
                 return await ArtistNameExists(artist);
             }).WithMessage(artist => $"{artist.Name} already exists.");
 
@@ -42,5 +43,5 @@ public class ArtistValidator : BaseValidator<Artist>
         return artist.Id == 0
             ? !(await _artistRepository.ExistsAsync(artist.Name))
             : !(await _artistRepository.ExistsAsync(artist.Id, artist.Name));
-    } 
+    }
 }

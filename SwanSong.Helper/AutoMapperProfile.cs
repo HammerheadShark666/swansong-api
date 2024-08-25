@@ -7,30 +7,30 @@ namespace SwanSong.Helper;
 public class AutoMapperProfile : AutoMapper.Profile
 {
     public AutoMapperProfile()
-    { 
+    {
         CreateMap<MemberAddRequest, Member>()
             .ForMember(dest => dest.BirthPlaceId, opt => opt.MapFrom(src => src.BirthPlaceId < 1 ? null : src.BirthPlaceId));
         CreateMap<MemberUpdateRequest, Member>()
             .ForMember(dest => dest.BirthPlaceId, opt => opt.MapFrom(src => src.BirthPlaceId < 1 ? null : src.BirthPlaceId));
         CreateMap<Member, MemberActionResponse>();
         CreateMap<Member, MemberLookUpResponse>();
-        CreateMap<Member, MemberResponse>(); 
+        CreateMap<Member, MemberResponse>();
 
         CreateMap<ArtistAddRequest, Artist>();
         CreateMap<ArtistUpdateRequest, Artist>();
         CreateMap<Artist, ArtistActionResponse>();
         CreateMap<Artist, ArtistResponse>();
-        CreateMap<Artist, ArtistLookUpResponse>() 
+        CreateMap<Artist, ArtistLookUpResponse>()
           .ConstructUsing((artist, c) => new ArtistLookUpResponse(
               artist.Id,
               artist.Name,
-              artist.Photo)); 
+              artist.Photo));
 
         CreateMap<AlbumAddRequest, Album>();
         CreateMap<AlbumUpdateRequest, Album>();
         CreateMap<Album, AlbumActionResponse>();
         CreateMap<Album, AlbumResponse>()
-          .ConstructUsing((album, c) => new AlbumResponse(               
+          .ConstructUsing((album, c) => new AlbumResponse(
               album.Id,
               album.Name,
               album.ArtistId,
@@ -44,8 +44,8 @@ public class AutoMapperProfile : AutoMapper.Profile
               album.Engineers,
               album.Artwork,
               album.Photo,
-              c.Mapper.Map<List<AlbumSongResponse>>(album.AlbumSongs))); 
-         
+              c.Mapper.Map<List<AlbumSongResponse>>(album.AlbumSongs)));
+
         CreateMap<Album, AlbumLookUpResponse>()
           .ConstructUsing(album => new AlbumLookUpResponse(
               album.Id,
@@ -61,8 +61,8 @@ public class AutoMapperProfile : AutoMapper.Profile
             .ConstructUsing(albumSong => new AlbumSongResponse(
                 albumSong.Id,
                 albumSong.AlbumId,
-                albumSong.SongId, 
-                new SongResponse(albumSong.Song.Id, albumSong.Song.Title, albumSong.Song.Length),              
+                albumSong.SongId,
+                new SongResponse(albumSong.Song.Id, albumSong.Song.Title, albumSong.Song.Length),
                 albumSong.Order,
                 albumSong.Side
                 ));
@@ -76,14 +76,14 @@ public class AutoMapperProfile : AutoMapper.Profile
                 song.Id,
                 song.Title,
                 song.Length
-                ));         
-          
-        CreateMap<ProfilePasswordChangeRequest, ProfilePasswordChangeActionResponse>().ReverseMap(); 
+                ));
+
+        CreateMap<ProfilePasswordChangeRequest, ProfilePasswordChangeActionResponse>().ReverseMap();
         CreateMap<Account, ProfilePasswordChangeRequest>().ReverseMap();
         CreateMap<Account, ProfileResponse>().ReverseMap();
         CreateMap<Account, ProfileRequest>().ReverseMap();
         CreateMap<Account, JwtRefreshTokenActionResponse>().ReverseMap();
-        CreateMap<Account, LoginActionResponse>().ReverseMap(); 
+        CreateMap<Account, LoginActionResponse>().ReverseMap();
         CreateMap<RegisterRequest, Account>().ReverseMap();
         CreateMap<SwanSong.Domain.Dto.Profile, ProfileResponse>();
         CreateMap<SwanSong.Domain.Dto.JwtRefreshToken, JwtRefreshTokenActionResponse>();

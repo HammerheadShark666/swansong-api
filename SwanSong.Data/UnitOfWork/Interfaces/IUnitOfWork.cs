@@ -16,8 +16,8 @@ public interface IUnitOfWork : IDisposable
     IRefreshTokenRepository RefreshTokens { get; }
     IRecordLabelRepository RecordLabels { get; }
     ISongRepository Songs { get; }
-    IStudioRepository Studios { get; } 
-    
+    IStudioRepository Studios { get; }
+
     Task<int> CompleteAsync();
     int Complete();
 }

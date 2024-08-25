@@ -22,19 +22,14 @@ namespace SwanSong.Api.Controllers;
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
-public class MemberController : BaseController<Member>
+public class MemberController(ILogger<MemberController> logger,
+                              IMemberService memberService,
+                              IValidator<Member> validator,
+                              IMapper mapper) : BaseController<Member>(validator)
 {
-    private readonly ILogger<MemberController> _logger;
-    private readonly IMemberService _memberService;
-    private readonly IMapper _mapper; 
-
-    public MemberController(ILogger<MemberController> logger, IMemberService memberService,
-                           IValidator<Member> validator, IMapper mapper) : base(validator)
-    {
-        _logger = logger;
-        _mapper = mapper;
-        _memberService = memberService;
-    }
+    private readonly ILogger<MemberController> _logger = logger;
+    private readonly IMemberService _memberService = memberService;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet("")]
     public async Task<ActionResult<List<MemberResponse>>> GetAllMembersAsync([FromQuery] PaginationFilter filter)
@@ -44,13 +39,13 @@ public class MemberController : BaseController<Member>
         var totalRecords = await _memberService.CountAsync();
 
         return Ok(PagingHelper.CreatePagedReponse<MemberResponse>(_mapper.Map<List<MemberResponse>>(members), paginationFilter, totalRecords));
-    } 
+    }
 
     [HttpGet("random")]
     public async Task<ActionResult<List<MemberLookUpResponse>>> GetRandomMembersAsync()
     {
         var members = await _memberService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords);
-        return Ok(_mapper.Map<List<MemberLookUpResponse>>(members)); 
+        return Ok(_mapper.Map<List<MemberLookUpResponse>>(members));
     }
 
     [HttpGet("search/{criteria}")]
@@ -79,7 +74,7 @@ public class MemberController : BaseController<Member>
     {
         var members = await _memberService.GetMembersByArtistAsync(artistId);
         return Ok(_mapper.Map<List<MemberResponse>>(members));
-    } 
+    }
 
     [HttpPost("member/add")]
     public async Task<ActionResult<MemberActionResponse>> PostAddMemberAsync([FromBody] MemberAddRequest memberAddRequest)
@@ -111,7 +106,7 @@ public class MemberController : BaseController<Member>
 
     [HttpDelete("member/{id}")]
     public async Task<ActionResult> DeleteMemberAsync(long id)
-    { 
+    {
         await _memberService.DeleteAsync(await _memberService.GetAsync(id));
 
         return Ok();
@@ -131,5 +126,5 @@ public class MemberController : BaseController<Member>
         {
             return BadRequest(ConstantMessages.NoFileToSave);
         }
-    }   
+    }
 }

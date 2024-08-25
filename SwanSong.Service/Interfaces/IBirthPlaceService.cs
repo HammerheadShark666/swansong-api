@@ -7,7 +7,7 @@ namespace SwanSong.Service.Interfaces;
 public interface IBirthPlaceService
 {
     Task<BirthPlace> GetAsync(int id);
-    Task<List<BirthPlace>> GetAllAsync(); 
+    Task<List<BirthPlace>> GetAllAsync();
     Task<BirthPlace> AddAsync(BirthPlace birthPlace);
     void Update(BirthPlace birthPlace);
     void DeleteAsync(BirthPlace birthPlace);
