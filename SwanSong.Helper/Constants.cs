@@ -34,7 +34,9 @@ public static class Constants
     public const string SmtpGmailUsername = "SMTP_GMAIL_USERNAME";
     public const string SmtpGmailPassword = "SMTP_GMAIL_PASSWORD";
 
-    public const string FrontEndBaseUrl = "FRONT_END_BASE_URL";
+    public const string VueFrontEndBaseUrl = "VUE_FRONT_END_BASE_URL";
+    public const string NextJsFrontEndBaseUrl = "NEXTJS_FRONT_END_BASE_URL";
+    public const string ProductionFrontEndBaseUrl = "PRODUCTION_FRONT_END_BASE_URL";
 
     public const string ApplicationInsightsConnectionString = "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
