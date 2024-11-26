@@ -13,6 +13,7 @@ public interface IArtistService
     Task<long> CountAsync();
     Task<List<Artist>> GetAllAsync(PaginationFilter filter);
     Task<List<Artist>> GetRandomAsync(int numberOfArtists);
+    Task<Artist> GetArtistFullDetailsAsync(long id);
     Task<Artist> GetAsync(long id);
     Task<string> UpdateArtistPhotoAsync(long id, IFormFile file);
     List<Artist> GetAll();

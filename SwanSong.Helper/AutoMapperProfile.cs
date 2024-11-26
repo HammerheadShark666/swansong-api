@@ -15,6 +15,21 @@ public class AutoMapperProfile : AutoMapper.Profile
         CreateMap<Member, MemberActionResponse>();
         CreateMap<Member, MemberLookUpResponse>();
         CreateMap<Member, MemberResponse>();
+        CreateMap<Member, ArtistMemberResponse>();
+
+        CreateMap<Album, ArtistAlbumResponse>();
+        CreateMap<Artist, ArtistWithAlbumsResponse>()
+            .ConstructUsing((artist, c) => new ArtistWithAlbumsResponse(
+                artist.Id,
+                artist.Name,
+                artist.Description,
+                artist.Photo,
+                artist.FormationYear,
+                artist.DisbandYear,
+                artist.CountryId,
+                c.Mapper.Map<List<ArtistMemberResponse>>(artist.Members),
+                c.Mapper.Map<List<ArtistAlbumResponse>>(artist.Albums)
+            ));
 
         CreateMap<ArtistAddRequest, Artist>();
         CreateMap<ArtistUpdateRequest, Artist>();

@@ -68,7 +68,7 @@ public class AlbumController(ILogger<AlbumController> logger,
         return Ok(_mapper.Map<List<AlbumLookUpResponse>>(await _albumService.SearchByLetterAsync(letter)));
     }
 
-    // [AllowAnonymous]
+    [AllowAnonymous]
     [HttpGet("album/{id}")]
     public async Task<ActionResult<AlbumResponse>> GetAlbumAsync(long id)
     {
@@ -131,82 +131,4 @@ public class AlbumController(ILogger<AlbumController> logger,
             return BadRequest(ConstantMessages.NoFileToSave);
         }
     }
-
-    //[HttpGet("search/{criteria}")]
-    //public async Task<ActionResult<List<AlbumLookUpResponse>>> SearchAlbumsAsync(string criteria)
-    //{
-    //    var albums = await _albumService.SearchByNameAsync(criteria);
-    //    return Ok(_mapper.Map<List<AlbumLookUpResponse>>(albums));
-    //}
-
-    //[HttpGet("search-by-letter/{letter}")]
-    //public async Task<ActionResult<List<AlbumLookUpResponse>>> SearchAlbumsByLetterAsync(string letter)
-    //{
-    //    var albums = await _albumService.SearchByLetterAsync(letter);
-    //    return Ok(_mapper.Map<List<AlbumLookUpResponse>>(albums));
-    //}
-
-    //[HttpGet("album/{id}")]
-    //public async Task<ActionResult<AlbumResponse>> GetAlbumAsync(long id)
-    //{
-    //    return Ok(_mapper.Map<AlbumResponse>(await _albumService.GetAsync(id)));
-    //}
-
-    //[HttpGet("artist/{id}")]
-    //public async Task<ActionResult<List<AlbumLookUpResponse>>> GetAlbumsForArtistAsync(long id)
-    //{
-    //    var albums = await _albumService.GetAlbumsForArtistAsync(id);
-    //    return Ok(_mapper.Map<List<AlbumLookUpResponse>>(albums));
-    //}
-
-    //[HttpPost("album/add")]
-    //public async Task<ActionResult<AlbumActionResponse>> PostAddAlbumAsync([FromBody] AlbumAddRequest albumAddRequest)
-    //{
-    //    Album album = _mapper.Map<Album>(albumAddRequest);
-
-    //    var validationResult = await Validate(album, Constants.ValidationEventBeforeSave);
-    //    if (validationResult != null)
-    //        return BadRequest(validationResult);
-
-    //    var savedAlbum = await _albumService.AddAsync(album);
-
-    //    return Ok(new AlbumActionResponse(savedAlbum.Id));
-    //}
-
-    //[HttpPut("album/update")]
-    //public async Task<ActionResult> PutUpdateAlbumAsync([FromBody] AlbumUpdateRequest albumUpdateRequest)
-    //{
-    //    Album album = _mapper.Map<Album>(albumUpdateRequest);
-
-    //    var validationResult = await Validate(album, Constants.ValidationEventBeforeSave);
-    //    if (validationResult != null)
-    //        return BadRequest(validationResult);
-
-    //    _albumService.Update(album);
-
-    //    return Ok();
-    //}
-
-    //[HttpDelete("album/{id}")]
-    //public async Task<ActionResult> DeleteAlbumAsync(long id)
-    //{
-    //    await _albumService.DeleteAsync(await _albumService.GetAsync(id));
-    //    return Ok();
-    //}
-
-    //[HttpPost("album/upload-photo/{id}")]
-    //[Consumes("multipart/form-data")]
-    //[ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    //public async Task<ActionResult> PostSaveAlbumPhotoAsync(long id)
-    //{
-    //    if (Request.Form.Files.Count > 0)
-    //    {
-    //        var filename = await _albumService.UpdateAlbumPhotoAsync(id, Request.Form.Files[0]);
-    //        return Ok(new AlbumPhotoActionResponse(filename));
-    //    }
-    //    else
-    //    {
-    //        return BadRequest(ConstantMessages.NoFileToSave);
-    //    }
-    //}
 }

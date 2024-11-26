@@ -52,6 +52,11 @@ public class ArtistService(IMapper mapper,
         return (List<Artist>)await _unitOfWork.Artists.SearchByNameAsync(criteria);
     }
 
+    public async Task<Artist> GetArtistFullDetailsAsync(long id)
+    {
+        return await _unitOfWork.Artists.GetArtistFullDetailsAsync(id) ?? throw new ArtistNotFoundException("Artist not found.");
+    }
+
     public async Task<List<Artist>> SearchByAlphaNumericAsync(string alphanumeric)
     {
         return (List<Artist>)await _unitOfWork.Artists.SearchByAlphaNumericAsync(alphanumeric);
@@ -61,6 +66,7 @@ public class ArtistService(IMapper mapper,
     {
         return await _unitOfWork.Artists.ByIdAsync(id) ?? throw new ArtistNotFoundException("Artist not found.");
     }
+
 
     public async Task<string> UpdateArtistPhotoAsync(long id, IFormFile file)
     {
