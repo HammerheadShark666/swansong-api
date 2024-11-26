@@ -38,6 +38,7 @@ public class ArtistRepository(SwanSongContext context) : IArtistRepository
                                 .CountAsync();
     }
 
+
     public async Task<IEnumerable<Artist>> SearchByNameAsync(string criteria)
     {
         return await (from artist in _context.Artists
@@ -60,6 +61,16 @@ public class ArtistRepository(SwanSongContext context) : IArtistRepository
     {
         return await _context.Artists
                                 .Include(e => e.Country)
+                                .Where(a => a.Id.Equals(id))
+                                .FirstOrDefaultAsync();
+    }
+
+    public async Task<Artist> GetArtistFullDetailsAsync(long id)
+    {
+        return await _context.Artists
+                                .Include(e => e.Country)
+                                .Include(e => e.Albums)
+                                .Include(e => e.Members)
                                 .Where(a => a.Id.Equals(id))
                                 .FirstOrDefaultAsync();
     }

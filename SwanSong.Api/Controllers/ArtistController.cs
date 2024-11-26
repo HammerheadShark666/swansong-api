@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -38,11 +39,11 @@ public class ArtistController(ILogger<AlbumController> logger,
         return Ok(_mapper.Map<List<ArtistLookUpResponse>>(artists));
     }
 
+    [AllowAnonymous]
     [HttpGet("random")]
-    public async Task<ActionResult<List<ArtistResponse>>> GetRandomArtistsAsync()
+    public async Task<ActionResult<List<ArtistLookUpResponse>>> GetRandomArtistsAsync()
     {
-        var artists = await _artistService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords);
-        return Ok(_mapper.Map<List<ArtistResponse>>(artists));
+        return Ok(_mapper.Map<List<ArtistLookUpResponse>>(await _artistService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords)));
     }
 
     [HttpGet("")]
@@ -71,6 +72,13 @@ public class ArtistController(ILogger<AlbumController> logger,
     public async Task<ActionResult<ArtistResponse>> GetArtistAsync(long id)
     {
         return Ok(_mapper.Map<ArtistResponse>(await _artistService.GetAsync(id)));
+    }
+
+    [AllowAnonymous]
+    [HttpGet("artist-full-details/{id}")]
+    public async Task<ActionResult<ArtistWithAlbumsResponse>> GetArtistWithAlbumsAsync(long id)
+    {
+        return Ok(_mapper.Map<ArtistWithAlbumsResponse>(await _artistService.GetArtistFullDetailsAsync(id)));
     }
 
     [HttpPost("artist/add")]

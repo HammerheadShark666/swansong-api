@@ -10,6 +10,7 @@ public interface IArtistRepository
     Task<IEnumerable<Artist>> SearchByAlphaNumericAsync(string alphanumeric);
     Task<long> CountAsync();
     Task<List<Artist>> GetAllAsync(int pageNumber, int pageSize);
+    Task<Artist> GetArtistFullDetailsAsync(long id);
     Task<List<Artist>> GetRandomAsync(int numberOfArtists);
     Task<Artist> GetAsync(long id);
     Task<Artist> UpdateArtistPhotoAsync(long id, string filename);
