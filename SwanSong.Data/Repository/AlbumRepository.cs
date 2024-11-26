@@ -18,15 +18,16 @@ public class AlbumRepository(SwanSongContext context) : IAlbumRepository
                              .OrderBy(a => a.Name)
                              .Skip((pageNumber - 1) * pageSize)
                              .Take(pageSize)
+                             .Include(a => a.Artist)
                              .AsNoTracking()
                              .ToListAsync();
     }
 
     public async Task<List<Album>> GetRandomAsync(int numberOfAlbums)
     {
+        var random = new Random();
         return await _context.Albums
                              .Include(a => a.Artist)
-                             .Include(s => s.AlbumSongs).ThenInclude(t => t.Song)
                              .OrderByDescending(x => Guid.NewGuid()).Take(numberOfAlbums)
                              .AsNoTracking()
                              .ToListAsync();
@@ -44,6 +45,8 @@ public class AlbumRepository(SwanSongContext context) : IAlbumRepository
                       from label in lbl.DefaultIfEmpty()
                       where album.Name.ToUpper().Contains(criteria.ToUpper())
                       select album)
+                      .Include(e => e.Artist)
+                      .Include(e => e.Label)
                       .AsNoTracking()
                       .ToListAsync();
     }
@@ -53,6 +56,7 @@ public class AlbumRepository(SwanSongContext context) : IAlbumRepository
         return await (from album in _context.Albums
                       where album.Name.ToUpper().Substring(0, 1).Equals(letter.ToUpper())
                       select album)
+                      .Include(e => e.Artist)
                       .AsNoTracking()
                       .ToListAsync();
     }
@@ -62,6 +66,7 @@ public class AlbumRepository(SwanSongContext context) : IAlbumRepository
         return await (from album in _context.Albums
                       where album.ArtistId.Equals(artistId)
                       select album)
+                      .Include(e => e.Artist)
                       .AsNoTracking()
                       .ToListAsync();
     }
