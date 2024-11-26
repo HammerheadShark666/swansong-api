@@ -33,11 +33,13 @@ public class AutoMapperProfile : AutoMapper.Profile
           .ConstructUsing((album, c) => new AlbumResponse(
               album.Id,
               album.Name,
+              album.Description,
               album.ArtistId,
               album.Artist.Name,
               album.ReleaseDate,
               album.RecordedDate,
               album.LabelId,
+              (album.Label != null ? album.Label.Name : ""),
               album.StudioId,
               album.Producers,
               album.Arrangers,
@@ -50,8 +52,8 @@ public class AutoMapperProfile : AutoMapper.Profile
           .ConstructUsing(album => new AlbumLookUpResponse(
               album.Id,
               album.Name,
-              album.ReleaseDate, "",
-              album.Photo, "", ""));
+              album.Artist.Name,
+              album.Photo));
 
         CreateMap<AlbumSongAddRequest, AlbumSong>();
         CreateMap<AlbumSongUpdateRequest, AlbumSong>();
