@@ -19,6 +19,10 @@ public class Album : BaseEntity
     [Required]
     public string Name { get; set; }
 
+    [Column(TypeName = "varchar(MAX)")]
+    public string Description { get; set; }
+
+
     [Column(TypeName = "nvarchar(100)")]
     public string Photo { get; set; }
 
