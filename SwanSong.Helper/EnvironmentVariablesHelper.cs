@@ -6,7 +6,9 @@ public class EnvironmentVariablesHelper
 {
     public static string ApplicationInsightsConnectionString = Environment.GetEnvironmentVariable(Constants.ApplicationInsightsConnectionString);
 
-    public static string FrontEndBaseUrl = Environment.GetEnvironmentVariable(Constants.FrontEndBaseUrl);
+    public static string VueFrontEndBaseUrl = Environment.GetEnvironmentVariable(Constants.VueFrontEndBaseUrl);
+    public static string NextJsFrontEndBaseUrl = Environment.GetEnvironmentVariable(Constants.NextJsFrontEndBaseUrl);
+    public static string ProductionFrontEndBaseUrl = Environment.GetEnvironmentVariable(Constants.ProductionFrontEndBaseUrl);
 
     public static string JwtSettingsSercret = Environment.GetEnvironmentVariable(Constants.JwtSettingsSercret);
     public static int JwtSettingsRefreshTokenTtl = Convert.ToInt16(Environment.GetEnvironmentVariable(Constants.JwtSettingsRefreshTokenTtl));

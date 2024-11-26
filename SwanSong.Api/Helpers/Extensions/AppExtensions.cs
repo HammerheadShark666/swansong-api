@@ -6,14 +6,14 @@ namespace SwanSong.Api.Helpers.Extensions;
 
 public static class AppExtensions
 {
-    public static void ConfigureSwagger(this WebApplication app)
+    public static void ConfigureSwagger(this WebApplication webApplication)
     {
-        if (app.Environment.IsDevelopment())
+        if (webApplication.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
+            webApplication.UseSwagger();
+            webApplication.UseSwaggerUI(options =>
             {
-                var descriptions = app.DescribeApiVersions();
+                var descriptions = webApplication.DescribeApiVersions();
 
                 // Build a swagger endpoint for each discovered API version
                 foreach (var description in descriptions)
@@ -26,14 +26,15 @@ public static class AppExtensions
         }
     }
 
-    public static void ConfigureCors(this WebApplication app)
+    public static void ConfigureCors(this WebApplication webApplication)
     {
-        app.UseCors(x => x
+        webApplication.UseCors(x => x
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
-            .WithOrigins(EnvironmentVariablesHelper.FrontEndBaseUrl)
-            );
+            .WithOrigins(EnvironmentVariablesHelper.VueFrontEndBaseUrl,
+                         EnvironmentVariablesHelper.NextJsFrontEndBaseUrl,
+                         EnvironmentVariablesHelper.ProductionFrontEndBaseUrl));
 
     }
 }

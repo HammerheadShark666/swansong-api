@@ -60,8 +60,8 @@ public class RegisterService(IMapper mapper,
 
     private static void SendVerificationEmail(string toEmail, string verificationToken)
     {
-        string message = !string.IsNullOrEmpty(EnvironmentVariablesHelper.FrontEndBaseUrl)
-                              ? EmailMessages.VerifyEmailAddressEmail(EnvironmentVariablesHelper.FrontEndBaseUrl, verificationToken)
+        string message = !string.IsNullOrEmpty(EnvironmentVariablesHelper.ProductionFrontEndBaseUrl)
+                              ? EmailMessages.VerifyEmailAddressEmail(EnvironmentVariablesHelper.ProductionFrontEndBaseUrl, verificationToken)
                               : EmailMessages.VerifyEmailAddressNoVerifyUrlEmail(verificationToken);
 
         SmtpHelper.SendEmail(toEmail, ConstantMessages.RegistrationVerifyEmailSubject, message);

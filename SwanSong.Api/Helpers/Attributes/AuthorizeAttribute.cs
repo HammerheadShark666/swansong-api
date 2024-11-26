@@ -15,11 +15,14 @@ public class AuthorizeAttribute(params SwanSong.Domain.Helper.Enums.Role[] roles
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        var account = (Account)context.HttpContext.Items[ConstantMessages.Account];
-        if (account == null || (_roles.Any() && !_roles.Contains(account.Role)))
+        if (context.HttpContext.GetEndpoint().Metadata.GetMetadata<Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute>() is not object)
         {
-            // not logged in or role not authorized
-            context.Result = new JsonResult(new { message = ConstantMessages.Unauthorized }) { StatusCode = StatusCodes.Status401Unauthorized };
+            var account = (Account)context.HttpContext.Items[ConstantMessages.Account];
+            if (account == null || (_roles.Any() && !_roles.Contains(account.Role)))
+            {
+                // not logged in or role not authorized
+                context.Result = new JsonResult(new { message = ConstantMessages.Unauthorized }) { StatusCode = StatusCodes.Status401Unauthorized };
+            }
         }
     }
 }

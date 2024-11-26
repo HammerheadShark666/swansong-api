@@ -99,8 +99,8 @@ public class ResetPasswordService(IMapper mapper,
 
     private static void SendPasswordResetEmail(string toEmail, string resetToken)
     {
-        string message = !string.IsNullOrEmpty(EnvironmentVariablesHelper.FrontEndBaseUrl)
-                             ? EmailMessages.PasswordResetEmail(EnvironmentVariablesHelper.FrontEndBaseUrl, resetToken)
+        string message = !string.IsNullOrEmpty(EnvironmentVariablesHelper.ProductionFrontEndBaseUrl)
+                             ? EmailMessages.PasswordResetEmail(EnvironmentVariablesHelper.ProductionFrontEndBaseUrl, resetToken)
                              : EmailMessages.PasswordResetNoResetUrlEmail(resetToken);
 
         SmtpHelper.SendEmail(toEmail, ConstantMessages.PasswordResetEmailInstruction, message);
