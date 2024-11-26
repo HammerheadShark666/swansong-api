@@ -12,7 +12,7 @@ public record MemberUpdateRequest(long Id, long ArtistId, string StageName, stri
 
 public record MemberResponse(long Id, long ArtistId, string StageName,
                              string FirstName, string MiddleName, string Surname,
-                             string Photo, DateTime? DateOfBirth, DateTime? DateOfDeath);
+                             string Photo, DateTime? DateOfBirth, DateTime? DateOfDeath, string Description);
 
 public record MemberLookUpResponse(long Id, string StageName, string Photo);
 

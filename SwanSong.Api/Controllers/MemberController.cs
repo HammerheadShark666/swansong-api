@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -41,39 +42,36 @@ public class MemberController(ILogger<MemberController> logger,
         return Ok(PagingHelper.CreatePagedReponse<MemberResponse>(_mapper.Map<List<MemberResponse>>(members), paginationFilter, totalRecords));
     }
 
+    [AllowAnonymous]
     [HttpGet("random")]
     public async Task<ActionResult<List<MemberLookUpResponse>>> GetRandomMembersAsync()
     {
-        var members = await _memberService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords);
-        return Ok(_mapper.Map<List<MemberLookUpResponse>>(members));
+        return Ok(_mapper.Map<List<MemberLookUpResponse>>(await _memberService.GetRandomAsync(EnvironmentVariablesHelper.NumberOfRandomRecords)));
     }
 
     [HttpGet("search/{criteria}")]
     public async Task<ActionResult<List<MemberResponse>>> GetSearchMembersAsync(string criteria)
     {
-        var members = await _memberService.SearchByNameAsync(criteria);
-        return Ok(_mapper.Map<List<MemberResponse>>(members));
+        return Ok(_mapper.Map<List<MemberResponse>>(await _memberService.SearchByNameAsync(criteria)));
     }
 
     [HttpGet("search-by-letter/{letter}")]
     public async Task<ActionResult<List<MemberResponse>>> GetSearchMembersByLetterAsync(string letter)
     {
-        var members = await _memberService.SearchByLetterAsync(letter);
-        return Ok(_mapper.Map<List<MemberResponse>>(members));
+        return Ok(_mapper.Map<List<MemberResponse>>(await _memberService.SearchByLetterAsync(letter)));
     }
 
+    [AllowAnonymous]
     [HttpGet("member/{id}")]
     public async Task<ActionResult<MemberResponse>> GetMemberAsync(long id)
     {
-        var member = await _memberService.GetAsync(id);
-        return Ok(_mapper.Map<MemberResponse>(member));
+        return Ok(_mapper.Map<MemberResponse>(await _memberService.GetAsync(id)));
     }
 
     [HttpGet("artist/{artistId}")]
     public async Task<ActionResult<List<MemberResponse>>> GetMembersForArtistAsync(long artistId)
     {
-        var members = await _memberService.GetMembersByArtistAsync(artistId);
-        return Ok(_mapper.Map<List<MemberResponse>>(members));
+        return Ok(_mapper.Map<List<MemberResponse>>(await _memberService.GetMembersByArtistAsync(artistId)));
     }
 
     [HttpPost("member/add")]
