@@ -22,6 +22,7 @@ builder.Services.ConfigureVersioning();
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
 app.UseDeveloperExceptionPage();
 app.ConfigureSwagger();
 app.UseRouting();
