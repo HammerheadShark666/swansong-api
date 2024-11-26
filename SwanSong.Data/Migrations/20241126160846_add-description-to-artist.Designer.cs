@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SwanSong.Data;
 
@@ -11,9 +12,11 @@ using SwanSong.Data;
 namespace SwanSong.Data.Migrations
 {
     [DbContext(typeof(SwanSongContext))]
-    partial class SwanSongContextModelSnapshot : ModelSnapshot
+    [Migration("20241126160846_add-description-to-artist")]
+    partial class adddescriptiontoartist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

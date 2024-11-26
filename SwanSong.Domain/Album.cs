@@ -22,7 +22,6 @@ public class Album : BaseEntity
     [Column(TypeName = "varchar(MAX)")]
     public string Description { get; set; }
 
-
     [Column(TypeName = "nvarchar(100)")]
     public string Photo { get; set; }
 
