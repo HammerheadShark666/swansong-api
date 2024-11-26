@@ -21,6 +21,9 @@ public class Member : BaseEntity
     [Required]
     public string StageName { get; set; }
 
+    [Column(TypeName = "varchar(MAX)")]
+    public string Description { get; set; }
+
     [Column(TypeName = "nvarchar(50)")]
     [Required]
     public string FirstName { get; set; }
