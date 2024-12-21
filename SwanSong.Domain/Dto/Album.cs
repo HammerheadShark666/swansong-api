@@ -19,3 +19,5 @@ public record AlbumResponse(long Id, string Name, string Description, long? Arti
 public record AlbumActionResponse(long Id);
 
 public record AlbumPhotoActionResponse(string filename);
+
+public record AlbumLookUpsResponse(List<ArtistLookUpResponse> Artists, List<RecordLabelResponse> RecordLabels, List<StudioResponse> Studios);

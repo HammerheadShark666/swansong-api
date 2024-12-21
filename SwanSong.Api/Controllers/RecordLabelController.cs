@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace SwanSong.Api.Controllers;
 
 [ApiVersion("1.0")]
-[Authorize]
+//[Authorize]
 [Route("api/v{version:apiVersion}/record-labels")]
 [ApiController]
 [ApiConventionType(typeof(DefaultApiConventions))]

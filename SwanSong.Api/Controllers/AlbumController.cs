@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Api.Controllers;
 
-[Authorize]
+//[Authorize]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/albums")]
 [ApiController]
@@ -29,12 +29,18 @@ namespace SwanSong.Api.Controllers;
 [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
 public class AlbumController(ILogger<AlbumController> logger,
                              IAlbumService albumService,
+                             IArtistService artistService,
+                             IRecordLabelService recordLabelService,
+                             IStudioService studioService,
                              IValidator<Album> validator,
                              IMapper mapper,
                              IAlbumHelper albumHelper) : BaseController<Album>(validator)
 {
     private readonly ILogger<AlbumController> _logger = logger;
     private readonly IAlbumService _albumService = albumService;
+    private readonly IArtistService _artistService = artistService;
+    private readonly IRecordLabelService _recordLabelService = recordLabelService;
+    private readonly IStudioService _studioService = studioService;
     private readonly IMapper _mapper = mapper;
     private readonly IAlbumHelper _albumHelper = albumHelper;
 
@@ -106,7 +112,7 @@ public class AlbumController(ILogger<AlbumController> logger,
 
         _albumService.Update(album);
 
-        return Ok();
+        return Ok(new AlbumActionResponse(album.Id));
     }
 
     [HttpDelete("album/{id}")]
@@ -123,12 +129,27 @@ public class AlbumController(ILogger<AlbumController> logger,
     {
         if (Request.Form.Files.Count > 0)
         {
-            var filename = await _albumService.UpdateAlbumPhotoAsync(id, Request.Form.Files[0]);
+            var file = Request.Form.Files[0];
+
+            if (file.Length >= Constants.MaxFileSize)
+                return BadRequest(ConstantMessages.FileTooBig);
+
+            var filename = await _albumService.UpdateAlbumPhotoAsync(id, file);
             return Ok(new AlbumPhotoActionResponse(filename));
         }
         else
         {
             return BadRequest(ConstantMessages.NoFileToSave);
         }
+    }
+
+    [HttpGet("lookups")]
+    public async Task<ActionResult<AlbumLookUpsResponse>> GetLookupsForAlbumAsync()
+    {
+        List<ArtistLookUpResponse> artists = _mapper.Map<List<ArtistLookUpResponse>>(_artistService.GetAll());
+        List<RecordLabelResponse> recordLabels = _mapper.Map<List<RecordLabelResponse>>(await _recordLabelService.GetAllAsync());
+        List<StudioResponse> studios = _mapper.Map<List<StudioResponse>>(await _studioService.GetAllAsync());
+
+        return Ok(new AlbumLookUpsResponse(artists, recordLabels, studios));
     }
 }

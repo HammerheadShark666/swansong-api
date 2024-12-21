@@ -41,8 +41,33 @@ public class AutoMapperProfile : AutoMapper.Profile
               artist.Name,
               artist.Photo));
 
-        CreateMap<AlbumAddRequest, Album>();
-        CreateMap<AlbumUpdateRequest, Album>();
+        CreateMap<AlbumAddRequest, Album>()
+            .ForMember(dest => dest.LabelId, opt => opt.MapFrom(src => src.LabelId == 0 ? null : src.LabelId))
+            .ForMember(dest => dest.StudioId, opt => opt.MapFrom(src => src.StudioId == 0 ? null : src.StudioId));
+
+        //.ConstructUsing((albumAddRequest, c) => new Album(
+
+        //      albumAddRequest.Name,
+        //      albumAddRequest.ArtistId,
+        //      albumAddRequest.ReleaseDate,
+        //      albumAddRequest.RecordedDate,
+        //      albumAddRequest.LabelId != null ? albumAddRequest.LabelId : null,
+        //      albumAddRequest.StudioId,
+        //      albumAddRequest.Producers,
+        //      albumAddRequest.Arrangers,
+        //      albumAddRequest.Engineers,
+        //      albumAddRequest.Artwork,
+        //      albumAddRequest.Photo,
+        //      new List<AlbumSongResponse>()
+        //      ));
+
+
+
+
+        CreateMap<AlbumUpdateRequest, Album>()
+            .ForMember(dest => dest.LabelId, opt => opt.MapFrom(src => src.LabelId == 0 ? null : src.LabelId))
+            .ForMember(dest => dest.StudioId, opt => opt.MapFrom(src => src.StudioId == 0 ? null : src.StudioId));
+
         CreateMap<Album, AlbumActionResponse>();
         CreateMap<Album, AlbumResponse>()
           .ConstructUsing((album, c) => new AlbumResponse(

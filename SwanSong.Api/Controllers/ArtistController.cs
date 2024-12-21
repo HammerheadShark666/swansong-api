@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Api.Controllers;
 
-[Authorize]
+//[Authorize]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/artists")]
 [ApiController]

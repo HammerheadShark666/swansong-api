@@ -41,4 +41,6 @@ public static class Constants
     public const string ApplicationInsightsConnectionString = "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
     public const string ValidationEventBeforeSave = "BeforeSave";
+
+    public const int MaxFileSize = 500000;
 }

@@ -3,6 +3,7 @@
 public class ConstantMessages
 {
     public const string NoFileToSave = "No file to save";
+    public const string FileTooBig = "File must be less than 3mb.";
     public const string AlbumSongNotSent = "Album Song not sent";
 
     public static string PasswordResetEmailInstruction = "Please check your email for password reset instructions";
