@@ -34,6 +34,7 @@ public static class AppExtensions
             .AllowCredentials()
             .WithOrigins(EnvironmentVariablesHelper.VueFrontEndBaseUrl,
                          EnvironmentVariablesHelper.NextJsFrontEndBaseUrl,
+                         EnvironmentVariablesHelper.NextJsFrontEndAdminBaseUrl,
                          EnvironmentVariablesHelper.ProductionFrontEndBaseUrl));
 
     }

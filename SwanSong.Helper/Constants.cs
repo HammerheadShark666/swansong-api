@@ -36,11 +36,13 @@ public static class Constants
 
     public const string VueFrontEndBaseUrl = "VUE_FRONT_END_BASE_URL";
     public const string NextJsFrontEndBaseUrl = "NEXTJS_FRONT_END_BASE_URL";
+    public const string NextJsFrontEndAdminBaseUrl = "NEXTJS_FRONT_END_ADMIN_BASE_URL";
     public const string ProductionFrontEndBaseUrl = "PRODUCTION_FRONT_END_BASE_URL";
 
     public const string ApplicationInsightsConnectionString = "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
     public const string ValidationEventBeforeSave = "BeforeSave";
+    public const string ValidationEventBeforeSaveDescription = "BeforeSaveDescription";
 
     public const int MaxFileSize = 500000;
 }

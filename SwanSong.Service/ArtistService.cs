@@ -9,6 +9,7 @@ using SwanSong.Helper.Exceptions;
 using SwanSong.Helper.Filter;
 using SwanSong.Helper.Interfaces;
 using SwanSong.Service.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -67,7 +68,6 @@ public class ArtistService(IMapper mapper,
         return await _unitOfWork.Artists.ByIdAsync(id) ?? throw new ArtistNotFoundException("Artist not found.");
     }
 
-
     public async Task<string> UpdateArtistPhotoAsync(long id, IFormFile file)
     {
         var artist = await _unitOfWork.Artists.ByIdAsync(id) ?? throw new ArtistNotFoundException("Artist not found.");
@@ -75,10 +75,25 @@ public class ArtistService(IMapper mapper,
         string originalFileName = artist.Photo;
 
         await _azureStorageHelper.SaveBlobToAzureStorageContainerAsync(file, Constants.AzureStorageContainerArtists, newFileName);
-        await DeleteOriginalFileAsync(originalFileName, newFileName, Constants.AzureStorageContainerArtists);
         await _unitOfWork.Artists.UpdateArtistPhotoAsync(id, newFileName);
 
+        if (!String.IsNullOrEmpty(originalFileName))
+            await DeleteOriginalFileAsync(originalFileName, newFileName, Constants.AzureStorageContainerArtists);
+
         return newFileName;
+    }
+
+    public async Task UpdateDescriptionAsync(long id, string description)
+    {
+        Artist existingArtist = await GetAsync(id) ?? throw new ArtistNotFoundException("Artist not found (" + id + ")");
+
+        existingArtist.Description = description;
+        existingArtist.ModifiedDate = DateTime.Now;
+
+        _unitOfWork.Artists.Update(existingArtist);
+        _unitOfWork.Complete();
+
+        return;
     }
 
     public async Task<Artist> AddAsync(Artist artist)

@@ -8,14 +8,18 @@ public class AutoMapperProfile : AutoMapper.Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<MemberAddRequest, Member>()
-            .ForMember(dest => dest.BirthPlaceId, opt => opt.MapFrom(src => src.BirthPlaceId < 1 ? null : src.BirthPlaceId));
         CreateMap<MemberUpdateRequest, Member>()
+            .ForMember(dest => dest.ArtistId, opt => opt.MapFrom(src => src.ArtistId == 0 ? null : src.ArtistId))
             .ForMember(dest => dest.BirthPlaceId, opt => opt.MapFrom(src => src.BirthPlaceId < 1 ? null : src.BirthPlaceId));
         CreateMap<Member, MemberActionResponse>();
         CreateMap<Member, MemberLookUpResponse>();
         CreateMap<Member, MemberResponse>();
         CreateMap<Member, ArtistMemberResponse>();
+        CreateMap<MemberDescriptionUpdateRequest, Member>();
+
+        CreateMap<MemberAddRequest, Member>()
+            .ForMember(dest => dest.ArtistId, opt => opt.MapFrom(src => src.ArtistId == 0 ? null : src.ArtistId))
+            .ForMember(dest => dest.BirthPlaceId, opt => opt.MapFrom(src => src.BirthPlaceId < 1 ? null : src.BirthPlaceId));
 
         CreateMap<Album, ArtistAlbumResponse>();
         CreateMap<Artist, ArtistWithAlbumsResponse>()
@@ -31,8 +35,18 @@ public class AutoMapperProfile : AutoMapper.Profile
                 c.Mapper.Map<List<ArtistAlbumResponse>>(artist.Albums)
             ));
 
-        CreateMap<ArtistAddRequest, Artist>();
-        CreateMap<ArtistUpdateRequest, Artist>();
+        CreateMap<ArtistDescriptionUpdateRequest, Artist>();
+
+        CreateMap<ArtistAddRequest, Artist>()
+            .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.CountryId == 0 ? null : src.CountryId))
+            .ForMember(dest => dest.FormationYear, opt => opt.MapFrom(src => src.FormationYear == 0 ? null : src.FormationYear))
+            .ForMember(dest => dest.DisbandYear, opt => opt.MapFrom(src => src.DisbandYear == 0 ? null : src.DisbandYear));
+
+        CreateMap<ArtistUpdateRequest, Artist>()
+            .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.CountryId == 0 ? null : src.CountryId))
+            .ForMember(dest => dest.FormationYear, opt => opt.MapFrom(src => src.FormationYear == 0 ? null : src.FormationYear))
+            .ForMember(dest => dest.DisbandYear, opt => opt.MapFrom(src => src.DisbandYear == 0 ? null : src.DisbandYear));
+
         CreateMap<Artist, ArtistActionResponse>();
         CreateMap<Artist, ArtistResponse>();
         CreateMap<Artist, ArtistLookUpResponse>()
@@ -45,24 +59,7 @@ public class AutoMapperProfile : AutoMapper.Profile
             .ForMember(dest => dest.LabelId, opt => opt.MapFrom(src => src.LabelId == 0 ? null : src.LabelId))
             .ForMember(dest => dest.StudioId, opt => opt.MapFrom(src => src.StudioId == 0 ? null : src.StudioId));
 
-        //.ConstructUsing((albumAddRequest, c) => new Album(
-
-        //      albumAddRequest.Name,
-        //      albumAddRequest.ArtistId,
-        //      albumAddRequest.ReleaseDate,
-        //      albumAddRequest.RecordedDate,
-        //      albumAddRequest.LabelId != null ? albumAddRequest.LabelId : null,
-        //      albumAddRequest.StudioId,
-        //      albumAddRequest.Producers,
-        //      albumAddRequest.Arrangers,
-        //      albumAddRequest.Engineers,
-        //      albumAddRequest.Artwork,
-        //      albumAddRequest.Photo,
-        //      new List<AlbumSongResponse>()
-        //      ));
-
-
-
+        CreateMap<AlbumDescriptionUpdateRequest, Album>();
 
         CreateMap<AlbumUpdateRequest, Album>()
             .ForMember(dest => dest.LabelId, opt => opt.MapFrom(src => src.LabelId == 0 ? null : src.LabelId))
@@ -147,7 +144,8 @@ public class AutoMapperProfile : AutoMapper.Profile
 
         CreateMap<BirthPlace, BirthPlaceResponse>();
         CreateMap<BirthPlace, BirthPlaceActionResponse>();
-        CreateMap<BirthPlaceAddRequest, BirthPlace>();
+        CreateMap<BirthPlaceAddRequest, BirthPlace>()
+            .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.CountryId < 1 ? null : src.CountryId));
         CreateMap<BirthPlaceUpdateRequest, BirthPlace>();
     }
 }

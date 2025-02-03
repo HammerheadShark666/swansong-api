@@ -18,5 +18,6 @@ public interface IAlbumService
     Task<string> UpdateAlbumPhotoAsync(long id, IFormFile file);
     Task DeleteAsync(Album album);
     Task<Album> AddAsync(Album album);
-    void Update(Album album);
+    Task UpdateAsync(Album album);
+    Task UpdateDescriptionAsync(long id, string description);
 }

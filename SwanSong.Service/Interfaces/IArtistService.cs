@@ -20,4 +20,5 @@ public interface IArtistService
     Task<Artist> AddAsync(Artist artist);
     void Update(Artist artist);
     Task DeleteAsync(Artist artist);
+    Task UpdateDescriptionAsync(long id, string description);
 }

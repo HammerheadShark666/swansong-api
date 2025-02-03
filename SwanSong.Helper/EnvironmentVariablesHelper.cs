@@ -8,6 +8,7 @@ public class EnvironmentVariablesHelper
 
     public static string VueFrontEndBaseUrl = Environment.GetEnvironmentVariable(Constants.VueFrontEndBaseUrl);
     public static string NextJsFrontEndBaseUrl = Environment.GetEnvironmentVariable(Constants.NextJsFrontEndBaseUrl);
+    public static string NextJsFrontEndAdminBaseUrl = Environment.GetEnvironmentVariable(Constants.NextJsFrontEndAdminBaseUrl);
     public static string ProductionFrontEndBaseUrl = Environment.GetEnvironmentVariable(Constants.ProductionFrontEndBaseUrl);
 
     public static string JwtSettingsSercret = Environment.GetEnvironmentVariable(Constants.JwtSettingsSercret);

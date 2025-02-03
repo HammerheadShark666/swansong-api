@@ -121,4 +121,10 @@ public class MemberRepository(SwanSongContext context) : IMemberRepository
     {
         return await _context.Members.FindAsync(id);
     }
+
+    public void UpdateArtistIdsForMembers(string sql)
+    {
+        context.Database.ExecuteSqlRaw(sql);
+        return;
+    }
 }

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace SwanSong.Api.Controllers;
 
 [ApiVersion("1.0")]
-//[Authorize]
+[Authorize]
 [Route("api/v{version:apiVersion}/studios")]
 [ApiController]
 [ApiConventionType(typeof(DefaultApiConventions))]
@@ -63,7 +63,7 @@ public class StudioController(ILogger<StudioController> logger,
 
         _studioService.Update(studio);
 
-        return Ok();
+        return Ok(new StudioActionResponse(studio.Id, studio.Name));
     }
 
     [HttpDelete("studio/{id}")]

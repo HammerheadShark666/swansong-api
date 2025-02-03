@@ -25,11 +25,13 @@ namespace SwanSong.Api.Controllers;
 [Consumes(MediaTypeNames.Application.Json)]
 public class MemberController(ILogger<MemberController> logger,
                               IMemberService memberService,
+                              IBirthPlaceService birthPlaceService,
                               IValidator<Member> validator,
                               IMapper mapper) : BaseController<Member>(validator)
 {
     private readonly ILogger<MemberController> _logger = logger;
     private readonly IMemberService _memberService = memberService;
+    private readonly IBirthPlaceService _birthPlaceService = birthPlaceService;
     private readonly IMapper _mapper = mapper;
 
     [HttpGet("")]
@@ -50,15 +52,15 @@ public class MemberController(ILogger<MemberController> logger,
     }
 
     [HttpGet("search/{criteria}")]
-    public async Task<ActionResult<List<MemberResponse>>> GetSearchMembersAsync(string criteria)
+    public async Task<ActionResult<List<MemberLookUpResponse>>> GetSearchMembersAsync(string criteria)
     {
-        return Ok(_mapper.Map<List<MemberResponse>>(await _memberService.SearchByNameAsync(criteria)));
+        return Ok(_mapper.Map<List<MemberLookUpResponse>>(await _memberService.SearchByNameAsync(criteria)));
     }
 
     [HttpGet("search-by-letter/{letter}")]
-    public async Task<ActionResult<List<MemberResponse>>> GetSearchMembersByLetterAsync(string letter)
+    public async Task<ActionResult<List<MemberLookUpResponse>>> GetSearchMembersByLetterAsync(string letter)
     {
-        return Ok(_mapper.Map<List<MemberResponse>>(await _memberService.SearchByLetterAsync(letter)));
+        return Ok(_mapper.Map<List<MemberLookUpResponse>>(await _memberService.SearchByLetterAsync(letter)));
     }
 
     [AllowAnonymous]
@@ -99,14 +101,20 @@ public class MemberController(ILogger<MemberController> logger,
 
         _memberService.Update(member);
 
-        return Ok();
+        return Ok(new MemberActionResponse(member.Id));
+    }
+
+    [HttpPut("update/artist/assigned-to")]
+    public ActionResult PutUpdateMemberArtistAssignedToAsync([FromBody] MemberUpdateArtistAssignedTo membersUpdateArtistAssignedTo)
+    {
+        _memberService.UpdateArtistAssignedTo(membersUpdateArtistAssignedTo);
+        return Ok(new MemberActionResponse(membersUpdateArtistAssignedTo.ArtistId));
     }
 
     [HttpDelete("member/{id}")]
     public async Task<ActionResult> DeleteMemberAsync(long id)
     {
         await _memberService.DeleteAsync(await _memberService.GetAsync(id));
-
         return Ok();
     }
 
@@ -124,5 +132,26 @@ public class MemberController(ILogger<MemberController> logger,
         {
             return BadRequest(ConstantMessages.NoFileToSave);
         }
+    }
+
+    [HttpGet("lookups/form")]
+    public async Task<ActionResult<MemberLookUpsFormResponse>> GetLookupsForArtistFormAsync()
+    {
+        List<BirthPlaceResponse> birthPlaces = _mapper.Map<List<BirthPlaceResponse>>(await _birthPlaceService.GetAllAsync());
+        return Ok(new MemberLookUpsFormResponse(birthPlaces));
+    }
+
+    [HttpPut("member/description/update")]
+    public async Task<ActionResult> PutUpdateMemberDescriptionAsync([FromBody] MemberDescriptionUpdateRequest memberDescriptionUpdateRequest)
+    {
+        Member member = _mapper.Map<Member>(memberDescriptionUpdateRequest);
+
+        var validationResult = await Validate(member, Constants.ValidationEventBeforeSaveDescription);
+        if (validationResult != null)
+            return BadRequest(validationResult);
+
+        await _memberService.UpdateDescriptionAsync(memberDescriptionUpdateRequest.Id, memberDescriptionUpdateRequest.Description);
+
+        return Ok(new MemberActionResponse(member.Id));
     }
 }

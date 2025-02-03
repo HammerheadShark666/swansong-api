@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace SwanSong.Api.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/albums")]
 [ApiController]
@@ -110,7 +110,21 @@ public class AlbumController(ILogger<AlbumController> logger,
         if (validationResult != null)
             return BadRequest(validationResult);
 
-        _albumService.Update(album);
+        await _albumService.UpdateAsync(album);
+
+        return Ok(); // new AlbumActionResponse(album.Id));
+    }
+
+    [HttpPut("album/description/update")]
+    public async Task<ActionResult> PutUpdateAlbumDescriptionAsync([FromBody] AlbumDescriptionUpdateRequest albumDescriptionUpdateRequest)
+    {
+        Album album = _mapper.Map<Album>(albumDescriptionUpdateRequest);
+
+        var validationResult = await Validate(album, Constants.ValidationEventBeforeSaveDescription);
+        if (validationResult != null)
+            return BadRequest(validationResult);
+
+        await _albumService.UpdateDescriptionAsync(albumDescriptionUpdateRequest.Id, albumDescriptionUpdateRequest.Description);
 
         return Ok(new AlbumActionResponse(album.Id));
     }
@@ -132,7 +146,7 @@ public class AlbumController(ILogger<AlbumController> logger,
             var file = Request.Form.Files[0];
 
             if (file.Length >= Constants.MaxFileSize)
-                return BadRequest(ConstantMessages.FileTooBig);
+                return BadRequest(new MessageResponse(new List<Message>() { new(ConstantMessages.FileTooBig, "error") }));
 
             var filename = await _albumService.UpdateAlbumPhotoAsync(id, file);
             return Ok(new AlbumPhotoActionResponse(filename));
