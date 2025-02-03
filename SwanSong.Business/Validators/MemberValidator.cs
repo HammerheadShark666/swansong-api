@@ -34,11 +34,11 @@ public class MemberValidator : BaseValidator<Member>
             .When(x => x.StageName.Count() > 0, ApplyConditionTo.CurrentValidator)
                 .WithMessage(member => $"{member.StageName} already exists.");
 
-            RuleFor(member => member.ArtistId)
-                .NotEmpty()
-                    .WithMessage("Artist is required.")
-                .GreaterThan(0)
-                    .WithMessage("Artist is required.");
+            //RuleFor(member => member.ArtistId)
+            //    .NotEmpty()
+            //        .WithMessage("Artist is required.")
+            //    .GreaterThan(0)
+            //        .WithMessage("Artist is required.");
 
             RuleFor(member => member).MustAsync(async (member, cancellation) =>
             {

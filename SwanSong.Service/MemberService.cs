@@ -4,13 +4,16 @@ using Microsoft.Extensions.Caching.Memory;
 using SwanSong.Azure.Storage.Interfaces;
 using SwanSong.Data.UnitOfWork.Interfaces;
 using SwanSong.Domain;
+using SwanSong.Domain.Dto;
 using SwanSong.Helper;
 using SwanSong.Helper.Exceptions;
 using SwanSong.Helper.Filter;
 using SwanSong.Helper.Interfaces;
 using SwanSong.Service.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using static SwanSong.Helper.PhotoHelper;
 
@@ -85,6 +88,33 @@ public class MemberService(IMapper mapper,
         return;
     }
 
+    public void UpdateArtistAssignedTo(MemberUpdateArtistAssignedTo membersUpdateArtistAssignedTo)
+    {
+        if (membersUpdateArtistAssignedTo.membersToRemove.Count == 0 &&
+            membersUpdateArtistAssignedTo.MembersToAdd.Count == 0)
+            return;
+
+        long? artistId = membersUpdateArtistAssignedTo.ArtistId;
+        var sqlBuilder = new StringBuilder();
+
+        foreach (long id in membersUpdateArtistAssignedTo.MembersToAdd)
+        {
+            sqlBuilder.AppendLine(
+                $"UPDATE SWSG_MEMBER SET ArtistId = '{artistId}' WHERE Id = {id};");
+        }
+
+        foreach (long id in membersUpdateArtistAssignedTo.membersToRemove)
+        {
+            sqlBuilder.AppendLine(
+                $"UPDATE SWSG_MEMBER SET ArtistId = null WHERE Id = {id};");
+        }
+
+        _unitOfWork.Members.UpdateArtistIdsForMembers(sqlBuilder.ToString());
+        _unitOfWork.Complete();
+
+        return;
+    }
+
     public async Task DeleteAsync(Member member)
     {
         _unitOfWork.Members.Delete(member);
@@ -105,11 +135,25 @@ public class MemberService(IMapper mapper,
         string originalFileName = member.Photo;
 
         await _unitOfWork.Members.UpdateMemberPhotoAsync(id, newFileName);
-
         await _azureStorageHelper.SaveBlobToAzureStorageContainerAsync(file, Constants.AzureStorageContainerMembers, newFileName);
-        await DeleteOriginalFileAsync(originalFileName, newFileName, Constants.AzureStorageContainerMembers);
+
+        if (!String.IsNullOrEmpty(originalFileName))
+            await DeleteOriginalFileAsync(originalFileName, newFileName, Constants.AzureStorageContainerMembers);
 
         return newFileName;
+    }
+
+    public async Task UpdateDescriptionAsync(long id, string description)
+    {
+        Member existingMember = await GetAsync(id) ?? throw new MemberNotFoundException("Member not found (" + id + ")");
+
+        existingMember.Description = description;
+        existingMember.ModifiedDate = DateTime.Now;
+
+        _unitOfWork.Members.Update(existingMember);
+        _unitOfWork.Complete();
+
+        return;
     }
 
     #endregion

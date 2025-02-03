@@ -44,7 +44,17 @@ public class UnitOfWork : IUnitOfWork
 
     public int Complete()
     {
-        return _context.SaveChanges();
+        try
+        {
+            return _context.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        return 0;
+
     }
 
     private bool disposed = false;

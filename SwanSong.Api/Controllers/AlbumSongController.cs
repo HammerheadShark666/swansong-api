@@ -61,7 +61,7 @@ public class AlbumSongController(ILogger<AlbumSongController> logger,
 
         _albumSongService.Update(albumSong);
 
-        return Ok();
+        return Ok(new AlbumSongActionResponse(albumSong.Id, albumSong.SongId));
     }
 
     [HttpDelete("song/{id}")]

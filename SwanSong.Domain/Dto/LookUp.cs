@@ -1,6 +1,8 @@
-﻿namespace SwanSong.Domain.Dto;
+﻿using System.Collections.Generic;
 
-public record BirthPlaceAddRequest(string Name, int CountryId);
+namespace SwanSong.Domain.Dto;
+
+public record BirthPlaceAddRequest(string Name, int? CountryId);
 
 public record BirthPlaceUpdateRequest(int Id, string Name, int CountryId);
 
@@ -30,4 +32,6 @@ public record RecordLabelActionResponse(long Id, string name);
 
 public record StudioResponse(int Id, string Name);
 
-public record StudioActionResponse(long Id, string name);
+public record StudioActionResponse(long Id, string Name);
+
+public record LookupsResponse(List<CountryResponse> Countries, List<RecordLabelResponse> RecordLabels, List<StudioResponse> Studios, List<BirthPlaceResponse> BirthPlaces);

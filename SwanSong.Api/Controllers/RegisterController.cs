@@ -22,16 +22,16 @@ public class RegisterController(IRegisterService registerService,
     private readonly IRegisterVerifyEmailService _registerVerifyEmailService = registerVerifyEmailService;
 
     [HttpPost("")]
-    public async Task<ActionResult> PostRegisterAsync(RegisterRequest registerRequest)
+    public async Task<ActionResult> PostRegisterAsync([FromBody] RegisterRequest registerRequest)
     {
         await _registerService.RegisterAsync(registerRequest);
-        return Ok();
+        return Ok(new { message = "Registration successful" });
     }
 
     [HttpPost("verify-email")]
     public async Task<ActionResult> PostVerifyEmailAsync(RegisterVerifyEmailRequest registerVerifyEmailRequest)
     {
         await _registerVerifyEmailService.VerifyEmailAsync(registerVerifyEmailRequest);
-        return Ok();
+        return Ok(new { message = "Registration verified" });
     }
 }

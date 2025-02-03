@@ -66,7 +66,7 @@ public class BirthPlaceController(ILogger<BirthPlaceController> logger,
 
         _birthPlaceService.Update(birthPlace);
 
-        return Ok();
+        return Ok(new BirthPlaceActionResponse(birthPlace.Id, birthPlace.Name));
     }
 
 

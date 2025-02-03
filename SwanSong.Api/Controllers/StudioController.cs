@@ -63,7 +63,7 @@ public class StudioController(ILogger<StudioController> logger,
 
         _studioService.Update(studio);
 
-        return Ok();
+        return Ok(new StudioActionResponse(studio.Id, studio.Name));
     }
 
     [HttpDelete("studio/{id}")]

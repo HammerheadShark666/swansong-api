@@ -20,4 +20,5 @@ public interface IMemberRepository
     void Update(Member member);
     void Delete(Member member);
     Task<Member> ByIdAsync(long id);
+    void UpdateArtistIdsForMembers(string sql);
 }

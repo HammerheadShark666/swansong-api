@@ -63,7 +63,7 @@ public class CountryController(ILogger<CountryController> logger,
 
         _countryService.Update(country);
 
-        return Ok();
+        return Ok(new CountryActionResponse(country.Id, country.Name));
     }
 
     [HttpDelete("country/{id}")]

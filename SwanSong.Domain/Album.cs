@@ -38,7 +38,9 @@ public class Album : BaseEntity
         {
             if (this.labelId == 0)
             {
+                this.labelId = null;
                 return null;
+
             }
             return this.labelId;
         }
@@ -54,6 +56,7 @@ public class Album : BaseEntity
         {
             if (this.studioId == 0)
             {
+                this.studioId = null;
                 return null;
             }
             return this.studioId;
@@ -87,6 +90,9 @@ public class Album : BaseEntity
         AlbumSongs = new HashSet<AlbumSong>();
         Photo = DefaultAlbumPhotoFileName;
         StudioId = null;
-        labelId = null;
+        LabelId = null;
+
+        // labelId = null;
+
     }
 }

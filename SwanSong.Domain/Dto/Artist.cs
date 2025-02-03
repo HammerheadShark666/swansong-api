@@ -18,8 +18,12 @@ public record ArtistWithAlbumsResponse(long Id, string Name, string Description,
 
 public record ArtistAlbumResponse(long Id, string Name, string Photo, string ArtistName);
 
-public record ArtistMemberResponse(long id, string StageName);
+public record ArtistMemberResponse(long id, string StageName, string Photo);
 
 public record ArtistActionResponse(long Id);
 
 public record ArtistPhotoActionResponse(string filename, bool IsValid);
+
+public record ArtistLookUpsFormResponse(List<CountryResponse> Countries);
+
+public record ArtistDescriptionUpdateRequest(long Id, string Description);

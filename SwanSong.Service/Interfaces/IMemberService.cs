@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SwanSong.Domain;
+using SwanSong.Domain.Dto;
 using SwanSong.Helper.Filter;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,4 +20,6 @@ public interface IMemberService
     Task DeleteAsync(Member member);
     Task<Member> AddAsync(Member member);
     void Update(Member member);
+    void UpdateArtistAssignedTo(MemberUpdateArtistAssignedTo membersUpdateArtistAssignedTo);
+    Task UpdateDescriptionAsync(long id, string description);
 }

@@ -50,7 +50,7 @@ public class AuthenticateService(IMapper mapper,
                                                              EnvironmentVariablesHelper.JwtSettingsTokenExpiryMinutes,
                                                              EnvironmentVariablesHelper.JwtSettingsSercret);
 
-        return new JwtRefreshToken(refreshToken.Account.IsAuthenticated, jwtToken, token,
+        return new JwtRefreshToken(refreshToken.Account.IsAuthenticated, jwtToken, newRefreshToken.Token,
                                                  new SwanSong.Domain.Dto.Profile(refreshToken.Account.FirstName, refreshToken.Account.LastName, refreshToken.Account.Email),
                                                  refreshToken.Account.Role.ToString());
     }

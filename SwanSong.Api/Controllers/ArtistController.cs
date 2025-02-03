@@ -25,11 +25,13 @@ namespace SwanSong.Api.Controllers;
 [Consumes(MediaTypeNames.Application.Json)]
 public class ArtistController(ILogger<AlbumController> logger,
                               IArtistService artistService,
+                              ICountryService countryService,
                               IValidator<Artist> validator,
                               IMapper mapper) : BaseController<Artist>(validator)
 {
     private readonly ILogger<AlbumController> _logger = logger;
     private readonly IArtistService _artistService = artistService;
+    private readonly ICountryService _countryService = countryService;
     private readonly IMapper _mapper = mapper;
 
     [HttpGet("lookups")]
@@ -106,7 +108,21 @@ public class ArtistController(ILogger<AlbumController> logger,
 
         _artistService.Update(artist);
 
-        return Ok();
+        return Ok(new ArtistActionResponse(artist.Id));
+    }
+
+    [HttpPut("artist/description/update")]
+    public async Task<ActionResult> PutUpdateArtistDescriptionAsync([FromBody] ArtistDescriptionUpdateRequest artistDescriptionUpdateRequest)
+    {
+        Artist artist = _mapper.Map<Artist>(artistDescriptionUpdateRequest);
+
+        var validationResult = await Validate(artist, Constants.ValidationEventBeforeSaveDescription);
+        if (validationResult != null)
+            return BadRequest(validationResult);
+
+        await _artistService.UpdateDescriptionAsync(artistDescriptionUpdateRequest.Id, artistDescriptionUpdateRequest.Description);
+
+        return Ok(new AlbumActionResponse(artist.Id));
     }
 
 
@@ -131,5 +147,13 @@ public class ArtistController(ILogger<AlbumController> logger,
         {
             return BadRequest(ConstantMessages.NoFileToSave);
         }
+    }
+
+    [HttpGet("lookups/form")]
+    public async Task<ActionResult<ArtistLookUpsFormResponse>> GetLookupsForArtistFormAsync()
+    {
+        List<CountryResponse> countries = _mapper.Map<List<CountryResponse>>(await _countryService.GetAllAsync());
+
+        return Ok(new ArtistLookUpsFormResponse(countries));
     }
 }

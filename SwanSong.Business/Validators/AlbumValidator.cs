@@ -61,6 +61,12 @@ public class AlbumValidator : BaseValidator<Album>
                 .Length(0, 100)
                 .WithMessage("Artwork maximum length is 100.");
         });
+
+        RuleSet("BeforeSaveDescription", () =>
+        {
+            RuleFor(album => album.Description)
+                .MaximumLength(200000).WithMessage("Album description max length is 200000.");
+        });
     }
 
     protected async Task<bool> AlbumNameExists(Album album)

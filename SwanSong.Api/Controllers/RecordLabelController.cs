@@ -63,7 +63,7 @@ public class RecordLabelController(ILogger<RecordLabelController> logger,
 
         _recordLabelService.Update(recordLabel);
 
-        return Ok();
+        return Ok(new RecordLabelActionResponse(recordLabel.Id, recordLabel.Name));
     }
 
     [HttpDelete("record-label/{id}")]

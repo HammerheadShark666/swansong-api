@@ -9,6 +9,7 @@ using SwanSong.Helper.Exceptions;
 using SwanSong.Helper.Filter;
 using SwanSong.Helper.Interfaces;
 using SwanSong.Service.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -77,9 +78,22 @@ public class AlbumService(IMapper mapper,
         return album;
     }
 
-    public void Update(Album album)
+    public async Task UpdateAsync(Album album)
     {
-        _unitOfWork.Albums.Update(album);
+        _unitOfWork.Albums.Update(await UpdateExistingAlbum(album));
+        _unitOfWork.Complete();
+
+        return;
+    }
+
+    public async Task UpdateDescriptionAsync(long id, string description)
+    {
+        Album existingAlbum = await GetAsync(id) ?? throw new AlbumNotFoundException("Album not found (" + id + ")");
+
+        existingAlbum.Description = description;
+        existingAlbum.ModifiedDate = DateTime.Now;
+
+        _unitOfWork.Albums.Update(existingAlbum);
         _unitOfWork.Complete();
 
         return;
@@ -106,9 +120,10 @@ public class AlbumService(IMapper mapper,
         string originalFileName = album.Photo;
 
         await _unitOfWork.Albums.UpdateAlbumPhotoAsync(id, newFileName);
-
         await _azureStorageHelper.SaveBlobToAzureStorageContainerAsync(file, Constants.AzureStorageContainerAlbums, newFileName);
-        await DeleteOriginalFileAsync(originalFileName, newFileName, Constants.AzureStorageContainerAlbums);
+
+        if (!String.IsNullOrEmpty(originalFileName))
+            await DeleteOriginalFileAsync(originalFileName, newFileName, Constants.AzureStorageContainerAlbums);
 
         return newFileName;
     }
@@ -124,6 +139,24 @@ public class AlbumService(IMapper mapper,
         {
             await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(editPhoto.originalPhotoName, container);
         }
+    }
+
+    private async Task<Album> UpdateExistingAlbum(Album album)
+    {
+        Album existingAlbum = await GetAsync(album.Id) ?? throw new AlbumNotFoundException("Album not found (" + album.Name + ")");
+
+        existingAlbum.Name = album.Name;
+        existingAlbum.ArtistId = album.ArtistId;
+        existingAlbum.ReleaseDate = album.ReleaseDate;
+        existingAlbum.RecordedDate = album.RecordedDate;
+        existingAlbum.LabelId = album.LabelId;
+        existingAlbum.StudioId = album.StudioId;
+        existingAlbum.Producers = album.Producers;
+        existingAlbum.Arrangers = album.Arrangers;
+        existingAlbum.Artwork = album.Artwork;
+        existingAlbum.ModifiedDate = DateTime.Now;
+
+        return existingAlbum;
     }
 
     #endregion

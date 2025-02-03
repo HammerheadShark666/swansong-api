@@ -29,7 +29,7 @@ public class ProfilePasswordChangeController(IProfilePasswordChangeService profi
     {
         profilePasswordChangeRequest = profilePasswordChangeRequest with { Id = LoggedInAccount().Id, Email = LoggedInAccount().Email };
         await _profilePasswordChangeService.UpdatePasswordAsync(profilePasswordChangeRequest);
-        return Ok();
+        return Ok(new { message = "Password changed." });
     }
 
     private Account LoggedInAccount()

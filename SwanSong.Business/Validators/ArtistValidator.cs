@@ -25,16 +25,24 @@ public class ArtistValidator : BaseValidator<Artist>
             }).WithMessage(artist => $"{artist.Name} already exists.");
 
             RuleFor(artist => artist.FormationYear)
-                .GreaterThan(1900);
+                .GreaterThan(1900)
+                .When(artist => artist.FormationYear != null && artist.FormationYear > 0);
 
             RuleFor(artist => artist.DisbandYear)
                 .GreaterThan(artist => artist.FormationYear)
-                .When(artist => artist.FormationYear != null)
-                .When(artist => artist.DisbandYear != null)
+                .When(artist => artist.FormationYear != null && artist.FormationYear > 0)
+                .When(artist => artist.DisbandYear != null && artist.DisbandYear > 0)
                 .WithMessage("Disband year must be after formation year.");
 
             RuleFor(artist => artist.DisbandYear)
-                .GreaterThan(1900);
+                .GreaterThan(1900)
+                .When(artist => artist.DisbandYear != null && artist.DisbandYear > 0);
+        });
+
+        RuleSet("BeforeSaveDescription", () =>
+        {
+            RuleFor(album => album.Description)
+                .MaximumLength(200000).WithMessage("Artist description max length is 200000.");
         });
     }
 
