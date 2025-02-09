@@ -112,7 +112,7 @@ public class AlbumController(ILogger<AlbumController> logger,
 
         await _albumService.UpdateAsync(album);
 
-        return Ok(); // new AlbumActionResponse(album.Id));
+        return Ok(new AlbumActionResponse(album.Id));
     }
 
     [HttpPut("album/description/update")]
