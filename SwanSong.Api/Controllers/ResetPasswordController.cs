@@ -47,6 +47,18 @@ public class ResetPasswordController(IResetPasswordService resetPasswordService,
         return Ok(new { message = "Password has been reset." });
     }
 
+    [HttpPost("reset-password-with-email-current-password")]
+    public async Task<ActionResult> PostResetPasswordWithEmailCurrentPasswordAsync(ResetPasswordWithEmailCurrentPasswordRequest resetPasswordWithEmailCurrentPasswordRequest)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new { message = GetMessages() });
+        }
+
+        await _resetPasswordService.ResetPasswordWithEmailCurrentPasswordAsync(resetPasswordWithEmailCurrentPasswordRequest);
+        return Ok(new { message = "Password has been reset." });
+    }
+
     private string GetMessages()
     {
         return string.Join("; ", ModelState.Values

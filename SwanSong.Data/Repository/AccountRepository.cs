@@ -4,6 +4,7 @@ using SwanSong.Domain;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BC = BCrypt.Net.BCrypt;
 
 namespace SwanSong.Data.Repository;
 
@@ -86,5 +87,18 @@ public class AccountRepository(SwanSongContext context) : IAccountRepository
     public void Delete(Account account)
     {
         _context.Accounts.Remove(account);
+    }
+
+    public async Task<bool> ValidResetTokenEmailCurrentPasswordAsync(string token, string email, string currentPassword)
+    {
+        Account account = await _context.Accounts
+                                .Where(x => x.Email.Equals(email) && x.ResetToken.Equals(token) && x.ResetTokenExpires > DateTime.Now)
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+
+        if (account == null)
+            return false;
+
+        return BC.Verify(currentPassword, account.PasswordHash);
     }
 }

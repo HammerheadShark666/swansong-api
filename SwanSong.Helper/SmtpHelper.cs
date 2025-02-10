@@ -16,8 +16,8 @@ public class SmtpHelper
             }
         };
 
-        email.From.Add(new MailboxAddress("Sender Name", EnvironmentVariablesHelper.RegisterSenderEmail));
-        email.To.Add(new MailboxAddress("Receiver Name", recipientAddress));
+        email.From.Add(new MailboxAddress(EnvironmentVariablesHelper.SmtpGmailSenderName, EnvironmentVariablesHelper.RegisterSenderEmail));
+        email.To.Add(new MailboxAddress(recipientAddress, recipientAddress));
 
         using var smtp = new SmtpClient();
         smtp.Connect(EnvironmentVariablesHelper.SmtpGmailServer, EnvironmentVariablesHelper.SmtpGmailPort, false);

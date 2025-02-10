@@ -19,7 +19,6 @@ public class RegisterValidator : BaseValidator<RegisterRequest>
 
         RuleSet("BeforeSave", () =>
         {
-
             RuleFor(register => register.Email)
                 .NotEmpty().WithMessage("Email is required.")
                 .Length(8, 150).WithMessage("Email length between 8 and 150.")
