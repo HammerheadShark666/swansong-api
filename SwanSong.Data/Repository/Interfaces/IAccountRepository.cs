@@ -13,6 +13,7 @@ public interface IAccountRepository
     Task<bool> AccountExistsAsync(string email, int id);
     Task<bool> AnyAccountExistAsync();
     Task<bool> ValidResetTokenAsync(string token);
+    Task<bool> ValidResetTokenEmailCurrentPasswordAsync(string token, string email, string currentPassword);
     Task<Account> ByIdAsync(int id);
     void Add(Account account);
     void Update(Account account);

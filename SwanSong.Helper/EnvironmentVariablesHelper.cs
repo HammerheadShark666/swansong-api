@@ -25,6 +25,7 @@ public class EnvironmentVariablesHelper
     public static int SmtpGmailPort = Convert.ToInt16(Environment.GetEnvironmentVariable(Constants.SmtpGmailPort));
     public static string SmtpGmailUsername = Environment.GetEnvironmentVariable(Constants.SmtpGmailUsername);
     public static string SmtpGmailPassword = Environment.GetEnvironmentVariable(Constants.SmtpGmailPassword);
+    public static string SmtpGmailSenderName = Environment.GetEnvironmentVariable(Constants.SmtpGmailSenderName);
 
     public static string AzureStorageConnectionString = Environment.GetEnvironmentVariable(Constants.AzureStorageConnectionString);
 }

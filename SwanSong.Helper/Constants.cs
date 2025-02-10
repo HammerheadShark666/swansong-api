@@ -33,6 +33,7 @@ public static class Constants
     public const string SmtpGmailPort = "SMTP_GMAIL_PORT";
     public const string SmtpGmailUsername = "SMTP_GMAIL_USERNAME";
     public const string SmtpGmailPassword = "SMTP_GMAIL_PASSWORD";
+    public const string SmtpGmailSenderName = "SMTP_GMAIL_SENDER_NAME";
 
     public const string VueFrontEndBaseUrl = "VUE_FRONT_END_BASE_URL";
     public const string NextJsFrontEndBaseUrl = "NEXTJS_FRONT_END_BASE_URL";

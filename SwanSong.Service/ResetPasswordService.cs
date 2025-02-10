@@ -16,12 +16,14 @@ namespace SwanSong.Service;
 
 public class ResetPasswordService(IMapper mapper,
                                   IValidatorHelper<ResetPasswordRequest> validatorHelper,
+                                  IValidatorHelper<ResetPasswordWithEmailCurrentPasswordRequest> validatorHelperExtraData,
                                   IUnitOfWork unitOfWork,
                                   ILogger<ResetPasswordService> logger) : IResetPasswordService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IMapper _mapper = mapper;
     private readonly IValidatorHelper<ResetPasswordRequest> _validatorHelper = validatorHelper;
+    private readonly IValidatorHelper<ResetPasswordWithEmailCurrentPasswordRequest> _validatorHelperExtraData = validatorHelperExtraData;
     private readonly ILogger<ResetPasswordService> _logger = logger;
 
     #region Public Functions
@@ -48,6 +50,14 @@ public class ResetPasswordService(IMapper mapper,
         return;
     }
 
+    public async Task ResetPasswordWithEmailCurrentPasswordAsync(ResetPasswordWithEmailCurrentPasswordRequest resetPasswordRequest)
+    {
+        await BeforeResetPasswordWithEmailCurrentPasswordAsync(resetPasswordRequest); ;
+        await UpdateAccountAsync(resetPasswordRequest.Token, resetPasswordRequest.Password);
+
+        return;
+    }
+
     public async Task ValidateResetTokenAsync(ValidateResetTokenRequest validateResetTokenRequest)
     {
         if (!await _unitOfWork.Accounts.ValidResetTokenAsync(validateResetTokenRequest.Token))
@@ -58,7 +68,12 @@ public class ResetPasswordService(IMapper mapper,
 
     #endregion
 
-    #region Private Functions
+    #region Private Functions  
+
+    private async Task BeforeResetPasswordWithEmailCurrentPasswordAsync(ResetPasswordWithEmailCurrentPasswordRequest resetPasswordRequest)
+    {
+        await _validatorHelperExtraData.ValidateAsync(resetPasswordRequest, Constants.ValidationEventBeforeSave);
+    }
 
     private async Task BeforeResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
     {
@@ -80,6 +95,11 @@ public class ResetPasswordService(IMapper mapper,
     private async Task<Account> UpdateAccountRecordAsync(string resetToken, string password)
     {
         var account = await _unitOfWork.Accounts.GetByResetTokenAsync(resetToken);
+
+        if (account == null)
+        {
+            throw new AppException("Account not found");
+        }
 
         account.PasswordHash = BC.HashPassword(password);
         account.PasswordReset = DateTime.Now;
