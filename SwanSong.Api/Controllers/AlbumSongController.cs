@@ -69,6 +69,6 @@ public class AlbumSongController(ILogger<AlbumSongController> logger,
     {
         _albumSongService.DeleteAsync(await _albumSongService.GetAsync(id));
 
-        return Ok();
+        return Ok(new AlbumSongActionResponse(id, 0));
     }
 }

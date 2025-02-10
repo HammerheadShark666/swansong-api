@@ -44,7 +44,7 @@ public class ResetPasswordController(IResetPasswordService resetPasswordService,
         }
 
         await _resetPasswordService.ResetPasswordAsync(resetPasswordRequest);
-        return Ok();
+        return Ok(new { message = "Password has been reset." });
     }
 
     private string GetMessages()

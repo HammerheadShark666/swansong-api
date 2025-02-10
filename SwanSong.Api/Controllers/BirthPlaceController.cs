@@ -71,10 +71,10 @@ public class BirthPlaceController(ILogger<BirthPlaceController> logger,
 
 
     [HttpDelete("birth-place/{id}")]
-    public async Task<ActionResult> DeleteBirthPlaceAsync(int id)
+    public async Task<ActionResult<BirthPlaceActionResponse>> DeleteBirthPlaceAsync(int id)
     {
         _birthPlaceService.DeleteAsync(await _birthPlaceService.GetAsync(id));
 
-        return Ok();
+        return Ok(new BirthPlaceActionResponse(id, "Birth place deleted."));
     }
 }
