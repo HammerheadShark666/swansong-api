@@ -3,7 +3,6 @@ using SwanSong.Data.Repository.Interfaces;
 using SwanSong.Domain;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SwanSong.Business.Validator;
 
@@ -26,25 +25,6 @@ public class MemberValidator : BaseValidator<Member>
                 .Length(1, 150)
                     .When(x => x.StageName.Count() > 0, ApplyConditionTo.CurrentValidator)
                         .WithMessage("Stage name length between 1 and 150.");
-
-            RuleFor(member => member).MustAsync(async (member, cancellation) =>
-            {
-                return await MemberStageNameExists(member);
-            })
-            .When(x => x.StageName.Count() > 0, ApplyConditionTo.CurrentValidator)
-                .WithMessage(member => $"{member.StageName} already exists.");
-
-            //RuleFor(member => member.ArtistId)
-            //    .NotEmpty()
-            //        .WithMessage("Artist is required.")
-            //    .GreaterThan(0)
-            //        .WithMessage("Artist is required.");
-
-            RuleFor(member => member).MustAsync(async (member, cancellation) =>
-            {
-                return await ArtistExists((long)member.ArtistId);
-            }).When(x => x.ArtistId > 0, ApplyConditionTo.CurrentValidator)
-               .WithMessage(member => $"Artist not found.");
 
             RuleFor(member => member.Surname)
                 .NotEmpty()
@@ -78,17 +58,5 @@ public class MemberValidator : BaseValidator<Member>
                 .GreaterThan(new DateTime(1900, 1, 1))
                     .When(x => x.DateOfDeath != null, ApplyConditionTo.CurrentValidator);
         });
-    }
-
-    protected async Task<bool> MemberStageNameExists(Member member)
-    {
-        return member.Id == 0
-            ? !(await _artistMemberRepository.ExistsAsync(member.Id, member.StageName))
-            : !(await _artistMemberRepository.ExistsAsync(member.Id, member.ArtistId, member.StageName));
-    }
-
-    protected async Task<bool> ArtistExists(long artistId)
-    {
-        return await _artistRepository.ByIdAsync(artistId) != null;
     }
 }

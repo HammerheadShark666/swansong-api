@@ -71,6 +71,6 @@ public class RecordLabelController(ILogger<RecordLabelController> logger,
     {
         _recordLabelService.DeleteAsync(await _recordLabelService.GetAsync(id));
 
-        return Ok();
+        return Ok(new RecordLabelActionResponse(id, ""));
     }
 }

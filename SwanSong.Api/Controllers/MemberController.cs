@@ -67,13 +67,7 @@ public class MemberController(ILogger<MemberController> logger,
     [HttpGet("member/{id}")]
     public async Task<ActionResult<MemberResponse>> GetMemberAsync(long id)
     {
-        return Ok(_mapper.Map<MemberResponse>(await _memberService.GetAsync(id)));
-    }
-
-    [HttpGet("artist/{artistId}")]
-    public async Task<ActionResult<List<MemberResponse>>> GetMembersForArtistAsync(long artistId)
-    {
-        return Ok(_mapper.Map<List<MemberResponse>>(await _memberService.GetMembersByArtistAsync(artistId)));
+        return Ok(_mapper.Map<MemberWithArtistsResponse>(await _memberService.GetAsync(id)));
     }
 
     [HttpPost("member/add")]
@@ -99,23 +93,16 @@ public class MemberController(ILogger<MemberController> logger,
         if (validationResult != null)
             return BadRequest(validationResult);
 
-        _memberService.Update(member);
+        await _memberService.Update(member);
 
         return Ok(new MemberActionResponse(member.Id));
-    }
-
-    [HttpPut("update/artist/assigned-to")]
-    public ActionResult PutUpdateMemberArtistAssignedToAsync([FromBody] MemberUpdateArtistAssignedTo membersUpdateArtistAssignedTo)
-    {
-        _memberService.UpdateArtistAssignedTo(membersUpdateArtistAssignedTo);
-        return Ok(new MemberActionResponse(membersUpdateArtistAssignedTo.ArtistId));
     }
 
     [HttpDelete("member/{id}")]
     public async Task<ActionResult> DeleteMemberAsync(long id)
     {
         await _memberService.DeleteAsync(await _memberService.GetAsync(id));
-        return Ok();
+        return Ok(new MemberActionResponse(id));
     }
 
     [HttpPost("member/upload-photo/{id}")]

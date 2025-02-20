@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwanSong.Data.Repository.Interfaces;
 using SwanSong.Domain;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,11 +27,13 @@ public class BirthPlaceRepository(SwanSongContext context) : IBirthPlaceReposito
 
     public async Task AddAsync(BirthPlace birthPlace)
     {
+        birthPlace.AddedDate = DateTime.Now;
         await _context.BirthPlaces.AddAsync(birthPlace);
     }
 
     public void Update(BirthPlace birthPlace)
     {
+        birthPlace.ModifiedDate = DateTime.Now;
         _context.BirthPlaces.Update(birthPlace);
     }
 

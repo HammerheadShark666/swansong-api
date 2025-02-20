@@ -16,6 +16,7 @@ public class UnitOfWork : IUnitOfWork
     public IMemberRepository Members { get; private set; }
     public IBirthPlaceRepository BirthPlaces { get; private set; }
     public IArtistRepository Artists { get; private set; }
+    public IArtistMemberRepository ArtistMembers { get; private set; }
     public IAlbumRepository Albums { get; private set; }
     public IAlbumSongRepository AlbumSongs { get; private set; }
     public IAccountRepository Accounts { get; private set; }
@@ -28,6 +29,7 @@ public class UnitOfWork : IUnitOfWork
         Albums = new AlbumRepository(_context);
         AlbumSongs = new AlbumSongRepository(_context);
         Artists = new ArtistRepository(_context);
+        ArtistMembers = new ArtistMemberRepository(_context);
         BirthPlaces = new BirthPlaceRepository(_context);
         Countries = new CountryRepository(_context);
         Members = new MemberRepository(_context);

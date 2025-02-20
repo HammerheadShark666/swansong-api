@@ -71,6 +71,6 @@ public class CountryController(ILogger<CountryController> logger,
     {
         _countryService.DeleteAsync(await _countryService.GetAsync(id));
 
-        return Ok();
+        return Ok(new CountryActionResponse(id, ""));
     }
 }

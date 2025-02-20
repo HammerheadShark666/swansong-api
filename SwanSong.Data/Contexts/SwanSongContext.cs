@@ -18,14 +18,11 @@ public class SwanSongContext(DbContextOptions<SwanSongContext> options) : DbCont
     public DbSet<Studio> Studios { get; set; }
     public DbSet<AlbumSong> AlbumSongs { get; set; }
 
+    public DbSet<ArtistMember> ArtistMembers { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        modelBuilder.Entity<Artist>()
-          .HasMany<Member>(c => c.Members)
-          .WithOne(s => s.Artist)
-          .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<AlbumSong>()
             .HasOne<Song>(s => s.Song);
@@ -36,6 +33,7 @@ public class SwanSongContext(DbContextOptions<SwanSongContext> options) : DbCont
         modelBuilder.Entity<Studio>().HasData(DefaultData.Lookups.GetStudioDefaultData());
         modelBuilder.Entity<Artist>().HasData(DefaultData.Artists.GetArtistDefaultData());
         modelBuilder.Entity<Member>().HasData(DefaultData.Members.GetMemberDefaultData());
+        modelBuilder.Entity<ArtistMember>().HasData(DefaultData.ArtistMembers.GetArtistMembersDefaultData());
         modelBuilder.Entity<Album>().HasData(DefaultData.Albums.GetAlbumDefaultData());
         modelBuilder.Entity<Song>().HasData(DefaultData.Songs.GetSongDefaultData());
         modelBuilder.Entity<AlbumSong>().HasData(DefaultData.AlbumSongs.GetAlbumSongDefaultData());

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwanSong.Data.Repository.Interfaces;
 using SwanSong.Domain;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,11 +27,13 @@ public class StudioRepository(SwanSongContext context) : IStudioRepository
 
     public async Task AddAsync(Studio studio)
     {
+        studio.AddedDate = DateTime.Now;
         await _context.Studios.AddAsync(studio);
     }
 
     public void Update(Studio studio)
     {
+        studio.ModifiedDate = DateTime.Now;
         _context.Studios.Update(studio);
     }
 

@@ -106,7 +106,7 @@ public class ArtistController(ILogger<AlbumController> logger,
         if (validationResult != null)
             return BadRequest(validationResult);
 
-        _artistService.Update(artist);
+        await _artistService.Update(artist);
 
         return Ok(new ArtistActionResponse(artist.Id));
     }
@@ -130,7 +130,7 @@ public class ArtistController(ILogger<AlbumController> logger,
     public async Task<ActionResult<ArtistResponse>> DeleteArtistAsync(long id)
     {
         await _artistService.DeleteAsync(await _artistService.GetAsync(id));
-        return Ok();
+        return Ok(new AlbumActionResponse(id));
     }
 
     [Consumes("multipart/form-data")]

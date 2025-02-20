@@ -91,7 +91,6 @@ public class AlbumService(IMapper mapper,
         Album existingAlbum = await GetAsync(id) ?? throw new AlbumNotFoundException("Album not found (" + id + ")");
 
         existingAlbum.Description = description;
-        existingAlbum.ModifiedDate = DateTime.Now;
 
         _unitOfWork.Albums.Update(existingAlbum);
         _unitOfWork.Complete();
@@ -135,9 +134,9 @@ public class AlbumService(IMapper mapper,
     private async Task DeleteOriginalFileAsync(string originalFileName, string newFileName, string container)
     {
         EditPhoto editPhoto = _photoHelper.WasPhotoEdited(originalFileName, newFileName, Constants.DefaultAlbumPhotoFileName);
-        if (editPhoto.photoWasChanged)
+        if (editPhoto.PhotoWasChanged)
         {
-            await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(editPhoto.originalPhotoName, container);
+            await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(editPhoto.OriginalPhotoName, container);
         }
     }
 
@@ -154,7 +153,6 @@ public class AlbumService(IMapper mapper,
         existingAlbum.Producers = album.Producers;
         existingAlbum.Arrangers = album.Arrangers;
         existingAlbum.Artwork = album.Artwork;
-        existingAlbum.ModifiedDate = DateTime.Now;
 
         return existingAlbum;
     }

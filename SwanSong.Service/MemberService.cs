@@ -62,11 +62,6 @@ public class MemberService(IMapper mapper,
         return await _unitOfWork.Members.SearchByLetterAsync(letter);
     }
 
-    public async Task<List<Member>> GetMembersByArtistAsync(long artistId)
-    {
-        return (List<Member>)await _unitOfWork.Members.GetMembersByArtistAsync(artistId);
-    }
-
     public async Task<Member> GetAsync(long id)
     {
         return await _unitOfWork.Members.GetAsync(id) ?? throw new MemberNotFoundException("Member not found.");
@@ -80,9 +75,9 @@ public class MemberService(IMapper mapper,
         return member;
     }
 
-    public void Update(Member member)
+    public async Task Update(Member member)
     {
-        _unitOfWork.Members.Update(member);
+        _unitOfWork.Members.Update(await UpdateExistingMember(member));
         _unitOfWork.Complete();
 
         return;
@@ -148,7 +143,6 @@ public class MemberService(IMapper mapper,
         Member existingMember = await GetAsync(id) ?? throw new MemberNotFoundException("Member not found (" + id + ")");
 
         existingMember.Description = description;
-        existingMember.ModifiedDate = DateTime.Now;
 
         _unitOfWork.Members.Update(existingMember);
         _unitOfWork.Complete();
@@ -163,10 +157,24 @@ public class MemberService(IMapper mapper,
     private async Task DeleteOriginalFileAsync(string originalFileName, string newFileName, string container)
     {
         EditPhoto editPhoto = _photoHelper.WasPhotoEdited(originalFileName, newFileName, Constants.DefaultMemberPhotoFileName);
-        if (editPhoto.photoWasChanged)
+        if (editPhoto.PhotoWasChanged)
         {
-            await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(editPhoto.originalPhotoName, container);
+            await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(editPhoto.OriginalPhotoName, container);
         }
+    }
+
+    private async Task<Member> UpdateExistingMember(Member member)
+    {
+        var existingMember = await _unitOfWork.Members.ByIdAsync(member.Id) ?? throw new MemberNotFoundException("Member not found.");
+
+        existingMember.StageName = member.StageName;
+        existingMember.Surname = member.Surname;
+        existingMember.FirstName = member.FirstName;
+        existingMember.MiddleName = member.MiddleName;
+        existingMember.DateOfBirth = member.DateOfBirth;
+        existingMember.DateOfDeath = member.DateOfDeath;
+
+        return existingMember;
     }
 
     #endregion

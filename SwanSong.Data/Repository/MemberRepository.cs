@@ -55,32 +55,14 @@ public class MemberRepository(SwanSongContext context) : IMemberRepository
                                 .CountAsync();
     }
 
-    public async Task<IEnumerable<Member>> GetMembersByArtistAsync(long artistId)
-    {
-        return await (from member in _context.Members
-                      where member.ArtistId.Equals(artistId)
-                      orderby member.StageName
-                      select member)
-                      .AsNoTracking()
-                      .ToListAsync();
-    }
-
     public async Task<Member> GetAsync(long id)
     {
         return await _context.Members
                                 .Include(p => p.BirthPlace)
+                                .Include(e => e.ArtistMembers)
+                                   .ThenInclude(s => s.Artist)
                                 .Where(a => a.Id.Equals(id))
                                 .FirstOrDefaultAsync();
-    }
-
-    public async Task<bool> ExistsAsync(long id, long? artistId, string stageName)
-    {
-        return await _context.Members
-                               .Where(a => a.StageName.Equals(stageName)
-                                    && a.ArtistId.Equals(artistId)
-                                    && !a.Id.Equals(id))
-                               .AsNoTracking()
-                               .AnyAsync();
     }
 
     public async Task<Member> UpdateMemberPhotoAsync(long id, string filename)
@@ -88,6 +70,7 @@ public class MemberRepository(SwanSongContext context) : IMemberRepository
         Member member = await GetAsync(id);
 
         member.Photo = filename;
+        member.ModifiedDate = DateTime.Now;
         _context.SaveChanges();
 
         return member;
@@ -104,11 +87,13 @@ public class MemberRepository(SwanSongContext context) : IMemberRepository
 
     public async Task AddAsync(Member member)
     {
+        member.AddedDate = DateTime.Now;
         await _context.Members.AddAsync(member);
     }
 
     public void Update(Member member)
     {
+        member.ModifiedDate = DateTime.Now;
         _context.Members.Update(member);
     }
 

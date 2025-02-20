@@ -9,19 +9,77 @@ public class AutoMapperProfile : AutoMapper.Profile
     public AutoMapperProfile()
     {
         CreateMap<MemberUpdateRequest, Member>()
-            .ForMember(dest => dest.ArtistId, opt => opt.MapFrom(src => src.ArtistId == 0 ? null : src.ArtistId))
             .ForMember(dest => dest.BirthPlaceId, opt => opt.MapFrom(src => src.BirthPlaceId < 1 ? null : src.BirthPlaceId));
         CreateMap<Member, MemberActionResponse>();
         CreateMap<Member, MemberLookUpResponse>();
         CreateMap<Member, MemberResponse>();
-        CreateMap<Member, ArtistMemberResponse>();
+        CreateMap<Member, ArtistMemberMemberResponse>();
+
+        CreateMap<Member, MemberWithArtistsResponse>()
+            .ConstructUsing((member, c) => new MemberWithArtistsResponse(
+                member.Id,
+                member.StageName,
+                member.FirstName,
+                member.MiddleName,
+                member.Surname,
+                member.Photo,
+                member.DateOfBirth,
+                member.DateOfDeath,
+                member.BirthPlaceId,
+                member.Description,
+                c.Mapper.Map<List<MemberArtistLookUpResponse>>(member.ArtistMembers)
+            ));
+
+        CreateMap<ArtistMember, ArtistMemberResponse>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.MemberId, opt => opt.MapFrom(src => src.MemberId))
+            .ForMember(dest => dest.ArtistId, opt => opt.MapFrom(src => src.ArtistId))
+            .ForMember(dest => dest.Member,
+                    opt => opt.MapFrom(src => new Member
+                    {
+                        Id = src.Member.Id,
+                        StageName = src.Member.StageName,
+                        Surname = src.Member.Surname,
+                        MiddleName = src.Member.MiddleName,
+                        FirstName = src.Member.FirstName,
+                        DateOfBirth = src.Member.DateOfBirth,
+                        DateOfDeath = src.Member.DateOfDeath,
+                        Photo = src.Member.Photo
+                    }));
+
+        CreateMap<ArtistMemberAddRequest, ArtistMember>()
+            .ForMember(dest => dest.ArtistId, opt => opt.MapFrom(src => src.ArtistId))
+            .ForMember(dest => dest.Member,
+                    opt => opt.MapFrom(src => new Member
+                    {
+                        Id = src.Member.Id,
+                        StageName = src.Member.StageName,
+                        Surname = src.Member.Surname,
+                        MiddleName = src.Member.MiddleName,
+                        FirstName = src.Member.FirstName,
+                        DateOfBirth = src.Member.DateOfBirth,
+                        DateOfDeath = src.Member.DateOfDeath
+                    }));
+
+        CreateMap<ArtistMember, MemberArtistLookUpResponse>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Artist.Id))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Artist.Name))
+            .ForMember(dest => dest.Photo, opt => opt.MapFrom(src => src.Artist.Photo));
+
+        CreateMap<ArtistMemberUpdateRequest, Member>()
+           .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.memberId))
+           .ForMember(dest => dest.StageName, opt => opt.MapFrom(src => src.StageName))
+           .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.Surname))
+           .ForMember(dest => dest.MiddleName, opt => opt.MapFrom(src => src.MiddleName))
+           .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+           .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth))
+           .ForMember(dest => dest.DateOfDeath, opt => opt.MapFrom(src => src.DateOfDeath));
+
         CreateMap<MemberDescriptionUpdateRequest, Member>();
 
         CreateMap<MemberAddRequest, Member>()
-            .ForMember(dest => dest.ArtistId, opt => opt.MapFrom(src => src.ArtistId == 0 ? null : src.ArtistId))
             .ForMember(dest => dest.BirthPlaceId, opt => opt.MapFrom(src => src.BirthPlaceId < 1 ? null : src.BirthPlaceId));
 
-        CreateMap<Album, ArtistAlbumResponse>();
         CreateMap<Artist, ArtistWithAlbumsResponse>()
             .ConstructUsing((artist, c) => new ArtistWithAlbumsResponse(
                 artist.Id,
@@ -31,8 +89,8 @@ public class AutoMapperProfile : AutoMapper.Profile
                 artist.FormationYear,
                 artist.DisbandYear,
                 artist.CountryId,
-                c.Mapper.Map<List<ArtistMemberResponse>>(artist.Members),
-                c.Mapper.Map<List<ArtistAlbumResponse>>(artist.Albums)
+                c.Mapper.Map<List<ArtistMemberLookupResponse>>(artist.ArtistMembers),
+                c.Mapper.Map<List<AlbumLookUpResponse>>(artist.Albums)
             ));
 
         CreateMap<ArtistDescriptionUpdateRequest, Artist>();
@@ -48,7 +106,14 @@ public class AutoMapperProfile : AutoMapper.Profile
             .ForMember(dest => dest.DisbandYear, opt => opt.MapFrom(src => src.DisbandYear == 0 ? null : src.DisbandYear));
 
         CreateMap<Artist, ArtistActionResponse>();
-        CreateMap<Artist, ArtistResponse>();
+        CreateMap<Artist, ArtistResponse>()
+            .ForMember(dest => dest.Members, opt => opt.MapFrom(src => src.ArtistMembers));
+
+        CreateMap<ArtistMember, ArtistMemberLookupResponse>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Member.Id))
+            .ForMember(dest => dest.StageName, opt => opt.MapFrom(src => src.Member.StageName))
+            .ForMember(dest => dest.Photo, opt => opt.MapFrom(src => src.Member.Photo));
+
         CreateMap<Artist, ArtistLookUpResponse>()
           .ConstructUsing((artist, c) => new ArtistLookUpResponse(
               artist.Id,
@@ -108,7 +173,6 @@ public class AutoMapperProfile : AutoMapper.Profile
 
         CreateMap<AlbumSongSongAddRequest, Song>();
         CreateMap<AlbumSongSongUpdateRequest, Song>();
-        CreateMap<Song, SongActionResponse>();
 
         CreateMap<Song, SongResponse>()
             .ConstructUsing(song => new SongResponse(

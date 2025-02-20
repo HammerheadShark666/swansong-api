@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwanSong.Data.Repository.Interfaces;
 using SwanSong.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,11 +55,13 @@ public class AlbumSongRepository(SwanSongContext context) : IAlbumSongRepository
 
     public async Task AddAsync(AlbumSong albumSong)
     {
+        albumSong.AddedDate = DateTime.Now;
         await _context.AlbumSongs.AddAsync(albumSong);
     }
 
     public void Update(AlbumSong albumSong)
     {
+        albumSong.ModifiedDate = DateTime.Now;
         _context.AlbumSongs.Update(albumSong);
     }
 

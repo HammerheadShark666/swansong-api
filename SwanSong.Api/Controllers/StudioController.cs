@@ -71,6 +71,6 @@ public class StudioController(ILogger<StudioController> logger,
     {
         _studioService.DeleteAsync(await _studioService.GetAsync(id));
 
-        return Ok();
+        return Ok(new StudioActionResponse(id, ""));
     }
 }

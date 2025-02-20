@@ -18,7 +18,7 @@ public interface IArtistService
     Task<string> UpdateArtistPhotoAsync(long id, IFormFile file);
     List<Artist> GetAll();
     Task<Artist> AddAsync(Artist artist);
-    void Update(Artist artist);
+    Task Update(Artist artist);
     Task DeleteAsync(Artist artist);
     Task UpdateDescriptionAsync(long id, string description);
 }

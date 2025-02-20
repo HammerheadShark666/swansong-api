@@ -10,6 +10,7 @@ public interface IUnitOfWork : IDisposable
     IAlbumRepository Albums { get; }
     IAlbumSongRepository AlbumSongs { get; }
     IArtistRepository Artists { get; }
+    IArtistMemberRepository ArtistMembers { get; }
     IBirthPlaceRepository BirthPlaces { get; }
     ICountryRepository Countries { get; }
     IMemberRepository Members { get; }

@@ -6,11 +6,14 @@ public class PhotoHelper : IPhotoHelper
 {
     public PhotoHelper() { }
 
-    public record EditPhoto(bool photoWasChanged, string originalPhotoName);
+    public record EditPhoto(bool PhotoWasChanged, string OriginalPhotoName);
 
     public bool NotDefaultImage(string fileName, string defaultPhotoFilename)
     {
-        return !(fileName == defaultPhotoFilename);
+        if (!string.IsNullOrEmpty(fileName) && fileName != defaultPhotoFilename)
+            return true;
+        else
+            return false;
     }
 
     public EditPhoto WasPhotoEdited(string originalPhotoFileName, string newPhotoFileName, string defaultPhotoFilename)
