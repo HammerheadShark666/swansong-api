@@ -8,29 +8,9 @@ namespace SwanSong.Domain;
 [Table("SWSG_Member")]
 public class Member : BaseEntity
 {
-    private long? artistId;
-
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
-
-    [ForeignKey("ArtistId")]
-    public long? ArtistId
-    {
-        get
-        {
-            if (this.artistId == 0)
-            {
-                this.artistId = null;
-                return null;
-
-            }
-            return this.artistId;
-        }
-        set { this.artistId = value; }
-    }
-
-    public virtual Artist Artist { get; set; }
 
     [Column(TypeName = "nvarchar(150)")]
     [Required]
@@ -66,4 +46,6 @@ public class Member : BaseEntity
     public bool IsSongWriter { get; set; }
 
     public ICollection<Song> SongsWritten { get; set; }
+
+    public ICollection<ArtistMember> ArtistMembers { get; set; } = new HashSet<ArtistMember>();
 }

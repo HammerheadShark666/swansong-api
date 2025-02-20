@@ -86,7 +86,9 @@ public static class ServiceExtensions
         services.AddScoped<IMemberRepository, MemberRepository>();
         services.AddScoped<IMemberService, MemberService>();
         services.AddScoped<IArtistRepository, ArtistRepository>();
+        services.AddScoped<IArtistMemberRepository, ArtistMemberRepository>();
         services.AddScoped<IArtistService, ArtistService>();
+        services.AddScoped<IArtistMemberService, ArtistMemberService>();
         services.AddScoped<IBirthPlaceRepository, BirthPlaceRepository>();
         services.AddScoped<IBirthPlaceService, BirthPlaceService>();
         services.AddScoped<ICountryRepository, CountryRepository>();

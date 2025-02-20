@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using SwanSong.Domain;
 using SwanSong.Domain.Dto;
 using SwanSong.Helper;
+using SwanSong.Helper.Exceptions;
 using SwanSong.Helper.Filter;
 using SwanSong.Helper.Interfaces;
 using SwanSong.Service.Interfaces;
@@ -132,8 +133,12 @@ public class AlbumController(ILogger<AlbumController> logger,
     [HttpDelete("album/{id}")]
     public async Task<ActionResult> DeleteAlbumAsync(long id)
     {
-        await _albumService.DeleteAsync(await _albumService.GetAsync(id));
-        return Ok();
+        var album = await _albumService.GetAsync(id);
+        if (album == null)
+            throw new AlbumNotFoundException("Album not found (" + id + ")");
+
+        await _albumService.DeleteAsync(album);
+        return Ok(new AlbumActionResponse(id));
     }
 
     [HttpPost("album/upload-photo/{id}")]

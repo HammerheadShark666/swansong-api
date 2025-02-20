@@ -104,9 +104,16 @@ public class ArtistService(IMapper mapper,
         return artist;
     }
 
-    public void Update(Artist artist)
+    public async Task Update(Artist artist)
     {
-        _unitOfWork.Artists.Update(artist);
+        var existingArtist = await _unitOfWork.Artists.ByIdAsync(artist.Id) ?? throw new ArtistNotFoundException("Artist not found.");
+
+        existingArtist.Name = artist.Name;
+        existingArtist.FormationYear = artist.FormationYear;
+        existingArtist.DisbandYear = artist.DisbandYear;
+        existingArtist.CountryId = artist.CountryId;
+
+        _unitOfWork.Artists.Update(await UpdateExistingArtist(artist));
         _unitOfWork.Complete();
 
         return;
@@ -118,7 +125,7 @@ public class ArtistService(IMapper mapper,
         _unitOfWork.Complete();
 
         await DeleteArtistPhotosAsync(artist.Photo);
-        await DeleteMembersPhotosAsync(artist.Members);
+        await DeleteArtistMembersPhotosAsync(artist.ArtistMembers.ToList());
 
         return;
     }
@@ -132,10 +139,10 @@ public class ArtistService(IMapper mapper,
 
     #region Private Function
 
-    private async Task DeleteMembersPhotosAsync(List<Member> members)
+    private async Task DeleteArtistMembersPhotosAsync(List<ArtistMember> artistMembers)
     {
-        foreach (Member member in members)
-            await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(member.Photo, Constants.AzureStorageContainerMembers);
+        foreach (ArtistMember artistMember in artistMembers)
+            await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(artistMember.Member.Photo, Constants.AzureStorageContainerMembers);
     }
 
     private async Task DeleteArtistPhotosAsync(string artistPhotoFileName)
@@ -149,10 +156,22 @@ public class ArtistService(IMapper mapper,
     private async Task DeleteOriginalFileAsync(string originalFileName, string newFileName, string container)
     {
         EditPhoto editPhoto = _photoHelper.WasPhotoEdited(originalFileName, newFileName, Constants.DefaultArtistPhotoFileName);
-        if (editPhoto.photoWasChanged)
+        if (editPhoto.PhotoWasChanged)
         {
-            await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(editPhoto.originalPhotoName, container);
+            await _azureStorageHelper.DeleteBlobInAzureStorageContainerAsync(editPhoto.OriginalPhotoName, container);
         }
+    }
+
+    private async Task<Artist> UpdateExistingArtist(Artist artist)
+    {
+        var existingArtist = await _unitOfWork.Artists.ByIdAsync(artist.Id) ?? throw new ArtistNotFoundException("Artist not found.");
+
+        existingArtist.Name = artist.Name;
+        existingArtist.FormationYear = artist.FormationYear;
+        existingArtist.DisbandYear = artist.DisbandYear;
+        existingArtist.CountryId = artist.CountryId;
+
+        return existingArtist;
     }
 
     #endregion

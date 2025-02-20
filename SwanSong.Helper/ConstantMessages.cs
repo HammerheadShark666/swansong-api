@@ -22,4 +22,6 @@ public class ConstantMessages
     public static string AlbumNotFound = "Album not found";
 
     public static string UnexpectedError = "An unexpected error has occurred.";
+
+    public static string NoArtistMembersToUpdate = "There are no artist members to update.";
 }

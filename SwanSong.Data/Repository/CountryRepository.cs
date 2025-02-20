@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwanSong.Data.Repository.Interfaces;
 using SwanSong.Domain;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,11 +27,13 @@ public class CountryRepository(SwanSongContext context) : ICountryRepository
 
     public async Task AddAsync(Country country)
     {
+        country.AddedDate = DateTime.Now;
         await _context.Countries.AddAsync(country);
     }
 
     public void Update(Country country)
     {
+        country.ModifiedDate = DateTime.Now;
         _context.Countries.Update(country);
     }
 

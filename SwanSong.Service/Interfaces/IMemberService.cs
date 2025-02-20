@@ -11,7 +11,6 @@ public interface IMemberService
 {
     Task<List<Member>> SearchByNameAsync(string criteria);
     Task<List<Member>> SearchByLetterAsync(string letter);
-    Task<List<Member>> GetMembersByArtistAsync(long artistId);
     Task<long> CountAsync();
     Task<List<Member>> GetAllAsync(PaginationFilter filter);
     Task<List<Member>> GetRandomAsync(int numberOfMembers);
@@ -19,7 +18,7 @@ public interface IMemberService
     Task<string> UpdateMemberPhotoAsync(long id, IFormFile file);
     Task DeleteAsync(Member member);
     Task<Member> AddAsync(Member member);
-    void Update(Member member);
+    Task Update(Member member);
     void UpdateArtistAssignedTo(MemberUpdateArtistAssignedTo membersUpdateArtistAssignedTo);
     Task UpdateDescriptionAsync(long id, string description);
 }

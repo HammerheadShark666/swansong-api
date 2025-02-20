@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SwanSong.Data.Repository.Interfaces;
 using SwanSong.Domain;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,11 +27,13 @@ public class RecordLabelRepository(SwanSongContext context) : IRecordLabelReposi
 
     public async Task AddAsync(RecordLabel recordLabel)
     {
+        recordLabel.AddedDate = DateTime.Now;
         await _context.RecordLabels.AddAsync(recordLabel);
     }
 
     public void Update(RecordLabel recordLabel)
     {
+        recordLabel.ModifiedDate = DateTime.Now;
         _context.RecordLabels.Update(recordLabel);
     }
 

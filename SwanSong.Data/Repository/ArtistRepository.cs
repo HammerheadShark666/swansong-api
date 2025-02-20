@@ -68,11 +68,11 @@ public class ArtistRepository(SwanSongContext context) : IArtistRepository
     public async Task<Artist> GetArtistFullDetailsAsync(long id)
     {
         return await _context.Artists
-                                .Include(e => e.Country)
-                                .Include(e => e.Albums)
-                                .Include(e => e.Members)
-                                .Where(a => a.Id.Equals(id))
-                                .FirstOrDefaultAsync();
+             .Include(e => e.ArtistMembers)
+                .ThenInclude(s => s.Member)
+             .Include(a => a.Albums)
+             .Where(a => a.Id.Equals(id))
+             .FirstOrDefaultAsync();
     }
 
     public async Task<Artist> UpdateArtistPhotoAsync(long id, string filename)
@@ -80,6 +80,7 @@ public class ArtistRepository(SwanSongContext context) : IArtistRepository
         Artist artist = await GetAsync(id);
 
         artist.Photo = filename;
+        artist.ModifiedDate = DateTime.Now;
         _context.SaveChanges();
 
         return artist;
@@ -104,11 +105,13 @@ public class ArtistRepository(SwanSongContext context) : IArtistRepository
 
     public async Task AddAsync(Artist artist)
     {
+        artist.AddedDate = DateTime.Now;
         await _context.Artists.AddAsync(artist);
     }
 
     public void Update(Artist artist)
     {
+        artist.ModifiedDate = DateTime.Now;
         _context.Artists.Update(artist);
     }
 

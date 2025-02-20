@@ -34,20 +34,18 @@ public class Artist : BaseEntity
 
     public virtual List<Album> Albums { get; set; }
 
-    public List<Member> Members { get; set; }
+    public ICollection<ArtistMember> ArtistMembers { get; set; } = new HashSet<ArtistMember>();
 
     public Artist()
     {
-        Albums = new List<Album>();
-        Members = new List<Member>();
+        Albums = [];
         Photo = DefaultArtistPhotoFileName;
     }
 
     public Artist(long id)
     {
         Id = id;
-        Albums = new List<Album>();
-        Members = new List<Member>();
+        Albums = [];
         Photo = DefaultArtistPhotoFileName;
     }
 }

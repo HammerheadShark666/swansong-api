@@ -92,6 +92,7 @@ public class AlbumRepository(SwanSongContext context) : IAlbumRepository
         Album album = await GetAsync(id);
 
         album.Photo = filename;
+        album.ModifiedDate = DateTime.Now;
         _context.SaveChanges();
 
         return album;
@@ -116,11 +117,13 @@ public class AlbumRepository(SwanSongContext context) : IAlbumRepository
 
     public async Task AddAsync(Album album)
     {
+        album.AddedDate = DateTime.Now;
         await _context.Albums.AddAsync(album);
     }
 
     public void Update(Album album)
     {
+        album.ModifiedDate = DateTime.Now;
         _context.Albums.Update(album);
     }
 
