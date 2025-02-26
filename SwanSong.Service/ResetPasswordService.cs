@@ -39,7 +39,7 @@ public class ResetPasswordService(IMapper mapper,
 
         await UpdateResetTokenAsync(GetResetToken(account));
 
-        SendPasswordResetEmail(account.Email, account.ResetToken);
+        SendPasswordResetEmail(account.Email, account.ResetToken, forgotPasswordRequest.FrontEndUrl);
     }
 
     public async Task ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
@@ -117,10 +117,10 @@ public class ResetPasswordService(IMapper mapper,
         return account;
     }
 
-    private static void SendPasswordResetEmail(string toEmail, string resetToken)
+    private static void SendPasswordResetEmail(string toEmail, string resetToken, string frontEndUrl)
     {
-        string message = !string.IsNullOrEmpty(EnvironmentVariablesHelper.ProductionFrontEndBaseUrl)
-                             ? EmailMessages.PasswordResetEmail(EnvironmentVariablesHelper.ProductionFrontEndBaseUrl, resetToken)
+        string message = !string.IsNullOrEmpty(frontEndUrl)
+                             ? EmailMessages.PasswordResetEmail(frontEndUrl, resetToken)
                              : EmailMessages.PasswordResetNoResetUrlEmail(resetToken);
 
         SmtpHelper.SendEmail(toEmail, ConstantMessages.PasswordResetEmailInstruction, message);
